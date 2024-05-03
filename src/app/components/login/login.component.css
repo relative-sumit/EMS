@@ -67,7 +67,7 @@
 
 .error-message {
   color: red;
-  font-size: 12px;
+  font-size: 15px;
   margin: 0px;
   position: relative;
   bottom: 15px;
@@ -90,8 +90,9 @@
 
 .submit-error-message {
   color: red;
-  font-size: 12px;
+  font-size: 15px;
   margin-top: 5px;
+  margin-bottom: 5px;
   text-align: center;
 }
 
