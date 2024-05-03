@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
               console.log(sessionStorage);
               this.router.navigate(['/home']);
             } else {
-              this.errorMessage = 'Invalid credentials';
+              this.errorMessage = data.errorMessage;
               throw new Error('Faulty credentials!');
             }
           },
