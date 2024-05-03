@@ -57,6 +57,10 @@
   position: relative;
 }
 
+.has-error .form-group {
+    border: 1px solid red;
+  }
+
 .form-control {
   width: 100%;
   padding: 10px;

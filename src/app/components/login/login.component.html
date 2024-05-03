@@ -8,7 +8,13 @@
       <h3 class="second-heading">Login</h3>
     </div>
     <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="form-username">
+      <div
+        class="form-username"
+        [ngClass]="{
+          'has-error':
+            form.get('username')?.invalid && form.get('username')?.touched
+        }"
+      >
         <div class="form-group">
           <fa-icon [icon]="faUser" class="formIcon"></fa-icon>
           <input
@@ -25,7 +31,13 @@
           *Username is required.
         </div>
       </div>
-      <div class="form-password">
+      <div
+        class="form-password"
+        [ngClass]="{
+          'has-error':
+            form.get('password')?.invalid && form.get('password')?.touched
+        }"
+      >
         <div class="form-group">
           <fa-icon [icon]="faLock" class="formIcon"></fa-icon>
           <input
