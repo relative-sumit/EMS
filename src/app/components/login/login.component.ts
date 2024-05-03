@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
-import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   fb = inject(FormBuilder);
   faUser = faUser;
   faLock = faLock;
@@ -25,36 +24,36 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  constructor(
-    private auth: AuthService,
-    private login: LoginService,
-    private router: Router
-  ) {}
-
+  constructor(private auth: AuthService, private router: Router) {}
   ngOnInit(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    if (this.auth.isLoggedin()) {
+      this.router.navigate(['/home']);
+    }
   }
 
   onSubmit(): void {
     if (this.form.getRawValue().username && this.form.getRawValue().password) {
       this.errorMessage = '';
 
-      this.login
+      this.auth
         .login(
           this.form.getRawValue().username,
           this.form.getRawValue().password
         )
         .subscribe(
           (data) => {
-            this.auth.storeSession('token', data.token);
-            this.auth.storeSession('userId', data.userId);
-            this.auth.storeSession('username', data.username);
-            console.log(sessionStorage);
-            this.router.navigate(['/home']);
+            if (data.status === 200) {
+              this.auth.storeSession('token', data.token);
+              this.auth.storeSession('userId', data.userId);
+              this.auth.storeSession('username', data.username);
+              console.log(sessionStorage);
+              this.router.navigate(['/home']);
+            } else {
+              this.errorMessage = 'Invalid credentials';
+              throw new Error('Faulty credentials!');
+            }
           },
           (error) => {
-            this.errorMessage = 'Invalid credentials';
             console.error(error);
           }
         );
