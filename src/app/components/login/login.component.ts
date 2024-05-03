@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/auth.service';
 import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,11 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  constructor(private auth: AuthService, private login: LoginService) {}
+  constructor(
+    private auth: AuthService,
+    private login: LoginService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     localStorage.removeItem('token');
@@ -40,9 +45,19 @@ export class LoginComponent {
           this.form.getRawValue().username,
           this.form.getRawValue().password
         )
-        .subscribe((data) => {
-          console.log(data);
-        });
+        .subscribe(
+          (data) => {
+            this.auth.storeSession('token', data.token);
+            this.auth.storeSession('userId', data.userId);
+            this.auth.storeSession('username', data.username);
+            console.log(sessionStorage);
+            this.router.navigate(['/home']);
+          },
+          (error) => {
+            this.errorMessage = 'Invalid credentials';
+            console.error(error);
+          }
+        );
     } else {
       if (
         this.form.getRawValue().username &&

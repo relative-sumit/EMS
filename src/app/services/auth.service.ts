@@ -10,10 +10,10 @@ export class AuthService {
   constructor(private encrDcrp: EncryptingDecryptingService) {}
 
   isLoggedin() {
-    return false;
+    return sessionStorage.getItem('token');
   }
 
-  storeSession(key:string,data: string) {
+  storeSession(key: string, data: string) {
     const dataToStore = this.encrDcrp.encrypt(data);
     sessionStorage.setItem(key, dataToStore);
   }
