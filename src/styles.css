@@ -12,3 +12,43 @@ html {
   height: 100%;
   font-family: Arial, sans-serif;
 }
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+.error-message {
+  color: red;
+  font-size: 15px;
+  margin: 0px;
+  position: relative;
+  bottom: 15px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #004190;
+}
+
+.submit-error-message {
+  color: red;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+}
