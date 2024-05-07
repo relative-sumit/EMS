@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router) {}
   ngOnInit(): void {
     if (this.auth.isLoggedin()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
               this.auth.storeSession('userId', data.userId);
               this.auth.storeSession('username', data.username);
               console.log(sessionStorage);
-              this.router.navigate(['/home']);
+              this.router.navigate(['/dashboard']);
             } else {
               this.errorMessage = data.errorMessage;
               throw new Error('Faulty credentials!');
