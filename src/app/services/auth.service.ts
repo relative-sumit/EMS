@@ -17,11 +17,65 @@ const EMPLOYEE_LOGIN_QUERY = gql`
   }
 `;
 
+const GET_EMPLOYEE_INFO = gql`
+query($UserId:String){
+  employeeInfoById(UserId: $UserId){
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+    UserId
+    Photo
+    Gender
+    Contact {
+      CountryCode
+      Primary
+      Emergency
+    }
+    Email {
+      CompanyMail
+      PersonalMail
+    }
+    Location {
+      Flat
+      Area
+      Landmark
+      Pincode
+      City
+      State
+    }
+    dob
+    doj
+    doc
+    Department {
+      DepartmentId
+      DepartmentName
+    }
+    SkillSet {
+      EmployeeSkillsetId
+      PrimarySkillset
+      SecondarySkillset
+      SkillLevel
+      Experience
+      Certification {
+        CertificationName
+        CertificationDate
+      }
+    }
+    ManagerId
+    Designation
+    CreatedBy
+    UpdatedBy
+    IsActive
+    IsDeleted
+  }
+}
+`;
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  apiUrl = 'http://localhost:3000/graphql';
 
   constructor(
     private encrDcrp: EncryptingDecryptingService,
@@ -48,6 +102,18 @@ export class AuthService {
         },
       })
       .valueChanges.pipe(map((result) => result.data.employeeLogin));
+  }
+
+  getEmployeeInfo(userId: string): Observable<any>{
+    console.log(userId);
+    return this.apollo
+            .watchQuery<any>({
+              query: GET_EMPLOYEE_INFO,
+              variables: {
+                UserId:userId
+              },
+            })
+            .valueChanges.pipe(map((info)=> info.data.employeeInfoById));
   }
 
   logout() {

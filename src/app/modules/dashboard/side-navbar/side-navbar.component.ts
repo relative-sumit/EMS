@@ -20,6 +20,12 @@ import { AuthService } from '../../../services/auth.service';
 export class SideNavbarComponent {
   navbarListItem = [
     {
+      number: 5,
+      name: 'View my Info',
+      icon: faUserGroup,
+      link: 'employee-info',
+    },
+    {
       number: 1,
       name: 'Home',
       icon: faHome,

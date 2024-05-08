@@ -4,12 +4,14 @@ import { HomeComponent } from './home/home.component';
 import { AssetDetailsComponent } from './asset-details/asset-details.component';
 import { OrgStructureComponent } from './org-structure/org-structure.component';
 import { TeamManagementComponent } from './team-management/team-management.component';
+import { EmployeeInfoComponent } from '../../components/employee-info/employee-info.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'asset-details', component: AssetDetailsComponent },
   { path: 'org-structure', component: OrgStructureComponent },
   { path: 'team-management', component: TeamManagementComponent },
+  { path: 'employee-info', component: EmployeeInfoComponent },
 ];
 
 @NgModule({
