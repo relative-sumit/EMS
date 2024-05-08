@@ -21,7 +21,6 @@ const EMPLOYEE_LOGIN_QUERY = gql`
   providedIn: 'root',
 })
 export class AuthService {
-  apiUrl = 'http://localhost:3000/graphql';
 
   constructor(
     private encrDcrp: EncryptingDecryptingService,

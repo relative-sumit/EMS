@@ -1,11 +1,24 @@
 <div class="side-nav-content">
+  <fa-icon
+    [icon]="faBars"
+    class="side-bar fa-2x"
+    (click)="toggleCollapse()"
+  ></fa-icon>
+  <div class="side-profile">
+    <img src="/assets/img/pro-pic.jpg" alt="" />
+    <h2>David</h2>
+    <a href="">View info</a>
+  </div>
   <ul class="nav-list">
     <li class="nav-list-item" *ngFor="let item of navbarListItem">
-      <fa-icon [icon]="item.icon" class="formIcon"></fa-icon>
+      <fa-icon [icon]="item.icon"></fa-icon>
       <span>
-        <a href="{{item.link}}">{{item.name}}</a>
+        <a href="{{ item.link }}">{{ item.name }}</a>
       </span>
     </li>
   </ul>
-  <button (click)="logout()">Logout</button>
+  <div class="side-logout">
+    <fa-icon [icon]="faPowerOff"></fa-icon>
+    <button (click)="logout()">Logout</button>
+  </div>
 </div>

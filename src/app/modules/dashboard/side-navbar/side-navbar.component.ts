@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { SideNavbarComponentVariable } from '../../../global-variables/side-navbar-variables';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  computed,
+  signal,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faBars,
   faHome,
   faLaptop,
+  faPowerOff,
   faSitemap,
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +25,18 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './side-navbar.component.css',
 })
 export class SideNavbarComponent {
+  faBars = faBars;
+  faPowerOff = faPowerOff;
+
+  @Output() collapsedChanged: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+  collapsed = false;
+
+  toggleCollapse() {
+    this.collapsed = !this.collapsed;
+    this.collapsedChanged.emit(this.collapsed);
+  }
+
   navbarListItem = [
     {
       number: 1,

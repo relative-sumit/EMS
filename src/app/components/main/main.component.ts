@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
+import { AuthService } from '../../services/auth.service';
+import { SideNavbarComponent } from '../../modules/dashboard/side-navbar/side-navbar.component';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,8 +12,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './main.component.css',
 })
 export class MainComponent {
+  collapsed = false;
+
   constructor(private auth: AuthService) {}
+
   isloggedIn() {
     return this.auth.isLoggedin();
+  }
+
+  onCollapsedChanged(collapsed: boolean) {
+    this.collapsed = collapsed;
   }
 }
