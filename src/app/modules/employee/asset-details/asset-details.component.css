@@ -1,38 +1,71 @@
 .container {
-    margin-top: 20px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th,
-  .table td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .table th {
-    background-color: #007bff; /* Blue */
-    color: #fff; /* White */
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #f2f2f2; /* Light Gray */
-  }
-  
-  .table tbody tr:hover {
-    background-color: #e2e6ea; /* Lighter Gray on Hover */
-  }
-  
-  .message {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f8d7da; /* Light Red */
-    border: 1px solid #f5c6cb; /* Red Border */
-    color: #721c24; /* Dark Red Text */
-    border-radius: 4px;
-  }
-  
+  margin-top: 20px;
+}
+
+.mangement-header {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.search-and-add {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #2d8cf3;
+  color: #fff;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+  background-color: #e2e6ea;
+}
+
+.message {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  border-radius: 4px;
+}
+.pagination {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  color: rgb(7, 71, 64);
+}
+
+.new-asset {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.new-asset:hover {
+  background-color: #45a049;
+}
