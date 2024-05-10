@@ -1,4 +1,3 @@
-
 .wrapper {
   background-color: white;
   padding: 20px;
@@ -104,6 +103,7 @@
 .formIcon {
   margin: 5px;
 }
+
 
 @media only screen and (max-width: 600px) {
   .container {
