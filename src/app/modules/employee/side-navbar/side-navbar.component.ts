@@ -55,7 +55,7 @@ export class SideNavbarComponent {
       number: 4,
       name: 'Asset Details',
       icon: faLaptop,
-      link: 'dashboard/asset-details',
+      link: 'dashboard/asset',
     },
   ];
   constructor(private auth: AuthService) {}
