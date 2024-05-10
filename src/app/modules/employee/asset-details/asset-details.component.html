@@ -1,35 +1,70 @@
 <div class="conatiner">
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table">
-          <thead>
-            <tr>
-              <th >Asset Name</th>
-              <th >Asset Model</th>
-              <th >Asset Type</th>
-              <th >Memory</th>
-              <th >Processor</th>
-              <th >Operating System</th>
-              <th >Warranty</th>
-              <th >Asset Tag</th>
-              <th >Serial Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of assetList">
-              <td scope="row">{{user.AssetName}}</td>
-              <td>{{user.AssetModel}}</td>
-              <td>{{user.AssetType}}</td>
-              <td>{{user.Memory}}</td>
-              <td>{{user.Processor}}</td>
-              <td>{{user.OperatingSystem}}</td>
-              <td>{{user.Warranty}}</td>
-              <td>{{user.AssetTag}}</td>
-              <td>{{user.SerialNumber}}</td>
-            </tr>
-            <div class="message" *ngIf="assetList.length === 0">No record found!</div>
-          </tbody>
-        </table>
-      </div>
+  <div class="mangement-header">
+    <h2>Asset Management</h2>
+    <div class="search-and-add">
+      <button class="new-asset" (click)="addNew()">Add New</button>
+      <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          name="searchText"
+          [(ngModel)]="searchText"
+          (keyup)="changeSearchText()"
+        />
+        <button class="btn btn-outline-success" (click)="changeSearchText()">
+          Search
+        </button>
+      </form>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Asset Name</th>
+            <th>Asset Model</th>
+            <th>Asset Type</th>
+            <th>Memory</th>
+            <th>Processor</th>
+            <th>Operating System</th>
+            <th>Warranty</th>
+            <th>Asset Tag</th>
+            <th>Serial Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let asset of assetList
+                | search : searchText
+                | paginate : { itemsPerPage: 10, currentPage: page }
+            "
+          >
+            <td scope="row">{{ asset.AssetName }}</td>
+            <td>{{ asset.AssetModel }}</td>
+            <td>{{ asset.AssetType }}</td>
+            <td>{{ asset.Memory }}</td>
+            <td>{{ asset.Processor }}</td>
+            <td>{{ asset.OperatingSystem }}</td>
+            <td>{{ asset.Warranty }}</td>
+            <td>{{ asset.AssetTag }}</td>
+            <td>{{ asset.SerialNumber }}</td>
+          </tr>
+          <div
+            class="message"
+            *ngIf="(assetList | search : searchText).length === 0"
+          >
+            No record found!
+          </div>
+        </tbody>
+      </table>
+      <pagination-controls
+        class="pagination"
+        (pageChange)="pageChangeEvent($event)"
+      ></pagination-controls>
+    </div>
+  </div>
+</div>
