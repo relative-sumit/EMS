@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EncryptingDecryptingService } from './encrypting-decrypting.service';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 
 const EMPLOYEE_LOGIN_QUERY = gql`
@@ -72,6 +72,15 @@ query($UserId:String){
 }
 `;
 
+const UPDATE_EMPLOYEE_INFO = gql`
+  mutation UpdateEmployeeInfo($UserId: String!, $input: EmployeeInfoInput!) {
+    updateEmployeeInfo(UserId: $UserId, input: $input) {
+      FirstName
+      LastName
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -105,7 +114,6 @@ export class AuthService {
   }
 
   getEmployeeInfo(userId: string): Observable<any>{
-    console.log(userId);
     return this.apollo
             .watchQuery<any>({
               query: GET_EMPLOYEE_INFO,
@@ -115,6 +123,16 @@ export class AuthService {
             })
             .valueChanges.pipe(map((info)=> info.data.employeeInfoById));
   }
+  updateEmployeeInfo(UserId: String, input:any){
+    return this.apollo.mutate<any>({
+      mutation:UPDATE_EMPLOYEE_INFO,
+      variables:{
+        UserId: UserId,
+        input: input
+      }
+    })
+  }
+
 
   logout() {
     sessionStorage.clear();

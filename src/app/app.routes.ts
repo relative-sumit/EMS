@@ -6,7 +6,6 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  {path: 'employee-info', component: EmployeeInfoComponent, canActivate: [authGuard]},
   {
     path: 'dashboard',
     loadChildren: () =>
@@ -15,6 +14,15 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
+  {
+    path: 'employee-info',
+    loadChildren: () =>
+      import('./modules/employee-info/employee-info.module').then(
+        (m) => m.EmployeeInfoModule
+      ),
+    canActivate: [authGuard],
+  },
+
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

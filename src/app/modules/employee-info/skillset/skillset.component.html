@@ -1,0 +1,99 @@
+<div class="personal-container">
+    <app-employee-navbar></app-employee-navbar>
+    <div class="accordion" #accordion>
+        <form [formGroup]="updateForm">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <div class="accordion-butto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 (click)="toggleAccordion('panelsStayOpen-collapseOne')">SkillSet</h3>
+                            </div>
+                            <div class="col-auto">
+                                <button class="edit-button" (click)="toggleEdit(1)">
+                                    <i class="fa fa-edit fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">SkillsetId</span></small></div>
+                                <div *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.EmployeeSkillsetId}}</div>
+                                <div formGroupName="SkillSet">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="EmployeeSkillsetId">
+                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.EmployeeSkillsetId')?.touched && this.updateForm.get('SkillSet.EmployeeSkillsetId')?.errors?.['required']">skillset Id is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Primary Skillset</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.PrimarySkillset}}</div>
+                                <div formGroupName="SkillSet">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="PrimarySkillset">
+                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.PrimarySkillset')?.touched && this.updateForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">primary skillset is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Secondary Skillset</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.SecondarySkillset}}</div>
+                                <div formGroupName="SkillSet">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="SecondarySkillset">
+                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">secondary skillset is required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">SkillLevel</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.SkillLevel}}</div>
+                                <div formGroupName="SkillSet">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="SkillLevel">
+                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.SkillLevel')?.touched && this.updateForm.get('SkillSet.SkillLevel')?.errors?.['required']">skill level is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Experience</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.Experience}}</div>
+                                <div formGroupName="SkillSet">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="Experience">
+                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.Experience')?.touched && this.updateForm.get('SkillSet.Experience')?.errors?.['required']">experience is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Certification Name</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.Certification.CertificationName}}</div>
+                                <div formGroupName="SkillSet">
+                                    <div formGroupName="Certification">
+                                        <input class="form-control" *ngIf="editMode[1]" formControlName="CertificationName">
+                                        <p class="error" *ngIf="this.updateForm.get('SkillSet.Certification.CertificationName')?.touched && this.updateForm.get('SkillSet.Certification.CertificationName')?.errors?.['required']">certification name is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Certification Date</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.Certification.CertificationDate}}</div>
+                                <div formGroupName="SkillSet">
+                                    <div formGroupName="Certification">
+                                        <input class="form-control" *ngIf="editMode[1]" formControlName="CertificationDate">
+                                        <p class="error" *ngIf="this.updateForm.get('SkillSet.Certification.CertificationDate')?.touched && this.updateForm.get('SkillSet.Certification.CertificationDate')?.errors?.['required']">certified date is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="editMode[1]">
+                        <div class="col p-3"></div>
+                        <div class="col p-3">
+                            <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                        </div>
+                        <div class="col p-3"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

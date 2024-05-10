@@ -11,7 +11,6 @@ const routes: Routes = [
   { path: 'asset-details', component: AssetDetailsComponent },
   { path: 'org-structure', component: OrgStructureComponent },
   { path: 'team-management', component: TeamManagementComponent },
-  { path: 'employee-info', component: EmployeeInfoComponent },
 ];
 
 @NgModule({
