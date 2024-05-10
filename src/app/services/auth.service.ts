@@ -11,6 +11,7 @@ const EMPLOYEE_LOGIN_QUERY = gql`
       status
       token
       userId
+      role
       username
       errorMessage
     }
@@ -21,7 +22,7 @@ const EMPLOYEE_LOGIN_QUERY = gql`
   providedIn: 'root',
 })
 export class AuthService {
-
+  role: string = '';
   constructor(
     private encrDcrp: EncryptingDecryptingService,
     private apollo: Apollo,
@@ -30,6 +31,14 @@ export class AuthService {
 
   isLoggedin() {
     return sessionStorage.getItem('token');
+  }
+
+  setRole(role: string) {
+    this.role = role;
+  }
+
+  getRole() {
+    return this.role;
   }
 
   storeSession(key: string, data: string) {

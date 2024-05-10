@@ -8,9 +8,15 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./modules/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
+      import('./modules/employee/employee.module').then(
+        (m) => m.EmployeeModule
       ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin',
+    loadChildren: () =>
+      import('./modules/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [authGuard],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

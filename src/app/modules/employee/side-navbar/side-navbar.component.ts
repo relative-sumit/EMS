@@ -3,8 +3,6 @@ import {
   Component,
   EventEmitter,
   Output,
-  computed,
-  signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -22,7 +20,7 @@ import { AuthService } from '../../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './side-navbar.component.html',
-  styleUrl: './side-navbar.component.css',
+  styleUrl: './side-navbar.component.css'
 })
 export class SideNavbarComponent {
   faBars = faBars;
