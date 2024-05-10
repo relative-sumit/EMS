@@ -1,5 +1,5 @@
 <main>
-  <app-admin-sidebar *ngIf="isloggedIn() && getRole()" (collapsedChanged)="onCollapsedChanged($event)"></app-admin-sidebar>
+  <!-- <app-admin-sidebar *ngIf="isloggedIn() && getRole()" (collapsedChanged)="onCollapsedChanged($event)"></app-admin-sidebar> -->
   <app-side-navbar *ngIf="isloggedIn() && !getRole()" (collapsedChanged)="onCollapsedChanged($event)"></app-side-navbar>
   <div class="main-page"><router-outlet></router-outlet></div>
   <!-- <h2>{{collapsed}}</h2> -->

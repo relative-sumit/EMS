@@ -8,6 +8,8 @@
         id="name"
         formControlName="name"
       />
+      <p class="form-note">Note: Please use ony lowercase words separated by
+        underscores (e.g., view_emp, add_emp).</p>
       <div
         *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
         class="text-danger"
@@ -16,8 +18,7 @@
           Name is required.
         </div>
         <div *ngIf="form.get('name')?.errors?.['pattern']">
-          Invalid name format. Please use lowercase words separated by
-          underscores (e.g., view_emp).
+          Invalid name format.
         </div>
       </div>
     </div>
