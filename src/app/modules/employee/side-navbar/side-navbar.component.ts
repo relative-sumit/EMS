@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Output,
-  computed,
-  signal,
-} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { SideNavbarComponentVariable } from '../../../global-variables/side-navbar-variables';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faBars,
@@ -16,7 +11,6 @@ import {
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-navbar',
@@ -26,6 +20,7 @@ import { Router } from '@angular/router';
   styleUrl: './side-navbar.component.css',
 })
 export class SideNavbarComponent {
+ 
   faBars = faBars;
   faPowerOff = faPowerOff;
 
@@ -37,9 +32,7 @@ export class SideNavbarComponent {
     this.collapsed = !this.collapsed;
     this.collapsedChanged.emit(this.collapsed);
   }
-
   navbarListItem = [
-
     {
       number: 1,
       name: 'Home',
@@ -66,6 +59,7 @@ export class SideNavbarComponent {
     },
   ];
   constructor(private auth: AuthService) {}
+
   logout() {
     this.auth.logout();
   }

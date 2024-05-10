@@ -13,13 +13,22 @@ html {
   font-family: Arial, sans-serif;
 }
 
-.container {
+.wrapper {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 400px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  position: relative;
 }
 
 .error-message {
@@ -52,6 +61,3 @@ html {
   margin-bottom: 5px;
   text-align: center;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

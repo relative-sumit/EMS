@@ -1,0 +1,26 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+      />
+      <div
+        *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+        class="text-danger"
+      >
+        <div *ngIf="form.get('name')?.errors?.['required']">
+          Name is required.
+        </div>
+        <div *ngIf="form.get('name')?.errors?.['pattern']">
+          Invalid name format. Please use lowercase words separated by
+          underscores (e.g., view_emp).
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>

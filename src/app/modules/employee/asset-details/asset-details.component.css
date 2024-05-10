@@ -1,0 +1,38 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #007bff; /* Blue */
+    color: #fff; /* White */
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light Gray */
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e2e6ea; /* Lighter Gray on Hover */
+  }
+  
+  .message {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8d7da; /* Light Red */
+    border: 1px solid #f5c6cb; /* Red Border */
+    color: #721c24; /* Dark Red Text */
+    border-radius: 4px;
+  }
+  

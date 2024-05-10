@@ -1,0 +1,70 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Create Asset</h2>
+  <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="assetName">Asset Name:</label>
+      <input type="text" class="form-control" formControlName="assetName" />
+    </div>
+
+    <div class="form-group">
+      <label for="assetModel">Asset Model:</label>
+      <input type="text" class="form-control" formControlName="assetModel" />
+    </div>
+
+    <div class="form-group">
+      <label for="assetType">Asset Type:</label>
+      <input type="text" class="form-control" formControlName="assetType" />
+    </div>
+
+    <div class="form-group">
+      <label for="memory">Memory:</label>
+      <input type="text" class="form-control" formControlName="memory" />
+    </div>
+
+    <div class="form-group">
+      <label for="processor">Processor:</label>
+      <input type="text" class="form-control" formControlName="processor" />
+    </div>
+
+    <div class="form-group">
+      <label for="operatingSystem">Operating System:</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="operatingSystem"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="warranty">Warranty:</label>
+      <input type="text" class="form-control" formControlName="warranty" />
+    </div>
+
+    <div class="form-group">
+      <label for="assetTag">Asset Tag:</label>
+      <input type="text" class="form-control" formControlName="assetTag" />
+    </div>
+
+    <div class="form-group">
+      <label for="serialNumber">Serial Number:</label>
+      <input type="text" class="form-control" formControlName="serialNumber" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" class="form-control" formControlName="description" />
+    </div>
+
+    <div class="form-group">
+      <label for="addon">Addon:</label>
+      <input type="text" class="form-control" formControlName="addon" />
+    </div>
+
+    <div class="form-group">
+        <label for="addon">Workable:</label>
+      <mat-slide-toggle formControlName="isWorkable"></mat-slide-toggle>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
