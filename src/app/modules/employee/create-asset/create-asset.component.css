@@ -8,6 +8,7 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
+    text-align: center;
   }
   
   .form-group {
@@ -47,3 +48,7 @@
     background-color: #0056b3;
   }
   
+  button{
+    display: block;
+    margin: 0 auto;
+  }
