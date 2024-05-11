@@ -1,0 +1,62 @@
+.accordion{
+    margin: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+app-employee-navbar{
+    margin-right: 5px;
+    margin-top: 20px;
+    left: 0rem;
+    width: 18vw;
+    height: 42.6rem ;
+    background-color: white;
+    /* box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5); */
+    /* border-top: 1px solid rgb(255, 0, 0); */
+}
+.personal-container{
+    display: flex;
+}
+img {
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+.accordion-item{
+    margin-bottom: 10px;
+}
+
+.accordion-butto{
+    font-weight: bold;
+    font-size: 16px;
+}
+/* .values{
+} */
+h3{
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    width: 20px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    float: right;
+}
+
+.col-auto{
+    margin-right: 20px;
+}
+
+.error{
+    color: red;
+}
+input.ng-touched.ng-invalid{
+    border: 2px solid red;
+}

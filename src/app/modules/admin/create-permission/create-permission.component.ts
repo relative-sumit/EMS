@@ -22,7 +22,7 @@ export class CreatePermissionComponent {
     this.form = this.fb.group({
       name: [
         '',
-        [Validators.required, Validators.pattern(/^[a-z]+(_[a-z]+)*$/)],
+        [Validators.required, Validators.pattern(/^[a-z]+(_[a-z]+)$/)],
       ],
     });
   }

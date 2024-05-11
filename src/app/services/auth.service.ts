@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EncryptingDecryptingService } from './encrypting-decrypting.service';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 
 const EMPLOYEE_LOGIN_QUERY = gql`
@@ -14,6 +14,70 @@ const EMPLOYEE_LOGIN_QUERY = gql`
       role
       username
       errorMessage
+    }
+  }
+`;
+
+const GET_EMPLOYEE_INFO = gql`
+query($UserId:String){
+  employeeInfoById(UserId: $UserId){
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+    UserId
+    Photo
+    Gender
+    Contact {
+      CountryCode
+      Primary
+      Emergency
+    }
+    Email {
+      CompanyMail
+      PersonalMail
+    }
+    Location {
+      Flat
+      Area
+      Landmark
+      Pincode
+      City
+      State
+    }
+    dob
+    doj
+    doc
+    Department {
+      DepartmentId
+      DepartmentName
+    }
+    SkillSet {
+      EmployeeSkillsetId
+      PrimarySkillset
+      SecondarySkillset
+      SkillLevel
+      Experience
+      Certification {
+        CertificationName
+        CertificationDate
+      }
+    }
+    ManagerId
+    Designation
+    CreatedBy
+    UpdatedBy
+    IsActive
+    IsDeleted
+  }
+}
+`;
+
+const UPDATE_EMPLOYEE_INFO = gql`
+  mutation UpdateEmployeeInfo($UserId: String!, $input: EmployeeInfoInput!) {
+    updateEmployeeInfo(UserId: $UserId, input: $input) {
+      FirstName
+      LastName
     }
   }
 `;
@@ -57,6 +121,27 @@ export class AuthService {
       })
       .valueChanges.pipe(map((result) => result.data.employeeLogin));
   }
+
+  getEmployeeInfo(userId: string): Observable<any>{
+    return this.apollo
+            .watchQuery<any>({
+              query: GET_EMPLOYEE_INFO,
+              variables: {
+                UserId:userId
+              },
+            })
+            .valueChanges.pipe(map((info)=> info.data.employeeInfoById));
+  }
+  updateEmployeeInfo(UserId: String, input:any){
+    return this.apollo.mutate<any>({
+      mutation:UPDATE_EMPLOYEE_INFO,
+      variables:{
+        UserId: UserId,
+        input: input
+      }
+    })
+  }
+
 
   logout() {
     sessionStorage.clear();

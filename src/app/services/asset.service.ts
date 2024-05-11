@@ -1,8 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { EncryptingDecryptingService } from './encrypting-decrypting.service';
 
+export interface Asset{
+  _id: string,
+  AssetName: string,
+  AssetModel: string,
+  AssetType: string,
+  Memory: string,
+  Processor: string,
+  OperatingSystem: string,
+  Warranty: string,
+  AssetTag: string,
+  SerialNumber: string,
+  Description: string,
+  Addon: string,
+  IsWorkable: number,
+  CreatedBy: string,
+  CreatedDate: string,
+  UpdatedBy: string,
+  UpdatedDate: string,
+  IsActive: number,
+  IsDeleted: number,
+}
 const ASSET_CREATE_MUTATION = gql`
   mutation CreateAsset(
     $AssetName: String
@@ -97,11 +118,17 @@ mutation UpdateAsset($input: AssetInput) {
   providedIn: 'root',
 })
 export class AssetService {
+
+  private searchText = new BehaviorSubject<string>('');
+  getsearchText = this.searchText.asObservable()
   constructor(
     private apollo: Apollo,
     private encrDcpr: EncryptingDecryptingService
   ) {}
 
+  setSearchText(searchText: string){
+    this.searchText.next(searchText)
+  }
   createAsset(form: any): Observable<any> {
     if (form.isWorkable) {
       form.isWorkable = 1;

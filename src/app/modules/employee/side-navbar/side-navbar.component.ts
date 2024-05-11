@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { SideNavbarComponentVariable } from '../../../global-variables/side-navbar-variables';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faBars,
@@ -20,7 +17,7 @@ import { AuthService } from '../../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './side-navbar.component.html',
-  styleUrl: './side-navbar.component.css'
+  styleUrl: './side-navbar.component.css',
 })
 export class SideNavbarComponent {
   faBars = faBars;
@@ -34,7 +31,6 @@ export class SideNavbarComponent {
     this.collapsed = !this.collapsed;
     this.collapsedChanged.emit(this.collapsed);
   }
-
   navbarListItem = [
     {
       number: 1,
@@ -58,7 +54,7 @@ export class SideNavbarComponent {
       number: 4,
       name: 'Asset Details',
       icon: faLaptop,
-      link: 'dashboard/asset-details',
+      link: 'dashboard/asset',
     },
   ];
   constructor(private auth: AuthService) {}

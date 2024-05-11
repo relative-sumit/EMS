@@ -1,26 +1,32 @@
-<div class="container">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        formControlName="name"
-      />
-      <div
-        *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-        class="text-danger"
-      >
-        <div *ngIf="form.get('name')?.errors?.['required']">
-          Name is required.
-        </div>
-        <div *ngIf="form.get('name')?.errors?.['pattern']">
-          Invalid name format. Please use lowercase words separated by
-          underscores (e.g., view_emp).
+<div class="container mt-5 col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+  <p class="text-center h3 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create Permission</p>
+
+  <form class="mx-1 mx-md-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="d-flex flex-row align-items-center mb-4">
+      <div data-mdb-input-init class="form-outline flex-fill mb-0">
+        <div class="form-group">
+
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" formControlName="name" />
+          <p class="form-note"><small>Note: Please use ony lowercase words separated by
+            underscores (e.g., view_emp, add_emp).</small></p>
+          <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">
+            <div *ngIf="form.get('name')?.errors?.['required']">
+              Name is required.
+            </div>
+            <div *ngIf="form.get('name')?.errors?.['pattern']">
+              Invalid name format.
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
   </form>
+
 </div>

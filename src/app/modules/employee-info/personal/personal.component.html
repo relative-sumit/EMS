@@ -1,0 +1,247 @@
+<div class="personal-container">
+    <app-employee-navbar></app-employee-navbar>
+    <div class="accordion" #accordion>
+        <form [formGroup]="updateForm">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <div class="accordion-butto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 (click)="toggleAccordion('panelsStayOpen-collapseOne')">PROFILE</h3>
+                            </div>
+                            <div class="col-auto">
+                                <button class="edit-button" (click)="toggleEdit(1)">
+                                    <i class="fa fa-edit fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col p-3">
+                                <div *ngIf="editMode[1]"><small><span style="color: gray;">Photo</span></small></div>
+                                <div *ngIf="!editMode[1]"><img src="{{employeeInfo?.Photo}}" alt=""></div>
+                                <input class="form-control" *ngIf="editMode[1]" formControlName="Photo">
+                                <p class="error" *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">upload photo</p>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">FirstName</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.FirstName}}</div>
+                                <input class="form-control" *ngIf="editMode[1]" formControlName="FirstName">
+                                <div *ngIf="updateForm.controls['FirstName']?.['touched'] && updateForm.controls['FirstName']?.['errors']" class="error">
+                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['required']">firstname is required</p>
+                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['minLength']">firstname should have minimum 4 letters</p>
+                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['FirstName']?.['errors']?.['required']">firstname contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">MiddleName</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.MiddleName}}</div>
+                                <input class="form-control" *ngIf="editMode[1]" formControlName="MiddleName">
+                                <div *ngIf="updateForm.controls['MiddleName']?.['touched'] && updateForm.controls['MiddleName']?.['errors']" class="error">
+                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['required']">middlename is required</p>
+                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['minLength']">MiddleName should have minimum 4 letters</p>
+                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['MiddleName']?.['errors']?.['required']">MiddleName contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">LastName</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.LastName}}</div>
+                                <input class="form-control" *ngIf="editMode[1]" formControlName="LastName">
+                                <div *ngIf="updateForm.controls['LastName']?.['touched'] && updateForm.controls['LastName']?.['errors']" class="error">
+                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['required']">lastname is required</p>
+                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['minLength']">lastname should have minimum 4 letters</p>
+                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['LastName']?.['errors']?.['required']">lastname contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">EmployeeId</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.UserId}}</div>
+                                <input class="form-control" *ngIf="editMode[1]" formControlName="UserId" readonly>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Company Email</span></small></div>
+                                <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.Email.CompanyMail}}</div>
+                                <div formGroupName="Email">
+                                    <input class="form-control" *ngIf="editMode[1]" formControlName="CompanyMail" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="editMode[1]">
+                        <div class="col p-3"></div>
+                        <div class="col p-3">
+                            <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                        </div>
+                        <div class="col p-3"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="updateForm">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <div class="accordion-butto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 (click)="toggleAccordion('panelsStayOpen-collapseTwo')">PERSONAL</h3>
+                            </div>
+                            <div class="col-auto">
+                                <button class="edit-button" (click)="toggleEdit(2)">
+                                    <i class="fa fa-edit fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+                    aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;;">Date of Birth</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.dob}}</div>
+                                <input class="form-control" formControlName="dob" *ngIf="editMode[2]">
+                                <p class="error" *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">date of birth is required</p>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Personal Email</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Email.PersonalMail}}</div>
+                                <div formGroupName="Email">
+                                    <input class="form-control" formControlName="PersonalMail" *ngIf="editMode[2]">
+                                    <p class="error" *ngIf="this.updateForm.get('Email.PersonalMail')?.touched && this.updateForm.get('Email.PersonalMail')?.errors?.['required']">email is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Gender</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Gender}}</div>
+                                <input class="form-control" formControlName="Gender" *ngIf="editMode[2]">
+                                <p class="error" *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">gender is required</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Country Code</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Contact.CountryCode}}</div>
+                                <div formGroupName="Contact">
+                                    <input class="form-control" formControlName="CountryCode" *ngIf="editMode[2]">
+                                    <p class="error" *ngIf="this.updateForm.get('Contact.CountryCode')?.touched && this.updateForm.get('Contact.CountryCode')?.errors?.['required']">country code is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Primary Contact No</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Contact.Primary}}</div>
+                                <div formGroupName="Contact">
+                                    <input class="form-control" formControlName="Primary" *ngIf="editMode[2]">
+                                    <p class="error" *ngIf="this.updateForm.get('Contact.Primary')?.touched && this.updateForm.get('Contact.Primary')?.errors?.['required']">contact number is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Emergency Contact No</span></small></div>
+                                <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Contact.Emergency}}</div>
+                                <div formGroupName="Contact">
+                                    <input class="form-control" formControlName="Emergency" *ngIf="editMode[2]">
+                                    <p class="error" *ngIf="this.updateForm.get('Contact.Emergency')?.touched && this.updateForm.get('Contact.Emergency')?.errors?.['required']">emergency contact number is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="editMode[2]">
+                        <div class="col p-3"></div>
+                        <div class="col p-3">
+                            <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                        </div>
+                        <div class="col p-3"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="updateForm">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <div class="accordion-butto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 (click)="toggleAccordion('panelsStayOpen-collapseThree')">ADDRESS</h3>
+                            </div>
+                            <div class="col-auto">
+                                <button class="edit-button" (click)="toggleEdit(3)">
+                                    <i class="fa fa-edit fa-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                    aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Flat No, Society/Building Name</span></small></div>
+                                <div class="values" *ngIf="!editMode[3]">{{employeeInfo?.Location.Flat}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="Flat" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">flat number is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Area</span></small></div>
+                                <div class="values"  *ngIf="!editMode[3]">{{employeeInfo?.Location.Area}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="Area" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">area name is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Landmark</span></small></div>
+                                <div class="values" *ngIf="!editMode[3]">{{employeeInfo?.Location.Landmark}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="Landmark" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">landmark is required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">City</span></small></div>
+                                <div class="values"  *ngIf="!editMode[3]">{{employeeInfo?.Location.City}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="City" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.City')?.touched && this.updateForm.get('Location.City')?.errors?.['required']">city name is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">State</span></small></div>
+                                <div class="values" *ngIf="!editMode[3]">{{employeeInfo?.Location.State}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="State" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">state name is required</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Pincode</span></small></div>
+                                <div class="values" *ngIf="!editMode[3]">{{employeeInfo?.Location.Pincode}}</div>
+                                <div formGroupName="Location">
+                                    <input class="form-control" formControlName="Pincode" *ngIf="editMode[3]">
+                                    <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.touched && this.updateForm.get('Location.Pincode')?.errors?.['required']">pincode is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="editMode[3]">
+                        <div class="col p-3"></div>
+                        <div class="col p-3">
+                            <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                        </div>
+                        <div class="col p-3"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
