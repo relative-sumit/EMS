@@ -24,7 +24,6 @@ export interface Asset{
   IsActive: number,
   IsDeleted: number,
 }
-
 const ASSET_CREATE_MUTATION = gql`
   mutation CreateAsset(
     $AssetName: String
@@ -130,7 +129,6 @@ export class AssetService {
   setSearchText(searchText: string){
     this.searchText.next(searchText)
   }
-
   createAsset(form: any): Observable<any> {
     if (form.isWorkable) {
       form.isWorkable = 1;

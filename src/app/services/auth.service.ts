@@ -87,7 +87,6 @@ const UPDATE_EMPLOYEE_INFO = gql`
 })
 export class AuthService {
   role: string = '';
-
   constructor(
     private encrDcrp: EncryptingDecryptingService,
     private apollo: Apollo,

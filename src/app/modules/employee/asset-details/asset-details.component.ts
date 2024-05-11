@@ -21,7 +21,6 @@ export class AssetDetailsComponent implements OnInit {
   key: string = '';
 
   constructor(private asset: AssetService, private router: Router) {}
-
   ngOnInit(): void {
     this.asset.getAllAsset().subscribe((data) => {
       this.assetList = data;
