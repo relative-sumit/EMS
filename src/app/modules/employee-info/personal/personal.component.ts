@@ -5,11 +5,12 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 
 @Component({
   selector: 'app-personal',
   standalone: true,
-  imports: [EmployeeNavbarComponent, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [EmployeeNavbarComponent, FormsModule, CommonModule, ReactiveFormsModule, NgxIntlTelInputModule],
   templateUrl: './personal.component.html',
   styleUrl: './personal.component.css'
 })
@@ -18,6 +19,9 @@ export class PersonalComponent implements OnInit {
   employeeInfo: any
   date: any;
   userId: string = '';
+  photoPreview!: string;
+  primaryContact:any;
+
   @ViewChild('accordion') accordion!: ElementRef;
 
   toggleAccordion(id: string) {
@@ -30,7 +34,9 @@ export class PersonalComponent implements OnInit {
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
     private route: Router
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
@@ -39,6 +45,8 @@ export class PersonalComponent implements OnInit {
       .subscribe(
         data => {
           if (data) {
+            // console.log(data);
+            this.photoPreview = data.Photo;
             this.updateForm.patchValue(data)
             const [month, day, year] = data.dob.split('/').map(Number);
             const date = new Date(year, month - 1, day);
@@ -59,7 +67,7 @@ export class PersonalComponent implements OnInit {
     LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
     EmployeeCode: [''],
     UserId: [''],
-    Photo: ['', [Validators.required]],
+    Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
       CountryCode: ['', [Validators.required]],
@@ -101,34 +109,71 @@ export class PersonalComponent implements OnInit {
   });
 
   //validating names
-  nameValidator(v: any){
+  nameValidator(v: any) {
     let pattern = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/
-    if(pattern.test(v.value)){
+    if (pattern.test(v.value)) {
       return null;
-    }else{
-      return {'onlyAlfa': true}
+    } else {
+      return { 'onlyAlfa': true }
+    }
+  }
+
+  get primaryE164Number() {
+    const primaryControl = this.updateForm.get('Contact.Primary');
+    if (primaryControl && typeof primaryControl.value === 'object') {
+      return (primaryControl.value as unknown as { e164Number: string }).e164Number;
+    }
+    return '';  
+  }
+  get emergencyE164Number() {
+    const primaryControl = this.updateForm.get('Contact.Emergency');
+    if (primaryControl && typeof primaryControl.value === 'object') {
+      return (primaryControl.value as unknown as { e164Number: string }).e164Number;
+    }
+    return '';  
+  }
+
+
+  onFileChange(event: any) {
+    const reader = new FileReader();
+
+    if(event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.updateForm.patchValue({
+          Photo: reader.result as string 
+        });
+      };
     }
   }
 
   updateEmployee() {
-    console.log(this.updateForm.value)
-    this.auth.updateEmployeeInfo(this.userId, this.updateForm.value)
-    .subscribe(
-      (result)=>{
-        console.log(result);
-        // this.route.navigate(['/employee-info/personal'])
-        location.reload()
-      },(error)=>{
-        console.log(error);
-      }
-    )
+    // this.updateForm.patchValue({
+    //   Contact: {
+    //     Primary: this.primaryE164Number,
+    //     Emergency: this.emergencyE164Number
+    //   }
+    // });
+   
+    console.log(this.updateForm.value);
+    // this.auth.updateEmployeeInfo(this.userId, this.updateForm.value)
+    // .subscribe(
+    //   (result)=>{
+    //     console.log("Respose: ",result);
+    //     location.reload();
+    //   },(error)=>{
+    //     console.log(error);
+    //   }
+    // )
   }
 
   //toggling of edit button
   editMode: boolean[] = [false, false, false];
   toggleEdit(index: number) {
     this.editMode[index] = !this.editMode[index];
-}
+  }
 
 
 }
