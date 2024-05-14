@@ -24,6 +24,8 @@
       <table class="table">
         <thead>
           <tr>
+            <th></th>
+            <th></th>
             <th>Asset Name</th>
             <th>Asset Model</th>
             <th>Asset Type</th>
@@ -43,6 +45,12 @@
                 | paginate : { itemsPerPage: 10, currentPage: page }
             "
           >
+          <td (click)="updateAsset(asset)">
+            <i class="fa-solid fa-pen-to-square" style="color: #089239;"></i>
+          </td>
+          <td (click)="deleteAsset(asset)">
+            <i class="fa-solid fa-trash" style="color: #f10303;"></i>
+          </td>
             <td scope="row">{{ asset.AssetName }}</td>
             <td>{{ asset.AssetModel }}</td>
             <td>{{ asset.AssetType }}</td>

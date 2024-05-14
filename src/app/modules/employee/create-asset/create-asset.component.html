@@ -1,70 +1,204 @@
 <div class="container mt-4">
-    <h2>Create Asset</h2>
+  <div *ngIf="notificationMessage" class="notification-box" [ngClass]="{'notification-success': creationSuccess, 'notification-fail': !creationSuccess}">
+    <h2>{{ notificationMessage }}</h2>
+  </div>
+  <h2>Create Asset</h2>
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="assetName">Asset Name:</label>
-      <input type="text" class="form-control" formControlName="assetName" />
-    </div>
+    <div class="create-form">
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Name</mat-label>
+          <input matInput formControlName="assetName" />
+          <mat-error *ngIf="assetForm.get('assetName')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('assetName')?.errors?.['required']">
+              Asset Name is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('assetName')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="assetModel">Asset Model:</label>
-      <input type="text" class="form-control" formControlName="assetModel" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Model</mat-label>
+          <input matInput formControlName="assetModel" />
+          <mat-error *ngIf="assetForm.get('assetModel')?.errors" class="error">
+            <mat-error
+              *ngIf="assetForm.get('assetModel')?.errors?.['required']"
+            >
+              Asset Model is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('assetModel')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="assetType">Asset Type:</label>
-      <input type="text" class="form-control" formControlName="assetType" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Type</mat-label>
+          <mat-select formControlName="assetType">
+            <mat-option *ngFor="let type of assetTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              assetForm.get('assetType')?.errors &&
+              assetForm.get('assetType')?.touched
+            "
+            >Asset Type is required</mat-error
+          >
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="memory">Memory:</label>
-      <input type="text" class="form-control" formControlName="memory" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Memory</mat-label>
+          <input matInput formControlName="memory" />
+          <mat-error *ngIf="assetForm.get('memory')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('memory')?.errors?.['required']">
+              Memory is required.
+            </mat-error>
+            <mat-error *ngIf="assetForm.get('memory')?.errors?.['maxlength']">
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="processor">Processor:</label>
-      <input type="text" class="form-control" formControlName="processor" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Processor</mat-label>
+          <input matInput formControlName="processor" />
+          <mat-error *ngIf="assetForm.get('processor')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('processor')?.errors?.['required']">
+              Processor is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('processor')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="operatingSystem">Operating System:</label>
-      <input
-        type="text"
-        class="form-control"
-        formControlName="operatingSystem"
-      />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Operating System</mat-label>
+          <input matInput formControlName="operatingSystem" />
+          <mat-error
+            *ngIf="assetForm.get('operatingSystem')?.errors"
+            class="error"
+          >
+            <mat-error
+              *ngIf="assetForm.get('operatingSystem')?.errors?.['required']"
+            >
+              Operating System is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('operatingSystem')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="warranty">Warranty:</label>
-      <input type="text" class="form-control" formControlName="warranty" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Warranty</mat-label>
+          <mat-select formControlName="warranty">
+            <mat-option *ngFor="let year of warrantyYears" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              assetForm.get('warranty')?.errors &&
+              assetForm.get('warranty')?.touched
+            "
+            >Warranty is required</mat-error
+          >
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="assetTag">Asset Tag:</label>
-      <input type="text" class="form-control" formControlName="assetTag" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Tag</mat-label>
+          <input matInput formControlName="assetTag" />
+          <mat-error *ngIf="assetForm.get('assetTag')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('assetTag')?.errors?.['required']">
+              Asset Tag is required.
+            </mat-error>
+            <mat-error *ngIf="assetForm.get('assetTag')?.errors?.['maxlength']">
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="serialNumber">Serial Number:</label>
-      <input type="text" class="form-control" formControlName="serialNumber" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Serial Number</mat-label>
+          <input matInput formControlName="serialNumber" />
+          <mat-error
+            *ngIf="assetForm.get('serialNumber')?.errors"
+            class="error"
+          >
+            <mat-error
+              *ngIf="assetForm.get('serialNumber')?.errors?.['required']"
+            >
+              Serial Number is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('serialNumber')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <input type="text" class="form-control" formControlName="description" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-      <label for="addon">Addon:</label>
-      <input type="text" class="form-control" formControlName="addon" />
-    </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Addon</mat-label>
+          <input matInput formControlName="addon" />
+        </mat-form-field>
+      </div>
 
-    <div class="form-group">
-        <label for="addon">Workable:</label>
-      <mat-slide-toggle formControlName="isWorkable"></mat-slide-toggle>
+      <div class="form-group">
+        <mat-slide-toggle
+          formControlName="isWorkable"
+          labelPosition="before"
+          color="primary"
+          >Workable</mat-slide-toggle
+        >
+      </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
+    <div *ngIf="errorMessage" class="submit-error-message">
+      {{ errorMessage }}
+    </div>
+    <div class="submit-save-button">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-clear" (click)="clearForm()">
+        Clear
+      </button>
+    </div>
   </form>
 </div>

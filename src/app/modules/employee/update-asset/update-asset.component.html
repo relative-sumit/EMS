@@ -1,1 +1,168 @@
-<p>update-asset works!</p>
+<div class="container mt-4">
+    <h2>Create Asset</h2>
+    <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
+      <div class="create-form">
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Asset Name</mat-label>
+            <input matInput formControlName="AssetName" />
+            <mat-error
+              *ngIf="
+                assetForm.get('assetName')?.errors &&
+                assetForm.get('assetName')?.touched
+              "
+              >Asset Name is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Asset Model</mat-label>
+            <input matInput formControlName="AssetModel" />
+            <mat-error
+              *ngIf="
+                assetForm.get('assetModel')?.errors &&
+                assetForm.get('assetModel')?.touched
+              "
+              >Asset Model is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Asset Type</mat-label>
+            <mat-select formControlName="AssetType">
+              <mat-option *ngFor="let type of assetTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="
+                assetForm.get('assetType')?.errors &&
+                assetForm.get('assetType')?.touched
+              "
+              >Asset Type is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Memory</mat-label>
+            <input matInput formControlName="Memory" />
+            <mat-error
+              *ngIf="
+                assetForm.get('memory')?.errors &&
+                assetForm.get('memory')?.touched
+              "
+              >Memory is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Processor</mat-label>
+            <input matInput formControlName="Processor" />
+            <mat-error
+              *ngIf="
+                assetForm.get('processor')?.errors &&
+                assetForm.get('processor')?.touched
+              "
+              >Processor is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Operating System</mat-label>
+            <input matInput formControlName="OperatingSystem" />
+            <mat-error
+              *ngIf="
+                assetForm.get('operatingSystem')?.errors &&
+                assetForm.get('operatingSystem')?.touched
+              "
+              >Operating System is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Warranty</mat-label>
+            <mat-select formControlName="Warranty">
+                <mat-option *ngFor="let year of warrantyYears" [value]="year">
+                  {{ year }}
+                </mat-option>
+              </mat-select>
+            <mat-error
+              *ngIf="
+                assetForm.get('warranty')?.errors &&
+                assetForm.get('warranty')?.touched
+              "
+              >Warranty is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Asset Tag</mat-label>
+            <input matInput formControlName="AssetTag" />
+            <mat-error
+              *ngIf="
+                assetForm.get('assetTag')?.errors &&
+                assetForm.get('assetTag')?.touched
+              "
+              >Asset Tag is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Serial Number</mat-label>
+            <input matInput formControlName="SerialNumber" />
+            <mat-error
+              *ngIf="
+                assetForm.get('serialNumber')?.errors &&
+                assetForm.get('serialNumber')?.touched
+              "
+              >Serial Number is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="Description" />
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Addon</mat-label>
+            <input matInput formControlName="Addon" />
+          </mat-form-field>
+        </div>
+  
+        <div class="form-group">
+          <mat-slide-toggle
+            formControlName="IsWorkable"
+            labelPosition="before"
+            color="primary"
+            >Workable</mat-slide-toggle
+          >
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="submit-error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+  

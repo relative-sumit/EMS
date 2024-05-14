@@ -21,7 +21,6 @@ export class AssetDetailsComponent implements OnInit {
   key: string = '';
 
   constructor(private asset: AssetService, private router: Router) {}
-
   ngOnInit(): void {
     this.asset.getAllAsset().subscribe((data) => {
       this.assetList = data;
@@ -38,5 +37,27 @@ export class AssetDetailsComponent implements OnInit {
 
   addNew() {
     this.router.navigate(['dashboard/create-asset']);
+  }
+
+  updateAsset(asset: Asset) {
+    this.asset.setAsset(asset);
+    this.router.navigate(['dashboard/update-asset']);
+  }
+
+  deleteAsset(asset: Asset) {
+    if (confirm('Are you sure, delete asset?')) {
+      this.asset.deleteAsset(asset).subscribe(
+        (data) => {
+          console.log(data);
+          alert('Asset deleted successfully!');
+          this.asset.getAllAsset().subscribe((data) => {
+            this.assetList = data;
+          });
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 }

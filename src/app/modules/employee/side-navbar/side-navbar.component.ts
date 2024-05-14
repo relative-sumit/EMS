@@ -20,7 +20,6 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './side-navbar.component.css',
 })
 export class SideNavbarComponent {
- 
   faBars = faBars;
   faPowerOff = faPowerOff;
 

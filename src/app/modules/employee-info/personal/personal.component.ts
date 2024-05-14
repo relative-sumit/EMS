@@ -2,7 +2,12 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { EmployeeNavbarComponent } from '../employee-navbar/employee-navbar.component';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
@@ -11,18 +16,25 @@ import { NgSelectModule } from '@ng-select/ng-select';
 @Component({
   selector: 'app-personal',
   standalone: true,
-  imports: [EmployeeNavbarComponent, FormsModule, CommonModule, ReactiveFormsModule, NgxIntlTelInputModule, NgSelectModule],
+  imports: [
+    EmployeeNavbarComponent,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    NgxIntlTelInputModule,
+    NgSelectModule
+  ],
   templateUrl: './personal.component.html',
   providers:[DatePipe],
-  styleUrl: './personal.component.css'
+  styleUrl: './personal.component.css',
 })
 export class PersonalComponent implements OnInit {
-  encrptedUserId: any
+  encrptedUserId: any;
   userId: string = '';
-  employeeInfo: any
+  employeeInfo: any;
   date: any;
   photoPreview!: string;
-  primaryContact:any;
+  primaryContact: any;
 
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -75,9 +87,18 @@ export class PersonalComponent implements OnInit {
   }
 
   updateForm = this.fb.group({
-    FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
+    FirstName: [
+      '',
+      [Validators.required, Validators.minLength(4), this.nameValidator],
+    ],
+    MiddleName: [
+      '',
+      [Validators.required, Validators.minLength(4), this.nameValidator],
+    ],
+    LastName: [
+      '',
+      [Validators.required, Validators.minLength(4), this.nameValidator],
+    ],
     EmployeeCode: [''],
     UserId: [''],
     Photo: [''],
@@ -114,8 +135,8 @@ export class PersonalComponent implements OnInit {
       Experience: ['', [Validators.required]],
       Certification: this.fb.group({
         CertificationName: ['', [Validators.required]],
-        CertificationDate: ['', [Validators.required]]
-      })
+        CertificationDate: ['', [Validators.required]],
+      }),
     }),
     ManagerId: ['', [Validators.required]],
     Designation: ['', [Validators.required]],
@@ -123,40 +144,45 @@ export class PersonalComponent implements OnInit {
 
   //validating names
   nameValidator(v: any) {
-    let pattern = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/
+    let pattern = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
     if (pattern.test(v.value)) {
       return null;
     } else {
-      return { 'onlyAlfa': true }
+      return { onlyAlfa: true };
     }
   }
 
   get primaryE164Number() {
     const primaryControl = this.updateForm.get('Contact.Primary');
     if (primaryControl && typeof primaryControl.value === 'object') {
-      return (primaryControl.value as unknown as { e164Number: string }).e164Number;
+      console.log('inside');
+
+      return (primaryControl.value as unknown as { e164Number: string })
+        .e164Number;
     }
-    return '';  
+    return this.updateForm.getRawValue().Contact.Primary;
   }
   get emergencyE164Number() {
     const primaryControl = this.updateForm.get('Contact.Emergency');
     if (primaryControl && typeof primaryControl.value === 'object') {
-      return (primaryControl.value as unknown as { e164Number: string }).e164Number;
+      return (primaryControl.value as unknown as { e164Number: string })
+        .e164Number;
     }
-    return '';  
+    return this.updateForm.getRawValue().Contact.Emergency;
   }
-
 
   onFileChange(event: any) {
     const reader = new FileReader();
 
-    if(event.target.files && event.target.files.length) {
+    console.log("Length:",event.target.files);
+    
+    if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
 
       reader.onload = () => {
         this.updateForm.patchValue({
-          Photo: reader.result as string 
+          Photo: reader.result as string,
         });
       };
     }
@@ -187,6 +213,4 @@ export class PersonalComponent implements OnInit {
   toggleEdit(index: number) {
     this.editMode[index] = !this.editMode[index];
   }
-
-
 }
