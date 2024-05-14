@@ -1,0 +1,58 @@
+pagination-controls{
+    display: flex;
+    justify-content: center;
+    float: right;
+}
+.tableSize{
+    display: flex;
+    justify-content: end;
+}
+#input-field::placeholder {
+    font-size: 20px; 
+  }
+  
+  #input-field {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px; 
+    float: right;
+  }
+
+  .options{
+    float: right;
+    display: inline-flex;
+  }
+  select{
+    width: 35px;
+    height: 20px;
+  }
+ 
+h2{
+  color: black;
+  text-align: center;
+  font-size: 2.5rem;
+  text-shadow: 2px;
+}
+
+th{
+  font-size: 1rem;
+}
+.message{
+  text-align: center;
+  font-size: 1rem;
+  color: red;
+}
+
+
+@media screen and (max-width: 431px) {
+  h2{
+    font-size: 1.6rem;
+  }
+  pagination-controls{
+    width: 200px;
+  }
+  #input-field {
+    width: 150px;
+  }
+}
+

@@ -5,11 +5,12 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-skillset',
   standalone: true,
-  imports: [EmployeeNavbarComponent, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [EmployeeNavbarComponent, FormsModule, CommonModule, ReactiveFormsModule, NgSelectModule],
   templateUrl: './skillset.component.html',
   styleUrl: './skillset.component.css'
 })
@@ -45,6 +46,9 @@ export class SkillsetComponent implements OnInit{
       )
       ;
   }
+
+  SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
+
 
   updateForm = this.fb.group({
     FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],

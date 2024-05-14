@@ -8,9 +8,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-personal',
@@ -21,15 +22,17 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
     CommonModule,
     ReactiveFormsModule,
     NgxIntlTelInputModule,
+    NgSelectModule
   ],
   templateUrl: './personal.component.html',
+  providers:[DatePipe],
   styleUrl: './personal.component.css',
 })
 export class PersonalComponent implements OnInit {
   encrptedUserId: any;
+  userId: string = '';
   employeeInfo: any;
   date: any;
-  userId: string = '';
   photoPreview!: string;
   primaryContact: any;
 
@@ -44,32 +47,43 @@ export class PersonalComponent implements OnInit {
     private auth: AuthService,
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
-    private route: Router
-  ) {}
+    private route: Router,
+    private datePipe: DatePipe
+  ) {
 
+  }
+
+  // employeeData:any
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
     this.userId = this.ed.decrypt(this.encrptedUserId);
-    this.auth.getEmployeeInfo(this.userId).subscribe((data) => {
-      if (data) {
-        // console.log(data);
-        this.photoPreview = data.Photo;
-        this.updateForm.patchValue(data);
-        const [month, day, year] = data.dob.split('/').map(Number);
-        const date = new Date(year, month - 1, day);
+    this.auth.getEmployeeInfo(this.userId)
+      .subscribe(
+        data => {
+          if (data) {
+            this.photoPreview = data.Photo;
+            this.employeeInfo = this.transformDates(data);
+            // console.log(this.employeeData[0]);
 
-        const options: Intl.DateTimeFormatOptions = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        };
-        const formattedDate = new Intl.DateTimeFormat('en-US', options).format(
-          date
-        );
-        const updatedData = { ...data, dob: formattedDate }; // we can add doc doj as well
-        this.employeeInfo = updatedData;
-      }
-    });
+            this.updateForm.patchValue(this.employeeInfo)
+            const [month, day, year] = data.dob.split('/').map(Number);
+            const date = new Date(year, month - 1, day);
+
+            const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+            const updatedData = { ...data, dob: formattedDate }; // we can add doc doj as well
+            this.employeeInfo = updatedData
+          }
+        }
+      );
+  }
+
+  transformDates(employeeData:any){
+    const transformDate = {...employeeData}
+    transformDate.dob = this.datePipe.transform(transformDate.dob, 'yyyy-MM-dd');
+    transformDate.doj = this.datePipe.transform(transformDate.doj, 'yyyy-MM-dd');
+    transformDate.doc = this.datePipe.transform(transformDate.doc, 'yyyy-MM-dd');
+    return transformDate;
   }
 
   updateForm = this.fb.group({
@@ -178,20 +192,20 @@ export class PersonalComponent implements OnInit {
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number,
-      },
+        Emergency: this.emergencyE164Number
+      }
     });
-
-    // console.log(this.updateForm.value);
-    this.auth.updateEmployeeInfo(this.userId, this.updateForm.value).subscribe(
-      (result) => {
-        console.log('Respose: ', result);
+   
+    console.log(this.updateForm.value);
+    this.auth.updateEmployeeInfo(this.userId, this.updateForm.value)
+    .subscribe(
+      (result)=>{
+        console.log("Respose: ",result);
         location.reload();
-      },
-      (error) => {
+      },(error)=>{
         console.log(error);
       }
-    );
+    )
   }
 
   //toggling of edit button
