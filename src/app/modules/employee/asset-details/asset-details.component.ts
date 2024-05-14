@@ -45,6 +45,8 @@ export class AssetDetailsComponent implements OnInit {
   }
 
   deleteAsset(asset: Asset) {
+    console.log(asset);
+    
     if (confirm('Are you sure, delete asset?')) {
       this.asset.deleteAsset(asset).subscribe(
         (data) => {

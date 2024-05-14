@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AdminSidebarComponent } from '../../modules/admin/admin-sidebar/admin-sidebar.component';
+import {
+  AdminSidebarComponent,
+  SideNavToggle,
+} from '../../modules/admin/admin-sidebar/admin-sidebar.component';
 import { SideNavbarComponent } from '../../modules/employee/side-navbar/side-navbar.component';
+import { BodyComponent } from '../body/body.component';
 
 @Component({
   selector: 'app-main',
@@ -13,17 +17,18 @@ import { SideNavbarComponent } from '../../modules/employee/side-navbar/side-nav
     RouterOutlet,
     CommonModule,
     AdminSidebarComponent,
+    BodyComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
 })
 export class MainComponent implements OnInit {
-  collapsed = false;
   userRole!: string;
+  isSideNavCollapsed = false;
+  screenWidth = 0;
 
   constructor(private auth: AuthService) {}
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isloggedIn() {
     return this.auth.isLoggedin();
@@ -32,11 +37,12 @@ export class MainComponent implements OnInit {
   getRole() {
     // console.log("M",this.userRole);
     this.userRole = this.auth.getRole();
-    
+
     return this.userRole === 'admin';
   }
 
-  onCollapsedChanged(collapsed: boolean) {
-    this.collapsed = collapsed;
+  onToggleSidenav(data: SideNavToggle) {
+    this.isSideNavCollapsed = data.collapsed;
+    this.screenWidth = data.screenWidth;
   }
 }

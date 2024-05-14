@@ -1,36 +1,33 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faBars,
   faHome,
   faLaptop,
-  faPowerOff,
   faSitemap,
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 
+export interface SideNavToggle {
+  screenWidth: number;
+  collapsed: boolean;
+}
 @Component({
   selector: 'app-admin-sidebar',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-sidebar.component.html',
   styleUrl: './admin-sidebar.component.css',
 })
-export class AdminSidebarComponent {
-  faBars = faBars;
-  faPowerOff = faPowerOff;
-
-  @Output() collapsedChanged: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
-  collapsed = false;
-
-  toggleCollapse() {
-    this.collapsed = !this.collapsed;
-    this.collapsedChanged.emit(this.collapsed);
-  }
-
+export class AdminSidebarComponent implements OnInit {
   navbarListItem = [
     {
       number: 1,
@@ -69,9 +66,44 @@ export class AdminSidebarComponent {
       link: 'admin/create-role',
     },
   ];
+
+  collapsed = false;
+  screenWidth = 0;
+  @Output() onToggleSidenav: EventEmitter<SideNavToggle> = new EventEmitter();
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth<=768) {
+      this.collapsed = false
+      this.onToggleSidenav.emit({
+        collapsed: this.collapsed,
+        screenWidth: this.screenWidth,
+      });
+    }
+  }
   constructor(private auth: AuthService) {}
+  ngOnInit(): void {
+    this.screenWidth = window.innerWidth;
+  }
 
   logout() {
     this.auth.logout();
+  }
+
+  toggleCollapse() {
+    this.collapsed = !this.collapsed;
+    this.onToggleSidenav.emit({
+      collapsed: this.collapsed,
+      screenWidth: this.screenWidth,
+    });
+  }
+
+  closeSidenav() {
+    this.collapsed = false;
+    this.onToggleSidenav.emit({
+      collapsed: this.collapsed,
+      screenWidth: this.screenWidth,
+    });
   }
 }
