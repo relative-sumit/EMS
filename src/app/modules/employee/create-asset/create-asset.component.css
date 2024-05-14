@@ -1,6 +1,6 @@
 .container {
   max-width: 900px;
-  max-height: calc(100vh - 25px);
+  /* max-height: calc(100vh - 25px); */
   background-color: #f4f4f4;
   border-radius: 10px;
   margin: 15px auto;
@@ -89,6 +89,27 @@ button {
   margin-bottom: 5px;
   text-align: center;
 }
+
+.notification-box {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.notification-box h2 {
+  margin: 0;
+}
+
+.notification-success {
+  background-color: #8bc34a; /* Green color for success */
+  color: #fff; /* White text color */
+}
+
+.notification-fail {
+  background-color: #f44336; /* Red color for failure */
+  color: #fff; /* White text color */
+}
+
 
 /* Responsive grid */
 @media (max-width: 768px) {

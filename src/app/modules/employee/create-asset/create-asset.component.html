@@ -1,4 +1,7 @@
 <div class="container mt-4">
+  <div *ngIf="notificationMessage" class="notification-box" [ngClass]="{'notification-success': creationSuccess, 'notification-fail': !creationSuccess}">
+    <h2>{{ notificationMessage }}</h2>
+  </div>
   <h2>Create Asset</h2>
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
     <div class="create-form">
@@ -6,13 +9,16 @@
         <mat-form-field appearance="fill">
           <mat-label>Asset Name</mat-label>
           <input matInput formControlName="assetName" />
-          <mat-error
-            *ngIf="
-              assetForm.get('assetName')?.errors &&
-              assetForm.get('assetName')?.touched
-            "
-            >Asset Name is required</mat-error
-          >
+          <mat-error *ngIf="assetForm.get('assetName')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('assetName')?.errors?.['required']">
+              Asset Name is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('assetName')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -20,13 +26,18 @@
         <mat-form-field appearance="fill">
           <mat-label>Asset Model</mat-label>
           <input matInput formControlName="assetModel" />
-          <mat-error
-            *ngIf="
-              assetForm.get('assetModel')?.errors &&
-              assetForm.get('assetModel')?.touched
-            "
-            >Asset Model is required</mat-error
-          >
+          <mat-error *ngIf="assetForm.get('assetModel')?.errors" class="error">
+            <mat-error
+              *ngIf="assetForm.get('assetModel')?.errors?.['required']"
+            >
+              Asset Model is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('assetModel')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -52,13 +63,14 @@
         <mat-form-field appearance="fill">
           <mat-label>Memory</mat-label>
           <input matInput formControlName="memory" />
-          <mat-error
-            *ngIf="
-              assetForm.get('memory')?.errors &&
-              assetForm.get('memory')?.touched
-            "
-            >Memory is required</mat-error
-          >
+          <mat-error *ngIf="assetForm.get('memory')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('memory')?.errors?.['required']">
+              Memory is required.
+            </mat-error>
+            <mat-error *ngIf="assetForm.get('memory')?.errors?.['maxlength']">
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -66,13 +78,16 @@
         <mat-form-field appearance="fill">
           <mat-label>Processor</mat-label>
           <input matInput formControlName="processor" />
-          <mat-error
-            *ngIf="
-              assetForm.get('processor')?.errors &&
-              assetForm.get('processor')?.touched
-            "
-            >Processor is required</mat-error
-          >
+          <mat-error *ngIf="assetForm.get('processor')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('processor')?.errors?.['required']">
+              Processor is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('processor')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -81,12 +96,20 @@
           <mat-label>Operating System</mat-label>
           <input matInput formControlName="operatingSystem" />
           <mat-error
-            *ngIf="
-              assetForm.get('operatingSystem')?.errors &&
-              assetForm.get('operatingSystem')?.touched
-            "
-            >Operating System is required</mat-error
+            *ngIf="assetForm.get('operatingSystem')?.errors"
+            class="error"
           >
+            <mat-error
+              *ngIf="assetForm.get('operatingSystem')?.errors?.['required']"
+            >
+              Operating System is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('operatingSystem')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -112,13 +135,14 @@
         <mat-form-field appearance="fill">
           <mat-label>Asset Tag</mat-label>
           <input matInput formControlName="assetTag" />
-          <mat-error
-            *ngIf="
-              assetForm.get('assetTag')?.errors &&
-              assetForm.get('assetTag')?.touched
-            "
-            >Asset Tag is required</mat-error
-          >
+          <mat-error *ngIf="assetForm.get('assetTag')?.errors" class="error">
+            <mat-error *ngIf="assetForm.get('assetTag')?.errors?.['required']">
+              Asset Tag is required.
+            </mat-error>
+            <mat-error *ngIf="assetForm.get('assetTag')?.errors?.['maxlength']">
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -127,12 +151,20 @@
           <mat-label>Serial Number</mat-label>
           <input matInput formControlName="serialNumber" />
           <mat-error
-            *ngIf="
-              assetForm.get('serialNumber')?.errors &&
-              assetForm.get('serialNumber')?.touched
-            "
-            >Serial Number is required</mat-error
+            *ngIf="assetForm.get('serialNumber')?.errors"
+            class="error"
           >
+            <mat-error
+              *ngIf="assetForm.get('serialNumber')?.errors?.['required']"
+            >
+              Serial Number is required.
+            </mat-error>
+            <mat-error
+              *ngIf="assetForm.get('serialNumber')?.errors?.['maxlength']"
+            >
+              Max length exceeded.(15)
+            </mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -164,7 +196,9 @@
     </div>
     <div class="submit-save-button">
       <button type="submit" class="btn btn-primary">Save</button>
-      <button type="button" class="btn btn-clear" (click)="clearForm()">Clear</button>
+      <button type="button" class="btn btn-clear" (click)="clearForm()">
+        Clear
+      </button>
     </div>
   </form>
 </div>

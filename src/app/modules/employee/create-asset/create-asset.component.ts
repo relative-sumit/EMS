@@ -29,6 +29,8 @@ import { Router } from '@angular/router';
 })
 export class CreateAssetComponent {
   assetForm!: FormGroup;
+  notificationMessage: string = '';
+  creationSuccess: boolean = false;
   errorMessage: string = '';
   assetTypes: string[] = [
     'Laptop',
@@ -56,15 +58,15 @@ export class CreateAssetComponent {
 
   ngOnInit() {
     this.assetForm = this.formBuilder.group({
-      assetName: ['', Validators.required],
-      assetModel: ['', Validators.required],
+      assetName: ['', [Validators.required, Validators.maxLength(15)]],
+      assetModel: ['', [Validators.required, Validators.maxLength(15)]],
       assetType: ['', Validators.required],
-      memory: ['', Validators.required],
-      processor: ['', Validators.required],
-      operatingSystem: ['', Validators.required],
+      memory: ['', [Validators.required, Validators.maxLength(15)]],
+      processor: ['', [Validators.required, Validators.maxLength(15)]],
+      operatingSystem: ['', [Validators.required, Validators.maxLength(15)]],
       warranty: ['', Validators.required],
-      assetTag: ['', Validators.required],
-      serialNumber: ['', Validators.required],
+      assetTag: ['', [Validators.required, Validators.maxLength(15)]],
+      serialNumber: ['', [Validators.required, Validators.maxLength(15)]],
       description: [''],
       addon: [''],
       isWorkable: [false],
@@ -73,22 +75,37 @@ export class CreateAssetComponent {
 
   clearForm() {
     this.assetForm.reset();
-    Object.keys(this.assetForm.controls).forEach(key => {
+    Object.keys(this.assetForm.controls).forEach((key) => {
       const control = this.assetForm.get(key);
       if (control) {
         control.setErrors(null);
       }
     });
+    this.notificationMessage = '';
+    this.errorMessage = '';
   }
 
   onSubmit() {
     console.log(this.assetForm.value);
+    console.log(this.assetForm.valid);
+
     if (this.assetForm.valid) {
-      this.asset.createAsset(this.assetForm.getRawValue()).subscribe((data) => {
-        console.log(data);
-      });
+      this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
+        (data) => {
+          console.log(data);
+          this.creationSuccess = true;
+          this.notificationMessage = 'Asset created sucessfully';
+        },
+        (error) => {
+          this.notificationMessage = 'Asset not created';
+          this.creationSuccess = false;
+        }
+      );
     } else {
+      console.log('else');
       this.errorMessage = '*Please provide all the required fields';
+      this.notificationMessage = 'Asset not created';
+      this.creationSuccess = false;
     }
   }
 }
