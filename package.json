@@ -25,6 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@ng-select/ng-select": "^12.0.7",
     "apollo-angular": "^7.0.1",
     "crypto-js": "^4.2.0",
     "graphql": "^16",

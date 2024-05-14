@@ -16,6 +16,20 @@ const routes: Routes = [
         (c) => c.CreateRoleComponent
       ),
   },
+  {
+    path: 'employee-manage',
+    loadComponent: () =>
+      import('./employee-management/employee-management.component').then(
+        (c) => c.EmployeeManagementComponent
+      ),
+  },
+  {
+    path: 'update-employee',
+    loadComponent: () =>
+      import('./update-employee/update-employee.component').then(
+        (c) => c.UpdateEmployeeComponent
+      ),
+  },
 ];
 
 @NgModule({

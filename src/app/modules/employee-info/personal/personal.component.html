@@ -117,7 +117,7 @@
                             <div class="col p-3">
                                 <div><small><span style="color: gray;;">Date of Birth</span></small></div>
                                 <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.dob}}</div>
-                                <input class="form-control" formControlName="dob" *ngIf="editMode[2]">
+                                <input type="date" class="form-control" formControlName="dob" *ngIf="editMode[2]">
                                 <p class="error" *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">Date of birth is required</p>
                             </div>
                             <div class="col p-3">

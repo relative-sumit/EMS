@@ -1,0 +1,173 @@
+<div class="personal-container">
+    <div class="accordion" #accordion>
+        <form [formGroup]="updateForm">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <div class="accordion-butto">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3>Update Info</h3>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Photo</span></small></div>
+                                <input type="file" class="form-control" formControlName="Photo">
+                                <!-- <p class="error" *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">Please upload photo</p> -->
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">First Name</span></small></div>
+                                <!-- <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.FirstName}}</div> -->
+                                <input class="form-control" formControlName="FirstName">
+                                <div *ngIf="updateForm.controls['FirstName']?.['touched'] && updateForm.controls['FirstName']?.['errors']"
+                                    class="error">
+                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['required']">First name is
+                                        required</p>
+                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['minLength']">First name
+                                        should
+                                        have minimum 4 letters</p>
+                                    <p
+                                        *ngIf="updateForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['FirstName']?.['errors']?.['required']">
+                                        First name contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Middle Name</span></small></div>
+                                <!-- <div class="values" >{{employeeInfo?.MiddleName}}</div> -->
+                                <input class="form-control" formControlName="MiddleName">
+                                <div *ngIf="updateForm.controls['MiddleName']?.['touched'] && updateForm.controls['MiddleName']?.['errors']"
+                                    class="error">
+                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['required']">Middle name
+                                        is
+                                        required</p>
+                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['minLength']">Middle Name
+                                        should have minimum 4 letters</p>
+                                    <p
+                                        *ngIf="updateForm.controls['MiddleName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['MiddleName']?.['errors']?.['required']">
+                                        Middle Name contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Last Name</span></small></div>
+                                <!-- <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.LastName}}</div> -->
+                                <input class="form-control" formControlName="LastName">
+                                <div *ngIf="updateForm.controls['LastName']?.['touched'] && updateForm.controls['LastName']?.['errors']"
+                                    class="error">
+                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['required']">Last name is
+                                        required</p>
+                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['minLength']">Last name
+                                        should
+                                        have minimum 4 letters</p>
+                                    <p
+                                        *ngIf="updateForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['LastName']?.['errors']?.['required']">
+                                        Last name contains only alphabets & no whitespaces before and after</p>
+                                </div>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Employee Id</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.UserId}}</div> -->
+                                <input class="form-control" formControlName="UserId">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Company Email</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.Email.CompanyMail}}</div> -->
+                                <input class="form-control" formControlName="CompanyMail">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Department Name</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.Department.DepartmentName}}</div> -->
+                                <input class="form-control" formControlName="DepartmentName">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Designation</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.Designation}}</div> -->
+                                <input class="form-control" formControlName="Designation">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Date of Join</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.doj}}</div> -->
+                                <input type="date" class="form-control" formControlName="doj">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Date of Conformation</span></small></div>
+                                <!-- <div class="values">{{employeeInfo?.doc}}</div> -->
+                                <input type="date" class="form-control" formControlName="doc">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Employee Code</span></small></div>
+                                <input class="form-control" formControlName="doc">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Gender</span></small></div>
+                                <!-- <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Gender}}</div> -->
+                                <!-- <input class="form-control" formControlName="Gender" *ngIf="editMode[2]"> -->
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" formControlName="Gender"
+                                        id="inlineRadio1" value="male">
+                                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" formControlName="Gender"
+                                        id="inlineRadio2" value="female">
+                                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" formControlName="Gender"
+                                        id="inlineRadio3" value="other">
+                                    <label class="form-check-label" for="inlineRadio3">Other</label>
+                                </div>
+                                <p class="error"
+                                    *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">
+                                    Gender is required</p>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Primary Contact Number</span></small></div>
+                                <input class="form-control" formControlName="Primary">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Emergency Contact Number</span></small></div>
+                                <input class="form-control" formControlName="Emergency">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Company Email</span></small></div>
+                                <input class="form-control" formControlName="CompanyMail">
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Personal Email</span></small></div>
+                                <!-- <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Gender}}</div> -->
+                                <input class="form-control" formControlName="PersonalMail">
+                                <!-- <p class="error" *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">Gender is required</p> -->
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Flat No, Society/Building Name</span></small>
+                                </div>
+                                <!-- <input  class="form-control" formControlName="Primary"> -->
+                                <textarea class="form-control" formControlName="Flat" rows="3"></textarea>
+                            </div>
+                            <div class="col p-3">
+                                <div><small><span style="color: gray;">Area</span></small></div>
+                                <textarea class="form-control" formControlName="Area" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-center mb-4" id="update-button">
+                                <button class="btn btn-primary" (click)="updateEmployee()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

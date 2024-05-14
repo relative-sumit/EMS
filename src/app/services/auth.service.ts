@@ -72,6 +72,60 @@ query($UserId:String){
   }
 }
 `;
+const GET_ALL_EMPLOYEES_INFO = gql`
+query{
+  employeeInfo{
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+    UserId
+    Photo
+    Gender
+    Contact {
+      CountryCode
+      Primary
+      Emergency
+    }
+    Email {
+      CompanyMail
+      PersonalMail
+    }
+    Location {
+      Flat
+      Area
+      Landmark
+      Pincode
+      City
+      State
+    }
+    dob
+    doj
+    doc
+    Department {
+      DepartmentId
+      DepartmentName
+    }
+    SkillSet {
+      EmployeeSkillsetId
+      PrimarySkillset
+      SecondarySkillset
+      SkillLevel
+      Experience
+      Certification {
+        CertificationName
+        CertificationDate
+      }
+    }
+    ManagerId
+    Designation
+    CreatedBy
+    UpdatedBy
+    IsActive
+    IsDeleted
+  }
+}
+`;
 
 const UPDATE_EMPLOYEE_INFO = gql`
   mutation UpdateEmployeeInfo($UserId: String!, $input: EmployeeInfoInput!) {
@@ -133,6 +187,15 @@ export class AuthService {
             })
             .valueChanges.pipe(map((info)=> info.data.employeeInfoById));
   }
+
+  getAllEmployeesInfo(){
+    return this.apollo
+      .watchQuery<any>({
+        query: GET_ALL_EMPLOYEES_INFO,
+      })
+      .valueChanges.pipe(map((info)=> info.data.employeeInfo));
+  }
+  
   updateEmployeeInfo(UserId: String, input:any){
     console.log("From Auth Service: ", input);
     return this.apollo.mutate<any>({
