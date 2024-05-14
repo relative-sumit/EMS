@@ -65,14 +65,14 @@ export class LoginComponent implements OnInit {
         this.form.getRawValue().username &&
         !this.form.getRawValue().password
       ) {
-        this.errorMessage = 'Empty Password input, please provide input...';
+        this.errorMessage = 'Password field is empty.';
       } else if (
         !this.form.getRawValue().username &&
         this.form.getRawValue().password
       ) {
-        this.errorMessage = 'Empty Username input, please provide input...';
+        this.errorMessage = 'Username field is empty.';
       } else {
-        this.errorMessage = 'Empty input, please provide input...';
+        this.errorMessage = 'Username/Password required.';
       }
     }
   }

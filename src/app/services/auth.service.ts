@@ -132,6 +132,7 @@ export class AuthService {
             })
             .valueChanges.pipe(map((info)=> info.data.employeeInfoById));
   }
+  
   updateEmployeeInfo(UserId: String, input:any){
     console.log("From Auth Service: ", input);
     return this.apollo.mutate<any>({

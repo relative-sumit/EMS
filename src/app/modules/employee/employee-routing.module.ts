@@ -38,6 +38,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'update-asset',
+    loadComponent: () =>
+      import('./update-asset/update-asset.component').then(
+        (c) => c.UpdateAssetComponent
+      ),
+  },
+  {
     path: 'asset',
     loadComponent: () =>
       import('./asset-details/asset-details.component').then(

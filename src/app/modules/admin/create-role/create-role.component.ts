@@ -6,6 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
@@ -15,13 +18,21 @@ interface Permission {
 @Component({
   selector: 'app-create-role',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NgMultiSelectDropDownModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    NgMultiSelectDropDownModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+  ],
   templateUrl: './create-role.component.html',
   styleUrl: './create-role.component.css',
 })
 export class CreateRoleComponent implements OnInit {
   form: FormGroup;
   permissionDropdownList: Permission[] = [];
+  errorMessage: string = '';
 
   selectedPermissions = [];
 
@@ -39,7 +50,7 @@ export class CreateRoleComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],
-      permissions: [[]],
+      permissions: [[], Validators.required],
     });
   }
   ngOnInit(): void {
@@ -58,6 +69,7 @@ export class CreateRoleComponent implements OnInit {
         )
         .subscribe((data) => console.log(data));
     } else {
+      this.errorMessage = '*Please provide all the required fields';
       this.form.markAllAsTouched();
     }
   }
