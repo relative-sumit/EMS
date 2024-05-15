@@ -8,13 +8,16 @@ import {
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faClipboardCheck,
   faHome,
   faLaptop,
   faSitemap,
   faUserGroup,
+  faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 
 export interface SideNavToggle {
   screenWidth: number;
@@ -56,16 +59,20 @@ export class AdminSidebarComponent implements OnInit {
     {
       number: 5,
       name: 'Permission',
-      icon: faLaptop,
+      icon: faClipboardCheck,
       link: 'admin/create-permission',
     },
     {
       number: 6,
       name: 'Role',
-      icon: faLaptop,
+      icon: faUserTie,
       link: 'admin/create-role',
     },
   ];
+
+  encrptedUserId: any;
+  userId: string = '';
+  photoPreview!: string;
 
   collapsed = false;
   screenWidth = 0;
@@ -82,9 +89,20 @@ export class AdminSidebarComponent implements OnInit {
       });
     }
   }
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private ed: EncryptingDecryptingService) {}
+
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+      this.encrptedUserId = sessionStorage.getItem('userId');
+      this.userId = this.ed.decrypt(this.encrptedUserId);
+      this.auth.getEmployeeInfo(this.userId)
+        .subscribe(
+          data => {
+            if (data) {
+              this.photoPreview = data.Photo;
+            }
+          }
+        );
   }
 
   logout() {

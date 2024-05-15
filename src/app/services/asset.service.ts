@@ -1,7 +1,8 @@
 import { Injectable, input } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, throwError } from 'rxjs';
 import { EncryptingDecryptingService } from './encrypting-decrypting.service';
+import { catchError } from 'rxjs/operators';
 
 export interface Asset {
   _id: string;
@@ -171,7 +172,13 @@ export class AssetService {
           CreatedBy: createdBy,
         },
       })
-      .pipe(map((result) => result.data.createAsset));
+      .pipe(
+        map((result) => result.data.createAsset),
+        catchError((error) => {
+          console.log('Error occurred:', error);
+          return throwError(() => new Error(error));
+        })
+      );
   }
 
   getAllAsset(): Observable<any> {
@@ -231,7 +238,7 @@ export class AssetService {
             Addon: newObj.addon,
             IsWorkable: newObj.isWorkable,
             UpdatedBy: updatedBy,
-            IsDeleted: newObj.IsDeleted
+            IsDeleted: newObj.IsDeleted,
           },
         },
       })
