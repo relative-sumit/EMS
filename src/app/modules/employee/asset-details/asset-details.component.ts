@@ -15,13 +15,21 @@ import { Router } from '@angular/router';
 })
 export class AssetDetailsComponent implements OnInit {
   assetList: Asset[] = [];
+  tableSize: number = 10;
+  tableSizes: any = [5, 10, 20];
   page: number = 1;
+  count: number = 0;
   total: number = 0;
   searchText: string = '';
   key: string = '';
+  reverse: boolean = false;
 
   constructor(private asset: AssetService, private router: Router) {}
   ngOnInit(): void {
+    this.get();
+  }
+
+  get(){
     this.asset.getAllAsset().subscribe((data) => {
       this.assetList = data;
     });
@@ -31,8 +39,14 @@ export class AssetDetailsComponent implements OnInit {
     this.asset.setSearchText(this.searchText);
   }
 
-  pageChangeEvent(event: number) {
+  tableDataChange(event: any){
     this.page = event;
+    this.get();
+  }
+  tableSizeChange(event: any){
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.get();
   }
 
   addNew() {
@@ -60,6 +74,33 @@ export class AssetDetailsComponent implements OnInit {
           console.error(error);
         }
       );
+    }
+  }
+
+  sort(key: keyof Asset) {
+    if (this.reverse === false) {
+      this.assetList = this.assetList.slice().sort((a, b) => {
+        if (a[key] < b[key]) {
+          return -1;
+        }
+        if (a[key] > b[key]) {
+          return 1;
+        }
+        return 0;
+      });
+      this.reverse = !this.reverse;
+    } else {
+      this.reverse = !this.reverse;
+      let leftIndex = 0;
+      let rightIndex = this.assetList.length - 1;
+
+      while (leftIndex < rightIndex) {
+        const temp = this.assetList[leftIndex];
+        this.assetList[leftIndex] = this.assetList[rightIndex];
+        this.assetList[rightIndex] = temp;
+        leftIndex++;
+        rightIndex--;
+      }
     }
   }
 }

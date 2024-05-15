@@ -7,7 +7,7 @@
     </button>
   </div>
   <div class="side-profile">
-    <img src="/assets/img/pro-pic.jpg" alt="" />
+    <img [src]="photoPreview" alt="" />
     <h2 *ngIf="collapsed">David</h2>
     <a href="employee-info/personal" *ngIf="collapsed">View info</a>
   </div>
@@ -20,7 +20,7 @@
     </li>
   </ul>
   <div class="sidenav-logout">
-    <i class="fa-solid fa-power-off"></i>
+    <i class="fa-solid fa-power-off" (click)="logout()"></i>
     <button (click)="logout()" *ngIf="collapsed">Logout</button>
   </div>
 </div>

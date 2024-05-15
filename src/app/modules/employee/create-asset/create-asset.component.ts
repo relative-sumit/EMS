@@ -86,23 +86,27 @@ export class CreateAssetComponent {
   }
 
   onSubmit() {
-    console.log(this.assetForm.value);
-    console.log(this.assetForm.valid);
+    console.log('Value:', this.assetForm.value);
+    console.log('Valid:', this.assetForm.valid);
 
-    if (this.assetForm.valid) {
+    if (
+      this.assetForm.valid &&
+      this.assetForm.getRawValue().serialNumber !== null
+    ) {
       this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
         (data) => {
-          console.log(data);
+          console.log('Data:', data);
           this.creationSuccess = true;
+          this.errorMessage = '';
           this.notificationMessage = 'Asset created sucessfully';
         },
         (error) => {
-          this.notificationMessage = 'Asset not created';
+          console.log('Error:', error.message);
+          this.notificationMessage = error;
           this.creationSuccess = false;
         }
       );
     } else {
-      console.log('else');
       this.errorMessage = '*Please provide all the required fields';
       this.notificationMessage = 'Asset not created';
       this.creationSuccess = false;

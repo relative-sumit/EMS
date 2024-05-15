@@ -1,78 +1,93 @@
-<div class="conatiner">
-  <div class="mangement-header">
-    <h2>Asset Management</h2>
-    <div class="search-and-add">
-      <button class="new-asset" (click)="addNew()">Add New</button>
-      <form class="d-flex" role="search">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          name="searchText"
-          [(ngModel)]="searchText"
-          (keyup)="changeSearchText()"
-        />
-        <button class="btn btn-outline-success" (click)="changeSearchText()">
-          Search
-        </button>
-      </form>
+<div class="container mt-5">
+  <h2><strong>Asset Management</strong></h2>
+
+  <div class="search-and-add">
+    <button class="new-asset" (click)="addNew()">Add New</button>
+    <form class="d-flex" role="search">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        name="searchText"
+        [(ngModel)]="searchText"
+        (keyup)="changeSearchText()"
+      />
+    </form>
+  </div>
+
+  <div class="container table-responsive">
+    <table
+      class="table table-bordered table-hover shadow-lg p-2 mb-5 bg-white rounded"
+      id="restable"
+    >
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Actions</th>
+          <th (click)="sort('AssetName')" ><span>Asset Name</span></th>
+          <th (click)="sort('AssetModel')">Asset Model</th>
+          <th (click)="sort('AssetType')">Asset Type</th>
+          <th (click)="sort('Memory')">Memory</th>
+          <th (click)="sort('Processor')">Processor</th>
+          <th (click)="sort('OperatingSystem')">Operating System</th>
+          <th (click)="sort('Warranty')">Warranty</th>
+          <th (click)="sort('SerialNumber')">Serial Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let asset of assetList
+              | search : searchText
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+        >
+          <td>
+            <i
+              class="fa-solid fa-pen-to-square"
+              style="color: #089239"
+              (click)="updateAsset(asset)"
+            ></i>
+            <i
+              class="fa-solid fa-trash"
+              style="color: #f10303"
+              (click)="deleteAsset(asset)"
+            ></i>
+          </td>
+          <td scope="row">{{ asset.AssetName }}</td>
+          <td>{{ asset.AssetModel }}</td>
+          <td>{{ asset.AssetType }}</td>
+          <td>{{ asset.Memory }}</td>
+          <td>{{ asset.Processor }}</td>
+          <td>{{ asset.OperatingSystem }}</td>
+          <td>{{ asset.Warranty }}</td>
+          <td>{{ asset.SerialNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="message" *ngIf="(assetList | search : searchText).length === 0">
+      No Record Found
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>Asset Name</th>
-            <th>Asset Model</th>
-            <th>Asset Type</th>
-            <th>Memory</th>
-            <th>Processor</th>
-            <th>Operating System</th>
-            <th>Warranty</th>
-            <th>Asset Tag</th>
-            <th>Serial Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="
-              let asset of assetList
-                | search : searchText
-                | paginate : { itemsPerPage: 10, currentPage: page }
-            "
-          >
-          <td (click)="updateAsset(asset)">
-            <i class="fa-solid fa-pen-to-square" style="color: #089239;"></i>
-          </td>
-          <td (click)="deleteAsset(asset)">
-            <i class="fa-solid fa-trash" style="color: #f10303;"></i>
-          </td>
-            <td scope="row">{{ asset.AssetName }}</td>
-            <td>{{ asset.AssetModel }}</td>
-            <td>{{ asset.AssetType }}</td>
-            <td>{{ asset.Memory }}</td>
-            <td>{{ asset.Processor }}</td>
-            <td>{{ asset.OperatingSystem }}</td>
-            <td>{{ asset.Warranty }}</td>
-            <td>{{ asset.AssetTag }}</td>
-            <td>{{ asset.SerialNumber }}</td>
-          </tr>
-          <div
-            class="message"
-            *ngIf="(assetList | search : searchText).length === 0"
-          >
-            No record found!
-          </div>
-        </tbody>
-      </table>
-      <pagination-controls
-        class="pagination"
-        (pageChange)="pageChangeEvent($event)"
-      ></pagination-controls>
-    </div>
+
+  <div class="options">
+    <strong class="tableSize">
+      item size:
+      <select (change)="tableSizeChange($event)">
+        <option *ngFor="let size of tableSizes">{{ size }}</option>
+      </select>
+    </strong>
+
+    <pagination-controls
+      previousLabel="Prev"
+      naxtLabel="Next"
+      (pageChange)="tableDataChange($event)"
+    ></pagination-controls>
   </div>
 </div>

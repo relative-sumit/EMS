@@ -1,58 +1,44 @@
-.container {
-  margin-top: 20px;
-  text-align: center;
-  max-width: 100%;
+pagination-controls{
+  display: flex;
+  justify-content: center;
+  float: right;
 }
 
-.mangement-header {
-  margin-bottom: 10px;
-  text-align: center;
+.tableSize{
+  display: flex;
+  justify-content: end;
 }
+
+.options{
+  float: right;
+  display: inline-flex;
+}
+select{
+  width: 35px;
+  height: 20px;
+}
+
+h2{
+color: black;
+text-align: center;
+font-size: 2.5rem;
+text-shadow: 2px;
+}
+
+th{
+font-size: 1rem;
+}
+
+.message{
+text-align: center;
+font-size: 1rem;
+color: red;
+}
+
 .search-and-add {
   display: flex;
   justify-content: space-between;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th,
-.table td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-}
-
-.table th {
-  background-color: #2d8cf3;
-  color: #e7e6e6;
-}
-
-.table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.table tbody tr:hover {
-  background-color: #e2e6ea;
-}
-
-.message {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
-  border-radius: 4px;
-}
-.pagination {
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  color: rgb(7, 71, 64);
+  margin-bottom: 10px;
 }
 
 .new-asset {
@@ -72,3 +58,35 @@
 .new-asset:hover {
   background-color: #45a049;
 }
+
+thead {
+  >tr{
+    >th{
+      cursor: pointer;
+      /* text-align: center; */
+      /* padding: 25px 0; */
+    }
+  }
+}
+
+tbody {
+  >tr{
+    >td{
+      text-align: center;
+      >i{
+        margin: 5px;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 431px) {
+h2{
+  font-size: 1.6rem;
+}
+pagination-controls{
+  width: 100px;
+}
+}
+

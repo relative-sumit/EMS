@@ -1,8 +1,8 @@
 <div class="container mt-4">
+  <h2>Create Asset</h2>
   <div *ngIf="notificationMessage" class="notification-box" [ngClass]="{'notification-success': creationSuccess, 'notification-fail': !creationSuccess}">
     <h2>{{ notificationMessage }}</h2>
   </div>
-  <h2>Create Asset</h2>
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
     <div class="create-form">
       <div class="form-group">
