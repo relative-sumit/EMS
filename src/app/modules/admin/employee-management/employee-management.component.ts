@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSortModule, Sort } from '@angular/material/sort'
 import { SearchPipe } from '../../../pipes/search.pipe';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../../../services/employee.service';
 
 @Component({
   selector: 'app-employee-management',
@@ -30,7 +31,8 @@ export class EmployeeManagementComponent implements OnInit{
   constructor(
     private auth: AuthService, 
     private ed: EncryptingDecryptingService,
-    private route: Router
+    private route: Router,
+    private employeeService: EmployeeService
   ){}
 
   ngOnInit(): void {
@@ -79,8 +81,9 @@ export class EmployeeManagementComponent implements OnInit{
       }
     })
   }
-  updateEmployee(){
-      this.route.navigate(['admin/update-employee']);
+  updateEmployee(employee: any){
+    this.employeeService.setEmployeeInfo(employee);
+    this.route.navigate(['admin/update-employee']);
   }
   deleteEmployee(){
 

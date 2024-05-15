@@ -66,3 +66,21 @@ input.ng-touched.ng-invalid{
     display: block;
     margin: 0 auto;
 }
+
+.upload img{
+    border: 6px solid #eaeaea;
+}
+.upload .round{
+    bottom: 0;
+    right: 0;
+    /* background: #de73b9; */
+    width: 24px;
+    height: 28px;
+    justify-content: center;
+    line-height: 30px;
+}
+ .upload .round input[type='file']{
+    position: absolute;
+    transform: scale(2);
+    opacity: 0;   
+}

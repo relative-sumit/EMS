@@ -6,7 +6,6 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-skillset',
