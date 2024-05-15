@@ -7,6 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import {MatStepperModule} from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { EmployeeService } from '../../../services/employee.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -20,17 +23,25 @@ import {MatRadioModule} from '@angular/material/radio';
     MatInputModule,
     CommonModule,
     MatDatepickerModule,
-    MatRadioModule
+    MatRadioModule,
+    NgxIntlTelInputModule,
+    NgSelectModule
   ],
   templateUrl: './update-employee.component.html',
   styleUrl: './update-employee.component.css'
 })
 export class UpdateEmployeeComponent implements OnInit{
 
-  constructor(private fb: FormBuilder){}
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService){}
 
   ngOnInit(): void {
-  
+    this.employeeService.employeeInfo
+    .subscribe(
+      (data)=>{
+        // console.log(data);
+        this.updateForm.patchValue(data);
+      }
+    )
   }
 
   updateForm = this.fb.group({
@@ -88,6 +99,11 @@ export class UpdateEmployeeComponent implements OnInit{
       return { 'onlyAlfa': true }
     }
   }
-
-  updateEmployee(){}
+  getSelectedPrimarySkills(){}
+  getRemainingPrimarySkills(){}
+  getSelectedSecondarySkills(){}
+  getRemainingSecondarySkills(){}
+  updateEmployee(){
+    console.log(this.updateForm.value)
+  }
 }

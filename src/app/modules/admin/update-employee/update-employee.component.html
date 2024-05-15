@@ -105,17 +105,54 @@
         <form [formGroup]="updateForm">
             <div class="row">
                 <div class="col">
-                    <mat-label>Gender</mat-label>
-                    <mat-radio-group aria-label="Gender" formControlName="Gender">
-                        <mat-radio-button value="male">Male</mat-radio-button>
-                        <mat-radio-button value="female">Female</mat-radio-button>
-                        <mat-radio-button value="other">Other</mat-radio-button>
-                    </mat-radio-group>
-                </div>
+                    <div><mat-label>Gender</mat-label></div>
+                    <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          id="inlineRadio1"
+                          value="male"
+                        />
+                        <label class="form-check-label" for="inlineRadio1"
+                          >Male</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          id="inlineRadio2"
+                          value="female"
+                        />
+                        <label class="form-check-label" for="inlineRadio2"
+                          >Female</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          id="inlineRadio3"
+                          value="other"
+                        />
+                        <label class="form-check-label" for="inlineRadio3"
+                          >Other</label
+                        >
+                      </div>
+                      <p
+                        class="error"
+                        *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']"
+                      >
+                        Gender is required
+                      </p>
+                    </div>
                 <div class="col">
                     <!-- <mat-form-field> -->
                         <mat-label>Photo</mat-label>
-                        <input type="file" placeholder="Upload photo" formControlName="Photo" required>
+                        <input type="file" placeholder="Upload photo" required>
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
@@ -124,19 +161,25 @@
                         <input matInput placeholder="Personal email" formControlName="PersonalMail" required>
                     </mat-form-field>
                 </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Contact">
+                <div class="col" formGroupName="Contact">
+                    <!-- <mat-form-field formGroupName="Contact"> -->
                         <mat-label>Primary Contact No</mat-label>
-                        <input matInput placeholder="Primary contact number" formControlName="Primary" required>
-                    </mat-form-field>
+                        <ngx-intl-tel-input
+                        id="primary"
+                        formControlName="Primary"
+                      ></ngx-intl-tel-input>
+                    <!-- </mat-form-field> -->
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <mat-form-field  formGroupName="Contact">
+                <div class="col"  formGroupName="Contact">
+                    <!-- <mat-form-field  formGroupName="Contact"> -->
                         <mat-label>Emergency Contact No</mat-label>
-                        <input matInput placeholder="Emergency contact number" formControlName="Emergency" required>
-                    </mat-form-field>
+                        <ngx-intl-tel-input
+                        id="emergency"
+                        formControlName="Emergency"
+                      ></ngx-intl-tel-input>
+                    <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
                     <mat-form-field formGroupName="Location">
@@ -194,78 +237,52 @@
     <mat-step [stepControl]="updateForm" label="SKILLSET">
         <form [formGroup]="updateForm">
             <div class="row">
-                <div class="col">
-                    <mat-form-field formGroupName="SkillSet">
+                <div class="col" formGroupName="SkillSet">
+                    <!-- <mat-form-field formGroupName="SkillSet"> -->
                         <mat-label>Primary Skill Set</mat-label>
-                        <input matInput placeholder="Primary Skills" formControlName="PrimarySkillset" required>
-                    </mat-form-field>
+                        <ng-select [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
+                            <ng-option [value]=""></ng-option>
+                            <ng-option [value]="'custom'"></ng-option>
+                        </ng-select>
+                        <p class="error" *ngIf="this.updateForm.get('SkillSet.PrimarySkillset')?.touched && this.updateForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
+                    <!-- </mat-form-field> -->
+                </div>
+                <div class="col" formGroupName="SkillSet">
+                    <!-- <mat-form-field> -->
+                        <mat-label>Secondary Skill Set</mat-label>
+                        <ng-select [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
+                            <ng-option [value]=""></ng-option>
+                            <ng-option [value]="'custom'"></ng-option>
+                        </ng-select>
+                        <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p>
+                    <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
                     <mat-form-field formGroupName="SkillSet">
-                        <mat-label>Secondary Skill Set</mat-label>
-                        <input matInput placeholder="Secondary Skills" formControlName="SecondarySkillset" required>
-                    </mat-form-field>
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Last name" formControlName="LastName" required>
-                    </mat-form-field>
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Employee Code</mat-label>
-                        <input matInput placeholder="Employee code" formControlName="EmployeeCode" required>
+                        <mat-label>Skill Level</mat-label>
+                        <input matInput placeholder="Skill eg: Basic,Intermediate .." formControlName="SkillLevel" required>
                     </mat-form-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <mat-form-field>
-                        <mat-label>User Id</mat-label>
-                        <input matInput placeholder="User id" formControlName="UserId" required>
+                    <mat-form-field formGroupName="SkillSet">
+                        <mat-label>Experience</mat-label>
+                        <input matInput placeholder="Experience eg: 2 years" formControlName="Experience" required>
                     </mat-form-field>
                 </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Email">
-                        <mat-label>Company Email</mat-label>
-                        <input matInput placeholder="Company email" formControlName="CompanyMail" required>
+                <div class="col" formGroupName="SkillSet">
+                    <mat-form-field formGroupName="Certification">
+                        <mat-label>Certification Name</mat-label>
+                        <input matInput placeholder="Certification name" formControlName="CertificationName" required>
                     </mat-form-field>
                 </div>
-                <div class="col">
-                    <!-- <mat-form-field class="dateSize"> -->
-                      <!-- need to add some code  -->
-                    <!-- </mat-form-field> -->
-                </div>
-                <div class="col">
-                    <!-- <mat-form-field class="dateSize"> -->
-                        <!-- need to add some code  -->
-                    <!-- </mat-form-field> -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <mat-form-field formGroupName="Department">
-                        <mat-label>Department Id</mat-label>
-                        <input matInput placeholder="Department id" formControlName="DepartmentId" required>
-                    </mat-form-field>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Department">
-                        <mat-label>Department Name</mat-label>
-                        <input matInput placeholder="Department name" formControlName="DepartmentName" required>
-                    </mat-form-field>
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Manager Id</mat-label>
-                        <input matInput placeholder="Manager id" formControlName="ManagerId" required>
-                    </mat-form-field>
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Designation</mat-label>
-                        <input matInput placeholder="Designation" formControlName="Designation" required>
+                <div class="col" formGroupName="SkillSet">
+                    <mat-form-field formGroupName="Certification">
+                        <mat-label>Certification Date</mat-label>
+                        <input matInput [matDatepicker]="certification" formControlName="CertificationDate" placeholder="Certification date">
+                        <mat-datepicker-toggle matSuffix [for]="certification"></mat-datepicker-toggle>
+                        <mat-datepicker #certification></mat-datepicker>
                     </mat-form-field>
                 </div>
             </div>
@@ -277,7 +294,7 @@
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
+        <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">update</button>
         <div>
             <button mat-button matStepperPrevious>Back</button>
         </div>

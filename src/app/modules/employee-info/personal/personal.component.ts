@@ -35,7 +35,7 @@ export class PersonalComponent implements OnInit {
   date: any;
   photoPreview!: string;
   primaryContact: any;
-  fileSizeOk: boolean = false;
+  fileSizeError: boolean = false;
 
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -180,8 +180,8 @@ export class PersonalComponent implements OnInit {
     const reader = new FileReader();    
     if (event.target.files && event.target.files.length) {
       // console.log(event.target.files[0].size);
-      if(event.target.files[0].size > 10000){
-        this.fileSizeOk = true;
+      if(event.target.files[0].size < 100000){
+        this.fileSizeError = false;
         const [file] = event.target.files;
         reader.readAsDataURL(file);
   
@@ -191,7 +191,7 @@ export class PersonalComponent implements OnInit {
           });
         };
       }else{
-        this.fileSizeOk = false;
+        this.fileSizeError = false;
       }
     }
   }

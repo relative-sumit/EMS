@@ -22,8 +22,8 @@
                 <tr
                     *ngFor="let employee of sortedData | search: searchText |paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count}; let i = index;">
                     <td>
-                        <button class="btn btn-primary" style="margin-right: 5px; size: 10px;" (click)="updateEmployee()"><i class="far fa-edit fa-lg" style="color: white; align-items: center;"></i></button>
-                        <button class="btn btn-danger" (click)="deleteEmployee()"><i class="fa-solid fa-trash fa-lg" style="color: white;"></i></button>
+                        <i class="fa-solid fa-pen-to-square" (click)="updateEmployee(employee)" style="color: #089239;"></i>
+                        <i class="fa-solid fa-trash"  (click)="deleteEmployee()" style="color: #f10303;"></i>
                     </td>
                     <td>{{tableSize * (page - 1) + i + 1}}</td>                   
                     <td>{{employee.FirstName}} {{employee.LastName}}</td>
