@@ -1,11 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {MatStepperModule} from '@angular/material/stepper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatRadioModule} from '@angular/material/radio';
 
 @Component({
   selector: 'app-update-employee',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [    
+    MatButtonModule,
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CommonModule,
+    MatDatepickerModule,
+    MatRadioModule
+  ],
   templateUrl: './update-employee.component.html',
   styleUrl: './update-employee.component.css'
 })
@@ -14,7 +30,7 @@ export class UpdateEmployeeComponent implements OnInit{
   constructor(private fb: FormBuilder){}
 
   ngOnInit(): void {
-
+  
   }
 
   updateForm = this.fb.group({

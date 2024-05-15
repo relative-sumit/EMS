@@ -26,9 +26,9 @@
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.PrimarySkillset}}</div>
                                 <div formGroupName="SkillSet">
                                     <!-- <textarea class="form-control" formControlName="PrimarySkillset" *ngIf="editMode[1]" id="exampleFormControlTextarea1" rows="3"></textarea> -->
-                                    <ng-select *ngIf="editMode[1]" [multiple]="true" formControlName="PrimarySkillset">
-                                        <ng-option *ngFor="let skill of updateForm.get('SkillSet.PrimarySkillset')?.value" [value]="skill">{{skill}}</ng-option>
-                                        <ng-option *ngFor="let s of SecondarySkills" [value]="s">{{s}}</ng-option>
+                                    <ng-select *ngIf="editMode[1]" [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
+                                        <ng-option *ngFor="let skill of getSelectedPrimarySkills()" [value]="skill">{{skill}}</ng-option>
+                                        <ng-option *ngFor="let s of getRemainingPrimarySkills()" [value]="s">{{s}}</ng-option>
                                     </ng-select>
                                     <p class="error" *ngIf="this.updateForm.get('SkillSet.PrimarySkillset')?.touched && this.updateForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
                                 </div>
@@ -40,9 +40,9 @@
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.SecondarySkillset}}</div>
                                 <div formGroupName="SkillSet">
                                     <!-- <textarea class="form-control" formControlName="SecondarySkillset" *ngIf="editMode[1]" id="exampleFormControlTextarea1" rows="3"></textarea> -->
-                                    <ng-select *ngIf="editMode[1]" [multiple]="true" formControlName="SecondarySkillset">
-                                        <ng-option *ngFor="let skill of updateForm.get('SkillSet.SecondarySkillset')?.value" [value]="skill">{{skill}}</ng-option>
-                                        <ng-option *ngFor="let s of SecondarySkills" [value]="s">{{s}}</ng-option>
+                                    <ng-select *ngIf="editMode[1]" [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
+                                        <ng-option *ngFor="let skill of getSelectedSecondarySkills()" [value]="skill">{{skill}}</ng-option>
+                                        <ng-option *ngFor="let s of getRemainingSecondarySkills()" [value]="s">{{s}}</ng-option>
                                     </ng-select>
                                     <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p>
                                 </div>
