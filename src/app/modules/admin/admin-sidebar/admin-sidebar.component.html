@@ -1,25 +1,26 @@
-<div class="side-nav-content">
-    <fa-icon
-      [icon]="faBars"
-      class="side-bar fa-2x"
-      (click)="toggleCollapse()"
-    ></fa-icon>
-    <div class="side-profile">
-      <img src="/assets/img/pro-pic.jpg" alt="" />
-      <h2>David</h2>
-      <a href="">View info</a>
-    </div>
-    <ul class="nav-list">
-      <li class="nav-list-item" *ngFor="let item of navbarListItem">
-        <fa-icon [icon]="item.icon"></fa-icon>
-        <span>
-          <a href="{{ item.link }}">{{ item.name }}</a>
-        </span>
-      </li>
-    </ul>
-    <div class="side-logout">
-      <fa-icon [icon]="faPowerOff"></fa-icon>
-      <button (click)="logout()">Logout</button>
-    </div>
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+  <div class="logo-container">
+    <button class="logo" (click)="toggleCollapse()"><img class="InnoLogo" src="/assets/img/Logo.png" alt="Innovecture Logo" /></button>
+    <div class="logo-text" *ngIf="collapsed">EMS</div>
+    <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
   </div>
-  
+  <div class="side-profile">
+    <img src="/assets/img/pro-pic.jpg" alt="" />
+    <h2 *ngIf="collapsed">David</h2>
+    <a href="employee-info/personal" *ngIf="collapsed">View info</a>
+  </div>
+  <ul class="sidenav-nav">
+    <li class="sidenav-nav-item" *ngFor="let data of navbarListItem">
+      <a class="sidenav-nav-link" [routerLink]="data.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <fa-icon [icon]="data.icon" class="sidenav-link-icon"></fa-icon>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{ data.name }}</span>
+      </a>
+    </li>
+  </ul>
+  <div class="sidenav-logout">
+    <i class="fa-solid fa-power-off"></i>
+    <button (click)="logout()" *ngIf="collapsed">Logout</button>
+  </div>
+</div>

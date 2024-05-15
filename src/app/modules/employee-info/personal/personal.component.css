@@ -10,7 +10,7 @@ app-employee-navbar{
     margin-top: 20px;
     left: 0rem;
     width: 12vw;
-    background-color: white;
+    background: #f4f7fa;
     /* box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5); */
     /* border-top: 1px solid rgb(255, 0, 0); */
 }
