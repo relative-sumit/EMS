@@ -7,6 +7,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { errorInterceptorInterceptor } from './interceptor/error-interceptor.interceptor';
 import { graphqlProvider } from './graphql.provider';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideNativeDateAdapter } from '@angular/material/core';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     graphqlProvider,
     provideAnimationsAsync(),
+    provideNativeDateAdapter()
+    // {provide: CdkStepper, useExisting: ste}
   ],
 };

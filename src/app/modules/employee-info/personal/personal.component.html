@@ -38,10 +38,11 @@
                   type="file"
                   class="form-control"
                   *ngIf="editMode[1]"
-                  formControlName="Photo"
                   (change)="onFileChange($event)"
                 />
-                <!-- <p class="error" *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">Please upload photo</p> -->
+                <p *ngIf="editMode[1]"><small>(*note: Photo size should be less than 100kb)</small></p>
+                <p *ngIf="fileSizeOk" class="error">File size should be less than 100KB</p>
+                <p class="error" *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">Please upload photo</p>
               </div>
               <div class="col p-3">
                 <div>
@@ -241,6 +242,7 @@
                   {{ employeeInfo?.dob }}
                 </div>
                 <input
+                  type="date"
                   class="form-control"
                   formControlName="dob"
                   *ngIf="editMode[2]"
@@ -280,7 +282,6 @@
                 <div class="values" *ngIf="!editMode[2]">
                   {{ employeeInfo?.Gender }}
                 </div>
-                <!-- <input class="form-control" formControlName="Gender" *ngIf="editMode[2]"> -->
                 <div class="form-check form-check-inline" *ngIf="editMode[2]">
                   <input
                     class="form-check-input"
@@ -381,6 +382,7 @@
                   </p>
                 </div>
               </div>
+              <div class="col p-3"></div>
             </div>
           </div>
           <div class="row" *ngIf="editMode[2]">

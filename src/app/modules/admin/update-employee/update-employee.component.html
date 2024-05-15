@@ -1,173 +1,285 @@
-<div class="personal-container">
-    <div class="accordion" #accordion>
+<!-- <button mat-raised-button (click)="isOptional = !isOptional">
+    {{!isOptional ? 'Enable optional steps' : 'Disable optional steps'}}
+</button> -->
+
+<!-- @switch (stepperOrientation | async) {
+@case ('horizontal') {
+<div>Make your screen smaller to see a vertical stepper</div>
+}
+@case ('vertical') {
+<div>Make your screen larger to see a horizontal stepper</div>
+}
+} -->
+
+<mat-stepper class="example-stepper">
+    <mat-step [stepControl]="updateForm" label="PROFILE">
         <form [formGroup]="updateForm">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <div class="accordion-butto">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h3>Update Info</h3>
-                            </div>
-                        </div>
-                    </div>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                    aria-labelledby="panelsStayOpen-headingOne">
-                    <div class="accordion-body">
-                        <div class="row">
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Photo</span></small></div>
-                                <input type="file" class="form-control" formControlName="Photo">
-                                <!-- <p class="error" *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">Please upload photo</p> -->
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">First Name</span></small></div>
-                                <!-- <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.FirstName}}</div> -->
-                                <input class="form-control" formControlName="FirstName">
-                                <div *ngIf="updateForm.controls['FirstName']?.['touched'] && updateForm.controls['FirstName']?.['errors']"
-                                    class="error">
-                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['required']">First name is
-                                        required</p>
-                                    <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['minLength']">First name
-                                        should
-                                        have minimum 4 letters</p>
-                                    <p
-                                        *ngIf="updateForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['FirstName']?.['errors']?.['required']">
-                                        First name contains only alphabets & no whitespaces before and after</p>
-                                </div>
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Middle Name</span></small></div>
-                                <!-- <div class="values" >{{employeeInfo?.MiddleName}}</div> -->
-                                <input class="form-control" formControlName="MiddleName">
-                                <div *ngIf="updateForm.controls['MiddleName']?.['touched'] && updateForm.controls['MiddleName']?.['errors']"
-                                    class="error">
-                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['required']">Middle name
-                                        is
-                                        required</p>
-                                    <p *ngIf="updateForm.controls['MiddleName']?.['errors']?.['minLength']">Middle Name
-                                        should have minimum 4 letters</p>
-                                    <p
-                                        *ngIf="updateForm.controls['MiddleName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['MiddleName']?.['errors']?.['required']">
-                                        Middle Name contains only alphabets & no whitespaces before and after</p>
-                                </div>
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Last Name</span></small></div>
-                                <!-- <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.LastName}}</div> -->
-                                <input class="form-control" formControlName="LastName">
-                                <div *ngIf="updateForm.controls['LastName']?.['touched'] && updateForm.controls['LastName']?.['errors']"
-                                    class="error">
-                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['required']">Last name is
-                                        required</p>
-                                    <p *ngIf="updateForm.controls['LastName']?.['errors']?.['minLength']">Last name
-                                        should
-                                        have minimum 4 letters</p>
-                                    <p
-                                        *ngIf="updateForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['LastName']?.['errors']?.['required']">
-                                        Last name contains only alphabets & no whitespaces before and after</p>
-                                </div>
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Employee Id</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.UserId}}</div> -->
-                                <input class="form-control" formControlName="UserId">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Company Email</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.Email.CompanyMail}}</div> -->
-                                <input class="form-control" formControlName="CompanyMail">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Department Name</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.Department.DepartmentName}}</div> -->
-                                <input class="form-control" formControlName="DepartmentName">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Designation</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.Designation}}</div> -->
-                                <input class="form-control" formControlName="Designation">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Date of Join</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.doj}}</div> -->
-                                <input type="date" class="form-control" formControlName="doj">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Date of Conformation</span></small></div>
-                                <!-- <div class="values">{{employeeInfo?.doc}}</div> -->
-                                <input type="date" class="form-control" formControlName="doc">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Employee Code</span></small></div>
-                                <input class="form-control" formControlName="doc">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Gender</span></small></div>
-                                <!-- <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Gender}}</div> -->
-                                <!-- <input class="form-control" formControlName="Gender" *ngIf="editMode[2]"> -->
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" formControlName="Gender"
-                                        id="inlineRadio1" value="male">
-                                    <label class="form-check-label" for="inlineRadio1">Male</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" formControlName="Gender"
-                                        id="inlineRadio2" value="female">
-                                    <label class="form-check-label" for="inlineRadio2">Female</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" formControlName="Gender"
-                                        id="inlineRadio3" value="other">
-                                    <label class="form-check-label" for="inlineRadio3">Other</label>
-                                </div>
-                                <p class="error"
-                                    *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">
-                                    Gender is required</p>
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Primary Contact Number</span></small></div>
-                                <input class="form-control" formControlName="Primary">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Emergency Contact Number</span></small></div>
-                                <input class="form-control" formControlName="Emergency">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Company Email</span></small></div>
-                                <input class="form-control" formControlName="CompanyMail">
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Personal Email</span></small></div>
-                                <!-- <div class="values" *ngIf="!editMode[2]">{{employeeInfo?.Gender}}</div> -->
-                                <input class="form-control" formControlName="PersonalMail">
-                                <!-- <p class="error" *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">Gender is required</p> -->
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Flat No, Society/Building Name</span></small>
-                                </div>
-                                <!-- <input  class="form-control" formControlName="Primary"> -->
-                                <textarea class="form-control" formControlName="Flat" rows="3"></textarea>
-                            </div>
-                            <div class="col p-3">
-                                <div><small><span style="color: gray;">Area</span></small></div>
-                                <textarea class="form-control" formControlName="Area" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col text-center mb-4" id="update-button">
-                                <button class="btn btn-primary" (click)="updateEmployee()">Update</button>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="First name" formControlName="FirstName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Middle Name</mat-label>
+                        <input matInput placeholder="Middle name" formControlName="MiddleName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Last name" formControlName="LastName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Employee Code</mat-label>
+                        <input matInput placeholder="Employee code" formControlName="EmployeeCode" required>
+                    </mat-form-field>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>User Id</mat-label>
+                        <input matInput placeholder="User id" formControlName="UserId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Email">
+                        <mat-label>Company Email</mat-label>
+                        <input matInput placeholder="Company email" formControlName="CompanyMail" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="dateSize">
+                        <mat-label>Date of Joining</mat-label>
+                        <input matInput [matDatepicker]="join" formControlName="doj" placeholder="Date of join">
+                        <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
+                        <mat-datepicker #join></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="dateSize">
+                        <mat-label>Date of Conformation</mat-label>
+                        <input matInput [matDatepicker]="conform" formControlName="doc" placeholder="Date of conformation ">
+                        <mat-datepicker-toggle matSuffix [for]="conform"></mat-datepicker-toggle>
+                        <mat-datepicker #conform></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Id</mat-label>
+                        <input matInput placeholder="Department id" formControlName="DepartmentId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Name</mat-label>
+                        <input matInput placeholder="Department name" formControlName="DepartmentName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Manager Id</mat-label>
+                        <input matInput placeholder="Manager id" formControlName="ManagerId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Designation</mat-label>
+                        <input matInput placeholder="Designation" formControlName="Designation" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
         </form>
-    </div>
-</div>
+    </mat-step>
+    <mat-step [stepControl]="updateForm" label="PERSONAL">
+        <form [formGroup]="updateForm">
+            <div class="row">
+                <div class="col">
+                    <mat-label>Gender</mat-label>
+                    <mat-radio-group aria-label="Gender" formControlName="Gender">
+                        <mat-radio-button value="male">Male</mat-radio-button>
+                        <mat-radio-button value="female">Female</mat-radio-button>
+                        <mat-radio-button value="other">Other</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col">
+                    <!-- <mat-form-field> -->
+                        <mat-label>Photo</mat-label>
+                        <input type="file" placeholder="Upload photo" formControlName="Photo" required>
+                    <!-- </mat-form-field> -->
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Email">
+                        <mat-label>Personal Email</mat-label>
+                        <input matInput placeholder="Personal email" formControlName="PersonalMail" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Contact">
+                        <mat-label>Primary Contact No</mat-label>
+                        <input matInput placeholder="Primary contact number" formControlName="Primary" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field  formGroupName="Contact">
+                        <mat-label>Emergency Contact No</mat-label>
+                        <input matInput placeholder="Emergency contact number" formControlName="Emergency" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Flat</mat-label>
+                        <input matInput placeholder="Flat No, Society/ Building name" formControlName="Flat" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Area</mat-label>
+                        <input matInput placeholder="Area name" formControlName="Area" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Landmark</mat-label>
+                        <input matInput placeholder="Landmark" formControlName="Landmark" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Pincode</mat-label>
+                        <input matInput placeholder="Enter pincode" formControlName="Pincode" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>City</mat-label>
+                        <input matInput placeholder="City name" formControlName="City" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>State</mat-label>
+                        <input matInput placeholder="State name" formControlName="State" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="birth" formControlName="dob" placeholder="Date of birth">
+                        <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
+                        <mat-datepicker #birth></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="updateForm" label="SKILLSET">
+        <form [formGroup]="updateForm">
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="SkillSet">
+                        <mat-label>Primary Skill Set</mat-label>
+                        <input matInput placeholder="Primary Skills" formControlName="PrimarySkillset" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="SkillSet">
+                        <mat-label>Secondary Skill Set</mat-label>
+                        <input matInput placeholder="Secondary Skills" formControlName="SecondarySkillset" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Last name" formControlName="LastName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Employee Code</mat-label>
+                        <input matInput placeholder="Employee code" formControlName="EmployeeCode" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>User Id</mat-label>
+                        <input matInput placeholder="User id" formControlName="UserId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Email">
+                        <mat-label>Company Email</mat-label>
+                        <input matInput placeholder="Company email" formControlName="CompanyMail" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <!-- <mat-form-field class="dateSize"> -->
+                      <!-- need to add some code  -->
+                    <!-- </mat-form-field> -->
+                </div>
+                <div class="col">
+                    <!-- <mat-form-field class="dateSize"> -->
+                        <!-- need to add some code  -->
+                    <!-- </mat-form-field> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Id</mat-label>
+                        <input matInput placeholder="Department id" formControlName="DepartmentId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Name</mat-label>
+                        <input matInput placeholder="Department name" formControlName="DepartmentName" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Manager Id</mat-label>
+                        <input matInput placeholder="Manager id" formControlName="ManagerId" required>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Designation</mat-label>
+                        <input matInput placeholder="Designation" formControlName="Designation" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+        </div>
+    </mat-step>
+</mat-stepper>

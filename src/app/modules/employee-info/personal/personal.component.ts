@@ -35,6 +35,7 @@ export class PersonalComponent implements OnInit {
   date: any;
   photoPreview!: string;
   primaryContact: any;
+  fileSizeOk: boolean = false;
 
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -63,21 +64,25 @@ export class PersonalComponent implements OnInit {
           if (data) {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
-            // console.log(this.employeeData[0]);
-
-            this.updateForm.patchValue(this.employeeInfo)
-            const [month, day, year] = data.dob.split('/').map(Number);
-            const date = new Date(year, month - 1, day);
-
-            const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
-            const updatedData = { ...data, dob: formattedDate }; // we can add doc doj as well
+            this.updateForm.patchValue(this.employeeInfo);
+            const updatedData = { 
+              ...this.employeeInfo,
+               dob: this.formatDate(this.employeeInfo.dob),
+               doj: this.formatDate(this.employeeInfo.doj),
+               doc: this.formatDate(this.employeeInfo.doc)
+               };
             this.employeeInfo = updatedData
           }
         }
       );
   }
 
+  formatDate(dateString: any) {
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  }
   transformDates(employeeData:any){
     const transformDate = {...employeeData}
     transformDate.dob = this.datePipe.transform(transformDate.dob, 'yyyy-MM-dd');
@@ -172,19 +177,22 @@ export class PersonalComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    const reader = new FileReader();
-
-    console.log("Length:",event.target.files);
-    
+    const reader = new FileReader();    
     if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        this.updateForm.patchValue({
-          Photo: reader.result as string,
-        });
-      };
+      // console.log(event.target.files[0].size);
+      if(event.target.files[0].size > 10000){
+        this.fileSizeOk = true;
+        const [file] = event.target.files;
+        reader.readAsDataURL(file);
+  
+        reader.onload = () => {
+          this.updateForm.patchValue({
+            Photo: reader.result as string,
+          });
+        };
+      }else{
+        this.fileSizeOk = false;
+      }
     }
   }
 

@@ -6,6 +6,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-skillset',
@@ -19,7 +20,7 @@ export class SkillsetComponent implements OnInit{
   employeeInfo:any;
   userId: string = '';
   @ViewChild('accordion') accordion!: ElementRef;
-
+  
   toggleAccordion(id: string) {
     const accordionItem = this.accordion.nativeElement.querySelector(`#${id}`);
     accordionItem.classList.toggle('show');
@@ -31,6 +32,7 @@ export class SkillsetComponent implements OnInit{
     private fb: FormBuilder,
     private route: Router
   ){}
+
 
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
@@ -107,6 +109,25 @@ export class SkillsetComponent implements OnInit{
     }
   }
 
+
+  
+  getSelectedPrimarySkills() {
+    return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
+  }
+
+  getSelectedSecondarySkills() {
+    return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
+  }
+
+  getRemainingPrimarySkills() {
+    return this.SecondarySkills.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
+  }
+
+  getRemainingSecondarySkills() {
+    return this.SecondarySkills.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
+  }
+
+
   updateEmployee() {
     console.log(this.updateForm.value);
     console.log("UserId : ", this.userId);
@@ -126,5 +147,5 @@ export class SkillsetComponent implements OnInit{
   editMode: boolean[] = [false, false, false];
   toggleEdit(index: number) {
     this.editMode[index] = !this.editMode[index];
-}
+  }
 }
