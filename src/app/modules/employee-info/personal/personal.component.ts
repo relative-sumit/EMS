@@ -30,18 +30,22 @@ import { NgSelectModule } from '@ng-select/ng-select';
 })
 export class PersonalComponent implements OnInit {
   encrptedUserId: any;
+  encrptedUsername: any;
   userId: string = '';
+  username: string = '';
   employeeInfo: any;
   date: any;
   photoPreview!: string;
   primaryContact: any;
   fileSizeError: boolean = false;
+  expanded: { [key: string]: boolean } = {};
 
   @ViewChild('accordion') accordion!: ElementRef;
 
   toggleAccordion(id: string) {
     const accordionItem = this.accordion.nativeElement.querySelector(`#${id}`);
     accordionItem.classList.toggle('show');
+    this.expanded[id] = !this.expanded[id];
   }
 
   constructor(
@@ -57,6 +61,8 @@ export class PersonalComponent implements OnInit {
   // employeeData:any
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
+    this.encrptedUsername = sessionStorage.getItem('username');
+    this.username = this.ed.decrypt(this.encrptedUsername);
     this.userId = this.ed.decrypt(this.encrptedUserId);
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
@@ -65,44 +71,28 @@ export class PersonalComponent implements OnInit {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
             this.updateForm.patchValue(this.employeeInfo);
-            const updatedData = { 
-              ...this.employeeInfo,
-               dob: this.formatDate(this.employeeInfo.dob),
-               doj: this.formatDate(this.employeeInfo.doj),
-               doc: this.formatDate(this.employeeInfo.doc)
-               };
-            this.employeeInfo = updatedData
           }
         }
       );
   }
 
-  formatDate(dateString: any) {
-    const [year, month, day] = dateString.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  }
   transformDates(employeeData:any){
     const transformDate = {...employeeData}
     transformDate.dob = this.datePipe.transform(transformDate.dob, 'yyyy-MM-dd');
     transformDate.doj = this.datePipe.transform(transformDate.doj, 'yyyy-MM-dd');
-    transformDate.doc = this.datePipe.transform(transformDate.doc, 'yyyy-MM-dd');
+    // transformDate.doc = this.datePipe.transform(transformDate.doc, 'dd-MM-yyyy');
     return transformDate;
   }
 
   updateForm = this.fb.group({
     FirstName: [
       '',
-      [Validators.required, Validators.minLength(4), this.nameValidator],
+      [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
-    MiddleName: [
-      '',
-      [Validators.required, Validators.minLength(4), this.nameValidator],
-    ],
+    MiddleName: [''],
     LastName: [
       '',
-      [Validators.required, Validators.minLength(4), this.nameValidator],
+      [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
     EmployeeCode: [''],
     UserId: [''],
@@ -115,7 +105,7 @@ export class PersonalComponent implements OnInit {
     }),
     Email: this.fb.group({
       CompanyMail: [''],
-      PersonalMail: ['', [Validators.required]],
+      PersonalMail: ['', [Validators.required, Validators.email]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
@@ -180,7 +170,7 @@ export class PersonalComponent implements OnInit {
     const reader = new FileReader();    
     if (event.target.files && event.target.files.length) {
       // console.log(event.target.files[0].size);
-      if(event.target.files[0].size < 100000){
+      if(event.target.files[0].size < 10000){
         this.fileSizeError = false;
         const [file] = event.target.files;
         reader.readAsDataURL(file);
@@ -191,7 +181,7 @@ export class PersonalComponent implements OnInit {
           });
         };
       }else{
-        this.fileSizeError = false;
+        this.fileSizeError = true;
       }
     }
   }
@@ -205,7 +195,7 @@ export class PersonalComponent implements OnInit {
     });
    
     console.log(this.updateForm.value);
-    this.auth.updateEmployeeInfo(this.userId, this.updateForm.value)
+    this.auth.updateEmployeeInfo(this.userId, this.username,this.updateForm.value)
     .subscribe(
       (result)=>{
         console.log("Respose: ",result);

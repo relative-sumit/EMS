@@ -75,6 +75,7 @@ query($UserId:String){
 const GET_ALL_EMPLOYEES_INFO = gql`
 query{
   employeeInfo{
+    _id
     FirstName
     MiddleName
     LastName
@@ -128,8 +129,8 @@ query{
 `;
 
 const UPDATE_EMPLOYEE_INFO = gql`
-  mutation UpdateEmployeeInfo($UserId: String!, $input: EmployeeInfoInput!) {
-    updateEmployeeInfo(UserId: $UserId, input: $input) {
+  mutation UpdateEmployeeInfo($UserId: String!,  $Username: String!, $input: EmployeeInfoInput!) {
+    updateEmployeeInfo(UserId: $UserId, Username: $Username, input: $input) {
       FirstName
       LastName
     }
@@ -195,12 +196,12 @@ export class AuthService {
       .valueChanges.pipe(map((info)=> info.data.employeeInfo));
   }
   
-  updateEmployeeInfo(UserId: String, input:any){
-    console.log("From Auth Service: ", input);
+  updateEmployeeInfo(UserId: String, Username: string, input:any){
     return this.apollo.mutate<any>({
       mutation:UPDATE_EMPLOYEE_INFO,
       variables:{
         UserId: UserId,
+        Username: Username,
         input: input
       }
     })

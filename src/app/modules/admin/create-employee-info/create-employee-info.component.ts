@@ -1,22 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatStepperModule} from '@angular/material/stepper';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatRadioModule} from '@angular/material/radio';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatStepperModule } from '@angular/material/stepper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { EmployeeService } from '../../../services/employee.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 
 @Component({
-  selector: 'app-update-employee',
+  selector: 'app-create-employee-info',
   standalone: true,
-  imports: [    
+  imports: [
     MatButtonModule,
     MatStepperModule,
     FormsModule,
@@ -29,37 +30,37 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
     NgxIntlTelInputModule,
     NgSelectModule
   ],
-  templateUrl: './update-employee.component.html',
-  styleUrl: './update-employee.component.css'
+  templateUrl: './create-employee-info.component.html',
+  styleUrl: './create-employee-info.component.css'
 })
-export class UpdateEmployeeComponent implements OnInit{
+export class CreateEmployeeInfoComponent {
   _id:String = '';
   fileSizeError: boolean = false;
-  encryptedUserName:any;
+  encryptedUserName: any;
   userName: String = '';
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
-    private route: Router ,
+    private route: Router,
     private ed: EncryptingDecryptingService
     ){}
 
   ngOnInit(): void {
+    // this.employeeService.employeeInfo
+    // .subscribe(
+    //   (data)=>{
+    //     console.log(data);
+    //     this._id = data._id
+    //     console.log(this._id);
+    //     this.updateForm.patchValue(data);
+    //   }
+    // )
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
-    this.employeeService.employeeInfo
-    .subscribe(
-      (data)=>{
-        console.log(data);
-        this._id = data._id
-        console.log(this._id);
-        this.updateForm.patchValue(data);
-      }
-    )
   }
 
-  updateForm = this.fb.group({
+  addForm = this.fb.group({
     FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
     MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
     LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
@@ -114,13 +115,51 @@ export class UpdateEmployeeComponent implements OnInit{
       return { 'onlyAlfa': true }
     }
   }
+ 
+  get primaryE164Number() {
+    const primaryControl = this.addForm.get('Contact.Primary');
+    if (primaryControl && typeof primaryControl.value === 'object') {
+      return (primaryControl.value as unknown as { e164Number: string })
+        .e164Number;
+    }
+    return this.addForm.getRawValue().Contact.Primary;
+  }
+  get emergencyE164Number() {
+    const primaryControl = this.addForm.get('Contact.Emergency');
+    if (primaryControl && typeof primaryControl.value === 'object') {
+      return (primaryControl.value as unknown as { e164Number: string })
+        .e164Number;
+    }
+    return this.addForm.getRawValue().Contact.Emergency;
+  }
+
+
+  onFileChange(event: any) {
+    const reader = new FileReader();    
+    if (event.target.files && event.target.files.length) {
+      // console.log(event.target.files[0].size);
+      if(event.target.files[0].size < 100000){
+        this.fileSizeError = false;
+        const [file] = event.target.files;
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.addForm.patchValue({
+            Photo: reader.result as string,
+          });
+        };
+      }else{
+        console.log("error ")
+        this.fileSizeError = true;
+      }
+    }
+  }
 
   SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
   getSelectedPrimarySkills() {
-    return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
+    return this.addForm.get('SkillSet.PrimarySkillset')?.value;
   }
   getSelectedSecondarySkills() {
-    return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
+    return this.addForm.get('SkillSet.SecondarySkillset')?.value;
   }
   getRemainingPrimarySkills() {
     return this.SecondarySkills.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
@@ -129,54 +168,15 @@ export class UpdateEmployeeComponent implements OnInit{
     return this.SecondarySkills.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
   }
 
-
-  get primaryE164Number() {
-    const primaryControl = this.updateForm.get('Contact.Primary');
-    if (primaryControl && typeof primaryControl.value === 'object') {
-      console.log('inside');
-
-      return (primaryControl.value as unknown as { e164Number: string })
-        .e164Number;
-    }
-    return this.updateForm.getRawValue().Contact.Primary;
-  }
-  get emergencyE164Number() {
-    const primaryControl = this.updateForm.get('Contact.Emergency');
-    if (primaryControl && typeof primaryControl.value === 'object') {
-      return (primaryControl.value as unknown as { e164Number: string })
-        .e164Number;
-    }
-    return this.updateForm.getRawValue().Contact.Emergency;
-  }
-
-
-  onFileChange(event: any) {
-    const reader = new FileReader();    
-    if (event.target.files && event.target.files.length) {
-      // console.log(event.target.files[0].size);
-      if(event.target.files[0].size < 10000){
-        this.fileSizeError = false;
-        const [file] = event.target.files;
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          this.updateForm.patchValue({
-            Photo: reader.result as string,
-          });
-        };
-      }else{
-        this.fileSizeError = true;
-      }
-    }
-  }
-  updateEmployee(){
-    this.updateForm.patchValue({
+  addEmployee(){
+    this.addForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
         Emergency: this.emergencyE164Number
       }
     });
-    console.log(this.updateForm.value);
-    this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
+    console.log(this.addForm.value);
+    this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
     .subscribe(
       (data)=>{
         console.log(data);

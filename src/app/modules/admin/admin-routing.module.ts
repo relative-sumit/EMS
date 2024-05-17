@@ -30,6 +30,13 @@ const routes: Routes = [
         (c) => c.UpdateEmployeeComponent
       ),
   },
+  {
+    path: 'add-employee',
+    loadComponent: () =>
+      import('./create-employee-info/create-employee-info.component').then(
+        (c) => c.CreateEmployeeInfoComponent
+      ),
+  },
 ];
 
 @NgModule({

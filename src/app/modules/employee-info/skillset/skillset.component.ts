@@ -18,11 +18,16 @@ export class SkillsetComponent implements OnInit{
   encrptedUserId: any;
   employeeInfo:any;
   userId: string = '';
+  expanded: { [key: string]: boolean } = {};
+  encrptedUsername:any;
+  username: string = '';
+
   @ViewChild('accordion') accordion!: ElementRef;
   
   toggleAccordion(id: string) {
     const accordionItem = this.accordion.nativeElement.querySelector(`#${id}`);
     accordionItem.classList.toggle('show');
+    this.expanded[id] = !this.expanded[id];
   }
 
   constructor(
@@ -32,10 +37,21 @@ export class SkillsetComponent implements OnInit{
     private route: Router
   ){}
 
+  SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
+  options = [
+    { id: 'Basic', name: 'Basic' },
+    { id: 'Intermediate', name: 'Intermediate' },
+    { id: 'Advance', name: 'Advance' }
+  ];
+  // onOptionChange() {
+  //   console.log(this.updateForm.value.SkillSet?.SkillLevel); // Log the selected option value
+  // }
 
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
      this.userId = this.ed.decrypt(this.encrptedUserId);
+     this.encrptedUsername = sessionStorage.getItem('username');
+     this.username = this.ed.decrypt(this.encrptedUsername);
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
         data => {
@@ -47,8 +63,6 @@ export class SkillsetComponent implements OnInit{
       )
       ;
   }
-
-  SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
 
 
   updateForm = this.fb.group({
@@ -86,9 +100,9 @@ export class SkillsetComponent implements OnInit{
     SkillSet: this.fb.group({
       EmployeeSkillsetId: ['', [Validators.required]],
       PrimarySkillset: ['', [Validators.required]],
-      SecondarySkillset: ['', [Validators.required]],
+      SecondarySkillset: [''],
       SkillLevel: ['', [Validators.required]],
-      Experience: ['', [Validators.required]],
+      Experience: ['', [Validators.required,  this.validExperience]],
       Certification: this.fb.group({
         CertificationName: ['', [Validators.required]],
         CertificationDate: ['', [Validators.required]]
@@ -107,21 +121,24 @@ export class SkillsetComponent implements OnInit{
       return {'onlyAlfa': true}
     }
   }
-
+  validExperience(control: any) {
+    const experience = control.value;
+    if (!experience.match(/^(0|[1-9]|[1-2][0-9]|29)(\.[0-9]{1,2})? years?$/)) {
+      return { invalidExperience: true };
+    }
+    return null;
+  }
 
   
   getSelectedPrimarySkills() {
     return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
   }
-
   getSelectedSecondarySkills() {
     return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
   }
-
   getRemainingPrimarySkills() {
     return this.SecondarySkills.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
   }
-
   getRemainingSecondarySkills() {
     return this.SecondarySkills.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
   }
@@ -130,7 +147,7 @@ export class SkillsetComponent implements OnInit{
   updateEmployee() {
     console.log(this.updateForm.value);
     console.log("UserId : ", this.userId);
-    this.auth.updateEmployeeInfo(this.userId, this.updateForm.value)
+    this.auth.updateEmployeeInfo(this.userId, this.username, this.updateForm.value)
     .subscribe(
       (result)=>{
         console.log(result);
