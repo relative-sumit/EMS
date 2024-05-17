@@ -39,8 +39,18 @@ h3{
     margin-top: 10px;
     font-size: 16px;
     font-weight: bold;
-    width: 20px;
+    position: relative;
+}
+h3 i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+}
+
+.accordion-header{
+    background-color:  lightblue;
 }
 
 .edit-button {
@@ -69,6 +79,7 @@ input.ng-touched.ng-invalid{
 
 .upload img{
     border: 6px solid #eaeaea;
+    height: 20px;
 }
 .upload .round{
     bottom: 0;

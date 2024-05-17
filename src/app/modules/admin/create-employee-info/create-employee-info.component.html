@@ -12,8 +12,8 @@
 } -->
 
 <mat-stepper class="example-stepper">
-    <mat-step [stepControl]="updateForm" label="PROFILE">
-        <form [formGroup]="updateForm">
+    <mat-step [stepControl]="addForm" label="PROFILE">
+        <form [formGroup]="addForm">
             <div class="row">
                 <div class="col">
                     <mat-form-field>
@@ -64,7 +64,7 @@
                 <div class="col">
                     <mat-form-field class="dateSize">
                         <mat-label>Date of Confirmation</mat-label>
-                        <input matInput [matDatepicker]="conform" formControlName="doc" placeholder="Date of conformation ">
+                        <input matInput [matDatepicker]="conform" formControlName="doc" placeholder="Date of conformation">
                         <mat-datepicker-toggle matSuffix [for]="conform"></mat-datepicker-toggle>
                         <mat-datepicker #conform></mat-datepicker>
                     </mat-form-field>
@@ -101,8 +101,8 @@
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="updateForm" label="PERSONAL">
-        <form [formGroup]="updateForm">
+    <mat-step [stepControl]="addForm" label="PERSONAL">
+        <form [formGroup]="addForm">
             <div class="row">
                 <div class="col">
                     <div><mat-label>Gender</mat-label></div>
@@ -144,7 +144,7 @@
                       </div>
                       <p
                         class="error"
-                        *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']"
+                        *ngIf="this.addForm.get('Gender')?.touched && this.addForm.get('Gender')?.errors?.['required']"
                       >
                         Gender is required
                       </p>
@@ -153,6 +153,8 @@
                     <!-- <mat-form-field> -->
                         <mat-label>Photo</mat-label>
                         <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required>
+                        <p><small>(*note: Photo size should be less than 100kb)</small></p>
+                        <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p>
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
@@ -234,8 +236,8 @@
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="updateForm" label="SKILLSET">
-        <form [formGroup]="updateForm">
+    <mat-step [stepControl]="addForm" label="SKILLSET">
+        <form [formGroup]="addForm">
             <div class="row">
                 <div class="col" formGroupName="SkillSet">
                     <!-- <mat-form-field formGroupName="SkillSet"> -->
@@ -244,7 +246,7 @@
                             <ng-option *ngFor="let skill of getSelectedPrimarySkills()" [value]="skill">{{skill}}</ng-option>
                             <ng-option *ngFor="let s of getRemainingPrimarySkills()" [value]="s">{{s}}</ng-option>
                         </ng-select>
-                        <p class="error" *ngIf="this.updateForm.get('SkillSet.PrimarySkillset')?.touched && this.updateForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
+                        <p class="error" *ngIf="this.addForm.get('SkillSet.PrimarySkillset')?.touched && this.addForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col" formGroupName="SkillSet">
@@ -254,7 +256,7 @@
                             <ng-option *ngFor="let skill of getSelectedSecondarySkills()" [value]="skill">{{skill}}</ng-option>
                             <ng-option *ngFor="let s of getRemainingSecondarySkills()" [value]="s">{{s}}</ng-option>
                         </ng-select>
-                        <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p>
+                        <p class="error" *ngIf="this.addForm.get('SkillSet.SecondarySkillset')?.touched && this.addForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p>
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
@@ -294,7 +296,7 @@
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">update</button>
+        <button class="btn btn-primary" (click)="addEmployee()">update</button>
         <div>
             <button mat-button matStepperPrevious>Back</button>
         </div>

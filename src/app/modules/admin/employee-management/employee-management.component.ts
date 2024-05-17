@@ -76,10 +76,22 @@ export class EmployeeManagementComponent implements OnInit{
       switch (sort.active) {
         case 'FirstName':
           return compare(a.FirstName, b.FirstName, isAsc);
+        case 'Email.CompanyMail':
+          return compare(a.Email.CompanyMail, b.Email.CompanyMail, isAsc);
+        case 'Department.DepartmentName':
+          return compare(a.Department.DepartmentName, b.Department.DepartmentName, isAsc);
+        case 'Designation':
+          return compare(a.Designation, b.Designation, isAsc);
+        case 'Gender':
+          return compare(a.Gender, b.Gender, isAsc);
         default:
           return 0;
       }
     })
+  }
+
+  addEmployee(){
+    this.route.navigate(['admin/add-employee']);
   }
   updateEmployee(employee: any){
     this.employeeService.setEmployeeInfo(employee);

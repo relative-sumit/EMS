@@ -4,12 +4,11 @@
 }
 
 app-employee-navbar{
-    margin-top: 20px;
-    margin-bottom: 20px;
     margin-right: 5px;
+    margin-top: 20px;
     left: 0rem;
     width: 12vw;
-    background-color: white;
+    background: #f4f7fa;
     /* box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5); */
     /* border-top: 1px solid rgb(255, 0, 0); */
 }
@@ -32,8 +31,17 @@ h3{
     margin-top: 10px;
     font-size: 16px;
     font-weight: bold;
-    width: 20px;
+    position: relative;
+}
+h3 i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+}
+.accordion-header{
+    background-color:  lightblue;
 }
 
 .edit-button {

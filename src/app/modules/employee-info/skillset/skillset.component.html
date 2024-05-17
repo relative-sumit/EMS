@@ -7,22 +7,25 @@
                     <div class="accordion-butto">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h3 (click)="toggleAccordion('panelsStayOpen-collapseOne')">SkillSet</h3>
-                            </div>
-                            <div class="col-auto">
-                                <button class="edit-button" (click)="toggleEdit(1)">
-                                    <i class="fa fa-edit fa-lg"></i>
-                                </button>
+                                <h3>
+                                    SkillSet
+                                    <i class="fa" [ngClass]="{'fa-chevron-up': !expanded['panelsStayOpen-collapseOne'], 'fa-chevron-down': expanded['panelsStayOpen-collapseOne']}" (click)="toggleAccordion('panelsStayOpen-collapseOne')"></i>
+                                </h3>
                             </div>
                         </div>
                     </div>
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
                     aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="col-auto">
+                        <button class="edit-button" (click)="toggleEdit(1)">
+                            <i class="fa fa-edit fa-lg"></i>
+                        </button>
+                    </div>
                     <div class="accordion-body">
                         <div class="row">
                             <div class="col p-3">
-                                <div><small><span style="color: gray;">Primary Skill Set</span></small></div>
+                                <div><span style="color: gray;">Primary Skill Set <span style="font-size: 20px;" *ngIf="editMode[1]">*</span></span></div>
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.PrimarySkillset}}</div>
                                 <div formGroupName="SkillSet">
                                     <!-- <textarea class="form-control" formControlName="PrimarySkillset" *ngIf="editMode[1]" id="exampleFormControlTextarea1" rows="3"></textarea> -->
@@ -36,7 +39,7 @@
                         </div>
                         <div class="row">    
                             <div class="col p-3">
-                                <div><small><span style="color: gray;">Secondary Skill Set</span></small></div>
+                                <div><span style="color: gray;">Secondary Skill Set</span></div>
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.SecondarySkillset}}</div>
                                 <div formGroupName="SkillSet">
                                     <!-- <textarea class="form-control" formControlName="SecondarySkillset" *ngIf="editMode[1]" id="exampleFormControlTextarea1" rows="3"></textarea> -->
@@ -44,25 +47,38 @@
                                         <ng-option *ngFor="let skill of getSelectedSecondarySkills()" [value]="skill">{{skill}}</ng-option>
                                         <ng-option *ngFor="let s of getRemainingSecondarySkills()" [value]="s">{{s}}</ng-option>
                                     </ng-select>
-                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p>
+                                    <!-- <p class="error" *ngIf="this.updateForm.get('SkillSet.SecondarySkillset')?.touched && this.updateForm.get('SkillSet.SecondarySkillset')?.errors?.['required']">Secondary skill set is required</p> -->
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col p-3">
-                                <div><small><span style="color: gray;">Skill Level</span></small></div>
+                                <div><span style="color: gray;">Skill Level <span style="font-size: 20px;" *ngIf="editMode[1]">*</span></span></div>
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.SkillLevel}}</div>
-                                <div formGroupName="SkillSet">
+                                <!-- <div formGroupName="SkillSet">
                                     <input class="form-control" *ngIf="editMode[1]" formControlName="SkillLevel">
                                     <p class="error" *ngIf="this.updateForm.get('SkillSet.SkillLevel')?.touched && this.updateForm.get('SkillSet.SkillLevel')?.errors?.['required']">Skill level is required</p>
+                                </div> -->
+                                <div formGroupName="SkillSet">
+                                    <select  *ngIf="editMode[1]" class="form-control" formControlName="SkillLevel">
+                                      <option value="" disabled selected>Select a skill level</option>
+                                      <option *ngFor="let option of options" [value]="option.id">{{ option.name }}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col p-3">
-                                <div><small><span style="color: gray;">Experience</span></small></div>
+                                <div><span style="color: gray;">Experience <span style="font-size: 20px;" *ngIf="editMode[1]">*</span></span></div>
                                 <div class="values" *ngIf="!editMode[1]">{{employeeInfo?.SkillSet.Experience}}</div>
                                 <div formGroupName="SkillSet">
                                     <input class="form-control" *ngIf="editMode[1]" formControlName="Experience">
-                                    <p class="error" *ngIf="this.updateForm.get('SkillSet.Experience')?.touched && this.updateForm.get('SkillSet.Experience')?.errors?.['required']">Experience is required</p>
+                                    <p  *ngIf="editMode[1]"><small>*note: Experience is in between 0.00 years to 30 years</small></p>
+                                    <div *ngIf="updateForm.get('SkillSet.Experience')?.touched && updateForm.get('SkillSet.Experience')?.errors" class="error">
+                                        <p *ngIf="updateForm.get('SkillSet.Experience')?.errors?.['required']">Experience is required</p>
+                                        <p *ngIf="updateForm.get('SkillSet.Experience')?.errors?.['invalidExperience'] && !updateForm.get('SkillSet.Experience')?.errors?.['required']">
+                                          Invalid Experience. Eg: 5.4 years
+                                        </p>
+                                      </div>
+                                    <!-- <p class="error" *ngIf="this.updateForm.get('SkillSet.Experience')?.touched && this.updateForm.get('SkillSet.Experience')?.errors?.['required']">Experience is required</p> -->
                                 </div>
                             </div>
                         </div>
