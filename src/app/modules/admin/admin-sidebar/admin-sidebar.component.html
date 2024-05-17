@@ -1,26 +1,33 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
   <div class="logo-container">
-    <button class="logo" (click)="toggleCollapse()"><img class="InnoLogo" src="/assets/img/Logo.png" alt="Innovecture Logo" /></button>
+    <button class="logo" (click)="toggleCollapse()">
+      <img class="InnoLogo" src="/assets/img/Logo.png" alt="Innovecture Logo" />
+    </button>
     <div class="logo-text" *ngIf="collapsed">EMS</div>
     <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
   <div class="side-profile">
-    <img [src]="photoPreview" alt="" />
-    <h2 *ngIf="collapsed">David</h2>
+    <img [src]="photoPreview" alt="Profile-picture" />
+    <h2 *ngIf="collapsed">{{name}}</h2>
     <a href="employee-info/personal" *ngIf="collapsed">View info</a>
   </div>
   <ul class="sidenav-nav">
     <li class="sidenav-nav-item" *ngFor="let data of navbarListItem">
-      <a class="sidenav-nav-link" [routerLink]="data.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <a
+        class="sidenav-nav-link"
+        [routerLink]="data.link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <fa-icon [icon]="data.icon" class="sidenav-link-icon"></fa-icon>
         <span class="sidenav-link-text" *ngIf="collapsed">{{ data.name }}</span>
       </a>
     </li>
   </ul>
-  <div class="sidenav-logout">
-    <i class="fa-solid fa-power-off" (click)="logout()"></i>
-    <button (click)="logout()" *ngIf="collapsed">Logout</button>
+  <div class="sidenav-logout" (click)="logout()">
+    <i class="fa-solid fa-power-off"></i>
+    <button *ngIf="collapsed">Logout</button>
   </div>
 </div>

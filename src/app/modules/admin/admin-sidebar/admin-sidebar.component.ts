@@ -40,30 +40,24 @@ export class AdminSidebarComponent implements OnInit {
     },
     {
       number: 2,
-      name: 'Team Management',
+      name: 'Employee Management',
       icon: faUserGroup,
-      link: 'dashboard/team-management',
+      link: 'admin/employee-manage',
     },
     {
       number: 3,
-      name: 'Organisation Structure',
-      icon: faSitemap,
-      link: 'dashboard/org-structure',
-    },
-    {
-      number: 4,
-      name: 'Asset Details',
+      name: 'Asset Management',
       icon: faLaptop,
       link: 'dashboard/asset-details',
     },
     {
-      number: 5,
+      number: 4,
       name: 'Permission',
       icon: faClipboardCheck,
       link: 'admin/create-permission',
     },
     {
-      number: 6,
+      number: 5,
       name: 'Role',
       icon: faUserTie,
       link: 'admin/create-role',
@@ -73,36 +67,38 @@ export class AdminSidebarComponent implements OnInit {
   encrptedUserId: any;
   userId: string = '';
   photoPreview!: string;
+  name!: string;
 
-  collapsed = false;
+  collapsed = true;
   screenWidth = 0;
   @Output() onToggleSidenav: EventEmitter<SideNavToggle> = new EventEmitter();
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
-    if (this.screenWidth<=768) {
-      this.collapsed = false
+    if (this.screenWidth <= 768) {
+      this.collapsed = false;
       this.onToggleSidenav.emit({
         collapsed: this.collapsed,
         screenWidth: this.screenWidth,
       });
     }
   }
-  constructor(private auth: AuthService, private ed: EncryptingDecryptingService) {}
+  constructor(
+    private auth: AuthService,
+    private ed: EncryptingDecryptingService
+  ) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-      this.encrptedUserId = sessionStorage.getItem('userId');
-      this.userId = this.ed.decrypt(this.encrptedUserId);
-      this.auth.getEmployeeInfo(this.userId)
-        .subscribe(
-          data => {
-            if (data) {
-              this.photoPreview = data.Photo;
-            }
-          }
-        );
+    this.encrptedUserId = sessionStorage.getItem('userId');
+    this.userId = this.ed.decrypt(this.encrptedUserId);
+    this.auth.getEmployeeInfo(this.userId).subscribe((data) => {
+      if (data) {
+        this.photoPreview = data.Photo;
+        this.name = data.FirstName;
+      }
+    });
   }
 
   logout() {

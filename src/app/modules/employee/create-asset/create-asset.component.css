@@ -5,6 +5,7 @@
   border-radius: 10px;
   margin: 15px auto;
   padding: 10px;
+  /* border: solid 1px black; */
 }
 
 h2 {
@@ -16,6 +17,7 @@ h2 {
 
 .create-form {
   display: grid;
+  /* justify-content: center; */
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
 }
@@ -44,15 +46,17 @@ mat-slide-toggle:focus {
 }
 
 .submit-save-button{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: center;
 }
 
 .btn-primary {
   background-color: #007bff;
   color: #fff;
   border: none;
+  width: 200px;
   border-radius: 5px;
+  margin: 10px;
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -66,7 +70,9 @@ mat-slide-toggle:focus {
   background-color: #b9bbbd;
   color: #000000;
   border: none;
+  width: 200px;
   border-radius: 5px;
+  margin: 10px;
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -82,6 +88,12 @@ button {
   width: 40%;
 }
 
+.error {
+  margin: 0px;
+  position: relative;
+  bottom: 20px;
+}
+
 .submit-error-message {
   color: red;
   font-size: 15px;
@@ -91,9 +103,9 @@ button {
 }
 
 .notification-box {
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  padding: 5px;
+  /* margin-bottom: 20px;
+  border-radius: 5px; */
 }
 
 .notification-box h2 {

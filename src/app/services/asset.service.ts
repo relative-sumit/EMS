@@ -15,6 +15,7 @@ export interface Asset {
   Warranty: string;
   AssetTag: string;
   SerialNumber: string;
+  AssignTo: string;
   Description: string;
   Addon: string;
   IsWorkable: number;
@@ -27,35 +28,38 @@ export interface Asset {
 }
 const ASSET_CREATE_MUTATION = gql`
   mutation CreateAsset(
-    $AssetName: String
-    $AssetModel: String
-    $AssetType: String
-    $Memory: String
-    $Processor: String
-    $OperatingSystem: String
-    $Warranty: String
-    $AssetTag: String
-    $SerialNumber: String
-    $Description: String
-    $Addon: String
-    $IsWorkable: Int
-    $CreatedBy: String
+    $assetName: String
+    $assetModel: String
+    $assetType: String
+    $memory: String
+    $processor: String
+    $operatingSystem: String
+    $warranty: String
+    $assetTag: String
+    $serialNumber: String
+    $assignTo: String
+    $description: String
+    $addon: String
+    $isWorkable: Int
+    $createdBy: String
   ) {
     createAsset(
-      AssetName: $AssetName
-      AssetModel: $AssetModel
-      AssetType: $AssetType
-      Memory: $Memory
-      Processor: $Processor
-      OperatingSystem: $OperatingSystem
-      Warranty: $Warranty
-      AssetTag: $AssetTag
-      SerialNumber: $SerialNumber
-      Description: $Description
-      Addon: $Addon
-      IsWorkable: $IsWorkable
-      CreatedBy: $CreatedBy
+      AssetName: $assetName
+      AssetModel: $assetModel
+      AssetType: $assetType
+      Memory: $memory
+      Processor: $processor
+      OperatingSystem: $operatingSystem
+      Warranty: $warranty
+      AssetTag: $assetTag
+      SerialNumber: $serialNumber
+      AssignTo: $assignTo
+      Description: $description
+      Addon: $addon
+      IsWorkable: $isWorkable
+      CreatedBy: $createdBy
     ) {
+      _id
       AssetName
       AssetModel
       AssetType
@@ -65,9 +69,17 @@ const ASSET_CREATE_MUTATION = gql`
       Warranty
       AssetTag
       SerialNumber
+      AssignTo
       Description
       Addon
       IsWorkable
+      CreatedBy
+      CreatedDate
+      UpdatedBy
+      UpdatedDate
+      IsActive
+      IsDeleted
+      Message
     }
   }
 `;
@@ -85,6 +97,7 @@ const ALL_ASSET_QUERY = gql`
       Warranty
       AssetTag
       SerialNumber
+      AssignTo
       Description
       Addon
       IsWorkable
@@ -157,19 +170,20 @@ export class AssetService {
       .mutate<any>({
         mutation: ASSET_CREATE_MUTATION,
         variables: {
-          AssetName: form.assetName,
-          AssetModel: form.assetModel,
-          AssetType: form.assetType,
-          Memory: form.memory,
-          Processor: form.processor,
-          OperatingSystem: form.operatingSystem,
-          Warranty: form.warranty,
-          AssetTag: form.assetTag,
-          SerialNumber: form.serialNumber,
-          Description: form.description,
-          Addon: form.addon,
-          IsWorkable: form.isWorkable,
-          CreatedBy: createdBy,
+          assetName: form.assetName,
+          assetModel: form.assetModel,
+          assetType: form.assetType,
+          memory: form.memory,
+          processor: form.processor,
+          operatingSystem: form.operatingSystem,
+          warranty: form.warranty,
+          assetTag: form.assetTag,
+          serialNumber: form.serialNumber,
+          assignTo: form.assignTo,
+          description: form.description,
+          addon: form.addon,
+          isWorkable: form.isWorkable,
+          createdBy: createdBy,
         },
       })
       .pipe(

@@ -1,14 +1,13 @@
 
 .body {
-  width: calc(100vw - 5rem);
+    /* border: solid 1px black; */
   height: 100vh;
-  margin-left: 5rem;
   z-index: 0;
   position: relative;
   top: 0;
   transition: all 0.5s ease;
   background: #f4f7fa;
-  padding: 3rem;
+  padding-left: 1rem;
   overflow: auto;
 }
 
@@ -20,4 +19,28 @@
 .body-md-screen {
   width: calc(100% - 5rem);
   margin-left: 5rem;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #f1f1f1 #f1f1f1;
 }

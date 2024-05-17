@@ -1,0 +1,9 @@
+.login-body {
+  width: calc(100vw - 16.5625rem);
+  margin-left: 16.5625rem;
+}
+
+.logout-body {
+    margin: 0;
+    width: 100vw;
+}

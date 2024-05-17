@@ -13,9 +13,14 @@ pagination-controls{
   float: right;
   display: inline-flex;
 }
+
 select{
-  width: 35px;
+  width: 40px;
   height: 20px;
+}
+
+option{
+  text-align: center;
 }
 
 h2{
@@ -59,14 +64,11 @@ color: red;
   background-color: #45a049;
 }
 
-thead {
-  >tr{
-    >th{
-      cursor: pointer;
-      /* text-align: center; */
-      /* padding: 25px 0; */
-    }
-  }
+.table-head-container{
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: pointer;
 }
 
 tbody {

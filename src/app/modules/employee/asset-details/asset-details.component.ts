@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AssetDetailsComponent implements OnInit {
   assetList: Asset[] = [];
-  tableSize: number = 10;
+  tableSize: number = 5;
   tableSizes: any = [5, 10, 20];
   page: number = 1;
   count: number = 0;
@@ -103,4 +103,5 @@ export class AssetDetailsComponent implements OnInit {
       }
     }
   }
+
 }
