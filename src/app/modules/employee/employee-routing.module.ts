@@ -24,13 +24,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'team-management',
-    loadComponent: () =>
-      import('./team-management/team-management.component').then(
-        (c) => c.TeamManagementComponent
-      ),
-  },
-  {
     path: 'create-asset',
     loadComponent: () =>
       import('./create-asset/create-asset.component').then(

@@ -1,5 +1,5 @@
 .sidenav {
-  background: #68d0f0;
+  background: #000000;
   transition: all 0.5s ease;
   position: fixed;
   z-index: 1;
@@ -63,12 +63,14 @@
   > img {
     height: 40px;
     width: 40px;
+    color: #fff;
     border-radius: 100%;
     object-fit: cover;
   }
   > h2 {
     margin: 0px;
     font-size: 1rem;
+    color: #fff;
     line-height: 1.5rem;
   }
   > a {

@@ -24,14 +24,48 @@
       <thead class="table-primary">
         <tr>
           <th scope="col">Actions</th>
-          <th (click)="sort('AssetName')" ><span>Asset Name</span></th>
-          <th (click)="sort('AssetModel')">Asset Model</th>
-          <th (click)="sort('AssetType')">Asset Type</th>
-          <th (click)="sort('Memory')">Memory</th>
-          <th (click)="sort('Processor')">Processor</th>
-          <th (click)="sort('OperatingSystem')">Operating System</th>
-          <th (click)="sort('Warranty')">Warranty</th>
-          <th (click)="sort('SerialNumber')">Serial Number</th>
+          <th scope="col">
+            <div class="table-head-container">
+              <div>S.No</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('AssetName')">
+            <div class="table-head-container">
+              <div>Asset Name</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('AssetModel')">
+            <div class="table-head-container">
+              <div>Asset Model</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('AssetType')">
+            <div class="table-head-container">
+              <div>Asset Type</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('Processor')">
+            <div class="table-head-container">
+              <div>Processor</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('SerialNumber')">
+            <div class="table-head-container">
+              <div>Serial Number</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('AssignTo')">
+            <div class="table-head-container">
+              <div>Assigned To</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -60,14 +94,13 @@
               (click)="deleteAsset(asset)"
             ></i>
           </td>
+          <td>{{ tableSize * (page - 1) + i + 1 }}</td>
           <td scope="row">{{ asset.AssetName }}</td>
           <td>{{ asset.AssetModel }}</td>
           <td>{{ asset.AssetType }}</td>
-          <td>{{ asset.Memory }}</td>
           <td>{{ asset.Processor }}</td>
-          <td>{{ asset.OperatingSystem }}</td>
-          <td>{{ asset.Warranty }}</td>
           <td>{{ asset.SerialNumber }}</td>
+          <td>{{ asset.AssignTo }}</td>
         </tr>
       </tbody>
     </table>
@@ -76,11 +109,13 @@
     </div>
   </div>
 
-  <div class="options">
+  <div class="options" *ngIf="(assetList | search : searchText).length !== 0">
     <strong class="tableSize">
-      item size:
+      Page size:
       <select (change)="tableSizeChange($event)">
-        <option *ngFor="let size of tableSizes">{{ size }}</option>
+        <option class="page-size" *ngFor="let size of tableSizes">
+          {{ size }}
+        </option>
       </select>
     </strong>
 

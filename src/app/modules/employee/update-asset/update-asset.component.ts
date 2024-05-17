@@ -29,6 +29,8 @@ import { Router } from '@angular/router';
 })
 export class UpdateAssetComponent implements OnInit {
   assetId: string = '';
+  notificationMessage: string = '';
+  creationSuccess: boolean = false;
   errorMessage: string = '';
   assetTypes: string[] = [
     'Laptop',
@@ -64,6 +66,7 @@ export class UpdateAssetComponent implements OnInit {
     Warranty: ['', Validators.required],
     AssetTag: ['', Validators.required],
     SerialNumber: ['', Validators.required],
+    AssignTo: [''],
     Description: [''],
     Addon: [''],
     IsWorkable: [false],
@@ -77,16 +80,44 @@ export class UpdateAssetComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.assetForm.value);
-    if (this.assetForm.valid) {
+    console.log(this.assetForm.getRawValue());
+
+    if (
+      this.assetForm.valid &&
+      this.assetForm.getRawValue().SerialNumber !== null
+    ) {
       this.asset
         .updateAsset(this.assetId, this.assetForm.getRawValue())
-        .subscribe((data) => {
-          console.log(data);
-          this.router.navigate(['dashboard/asset']);
-        });
+        .subscribe(
+          (data) => {
+            console.log('Data:', data);
+            this.creationSuccess = true;
+            this.errorMessage = '';
+            this.notificationMessage = 'Asset created sucessfully';
+          },
+          (error) => {
+            console.log('Error:', error.message);
+            this.notificationMessage = error;
+            this.creationSuccess = false;
+          }
+        );
     } else {
       this.errorMessage = '*Please provide all the required fields';
+      this.notificationMessage = 'Asset can not be created';
+      this.creationSuccess = false;
+      this.assetForm.markAllAsTouched();
     }
+  }
+
+  clearForm() {
+    this.assetForm.reset();
+    Object.keys(this.assetForm.controls).forEach((key) => {
+      const control = this.assetForm.get(key);
+      if (control) {
+        control.setErrors(null);
+      }
+    });
+    this.notificationMessage = '';
+    this.errorMessage = '';
   }
 }

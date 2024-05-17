@@ -67,6 +67,7 @@ export class CreateAssetComponent {
       warranty: ['', Validators.required],
       assetTag: ['', [Validators.required, Validators.maxLength(15)]],
       serialNumber: ['', [Validators.required, Validators.maxLength(15)]],
+      assignTo: [''],
       description: [''],
       addon: [''],
       isWorkable: [false],
@@ -86,8 +87,7 @@ export class CreateAssetComponent {
   }
 
   onSubmit() {
-    console.log('Value:', this.assetForm.value);
-    console.log('Valid:', this.assetForm.valid);
+    console.log(this.assetForm.getRawValue());
 
     if (
       this.assetForm.valid &&
@@ -108,8 +108,8 @@ export class CreateAssetComponent {
       );
     } else {
       this.errorMessage = '*Please provide all the required fields';
-      this.notificationMessage = 'Asset not created';
       this.creationSuccess = false;
+      this.assetForm.markAllAsTouched();
     }
   }
 }

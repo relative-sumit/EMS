@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -17,14 +17,15 @@ import { BodyComponent } from '../body/body.component';
     RouterOutlet,
     CommonModule,
     AdminSidebarComponent,
-    BodyComponent
+    BodyComponent,
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
+  encapsulation: ViewEncapsulation.None,
 })
 export class MainComponent implements OnInit {
   userRole!: string;
-  isSideNavCollapsed = false;
+  isSideNavCollapsed = true;
   screenWidth = 0;
 
   constructor(private auth: AuthService) {}
