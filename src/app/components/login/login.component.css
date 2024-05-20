@@ -105,6 +105,11 @@ img.img-fluid {
   .content {
     padding: 3rem 0;
   }
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .content .contents {
     width: 100%;
