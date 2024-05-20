@@ -39,3 +39,6 @@ h3{
 .dateSize{
     width: 76%;
 }
+.error{
+    color: red;
+}

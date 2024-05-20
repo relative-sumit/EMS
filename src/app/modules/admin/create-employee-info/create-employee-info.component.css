@@ -8,3 +8,7 @@
 .dateSize{
     width: 76%;
 }
+
+.error{
+    color: red;
+}
