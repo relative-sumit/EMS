@@ -105,7 +105,7 @@ export class CreateAssetComponent {
         },
         (error) => {
           console.log('Error:', error.message);
-          this.notificationMessage = error;
+          this.notificationMessage = "Failure! Asset not created";
           this.creationSuccess = false;
         }
       );
