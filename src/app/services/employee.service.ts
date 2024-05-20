@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { Apollo, gql } from 'apollo-angular';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as usZipcodes from 'zipcodes';
 
 
@@ -37,20 +37,32 @@ export class EmployeeService {
         return of({ city: location.city, state: location.state});
       }
       return of(null);
-    } else if (/^\d{6}$/.test(postalCode)) {
-      // Indian PIN Code
-      return this.http.get(`https://api.postalpincode.in/pincode/${postalCode}`).pipe(
-        map((data: any) => {
-          const postOffice = data[0]?.PostOffice[0];
-          return {
-            city: postOffice.District,
-            state: postOffice.State,
-            // country: 'IN'
-          };
-        }),
-        catchError(() => of(null))
-      );
-    }
+    } 
+    // else if (/^\d{6}$/.test(postalCode)) {
+    //   // Indian PIN Code
+    //   return this.http.get(`https://api.postalpincode.in/pincode/${postalCode}`).pipe(
+    //     map((data: any) => {
+    //       const postOffice = data[0]?.PostOffice[0];
+    //       return {
+    //         city: postOffice.District,
+    //         state: postOffice.State,
+    //         // country: 'IN'
+    //       };
+    //     }),
+    //     catchError((error: HttpErrorResponse) => {
+    //       let errorMessage = 'Unknown error';
+    //       if (error.error instanceof ErrorEvent) {
+    //         // Client-side errors
+    //         errorMessage = `Error: ${error.error.message}`;
+    //       } else {
+    //         // Server-side errors
+    //         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    //       }
+    //       console.error(errorMessage);
+    //       return of(null);
+    //     })
+    //   );
+    // }
     return of(null);
   }
 

@@ -264,6 +264,7 @@
                         <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p>
                         <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
                     </div>
+                    <p class="error">{{errorMessage}}</p>
                 </div>
                 <div class="col">
                     <mat-form-field formGroupName="Location">

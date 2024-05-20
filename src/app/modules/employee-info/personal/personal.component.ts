@@ -12,6 +12,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EmployeeService } from '../../../services/employee.service';
 
 @Component({
   selector: 'app-personal',
@@ -39,6 +40,8 @@ export class PersonalComponent implements OnInit {
   primaryContact: any;
   fileSizeError: boolean = false;
   expanded: { [key: string]: boolean } = {};
+  errorMessage: string = '';
+  dateFormate: any;
 
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -53,7 +56,8 @@ export class PersonalComponent implements OnInit {
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
     private route: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private employeeService: EmployeeService
   ) {
 
   }
@@ -64,12 +68,18 @@ export class PersonalComponent implements OnInit {
     this.encrptedUsername = sessionStorage.getItem('username');
     this.username = this.ed.decrypt(this.encrptedUsername);
     this.userId = this.ed.decrypt(this.encrptedUserId);
+    this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+      if (this.updateForm.get('Location.Pincode')?.valid) {
+        this.onPostalCodeChange(value);
+      }
+    });
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
         data => {
           if (data) {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
+            this.dateFormate = this.transformDateFormate(this.employeeInfo);
             this.updateForm.patchValue(this.employeeInfo);
           }
         }
@@ -82,6 +92,12 @@ export class PersonalComponent implements OnInit {
     transformDate.doj = this.datePipe.transform(transformDate.doj, 'yyyy-MM-dd');
     // transformDate.doc = this.datePipe.transform(transformDate.doc, 'dd-MM-yyyy');
     return transformDate;
+  }
+  transformDateFormate(transformDates: any){
+    const transformDate = {...transformDates}
+    transformDate.dob = this.datePipe.transform(transformDate.dob, 'dd-MM-yyyy');
+    transformDate.doj = this.datePipe.transform(transformDate.doj, 'dd-MM-yyyy');
+    return transformDate
   }
 
   updateForm = this.fb.group({
@@ -111,7 +127,7 @@ export class PersonalComponent implements OnInit {
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
     }),
@@ -184,6 +200,22 @@ export class PersonalComponent implements OnInit {
         this.fileSizeError = true;
       }
     }
+  }
+
+  onPostalCodeChange(postalCode: any) {
+    this.employeeService.getLocation(postalCode).subscribe(location => {
+      if (location) {
+        this.updateForm.patchValue({
+          Location: {
+            City: location.city,
+            State: location.state
+          }
+        });
+        this.errorMessage = '';
+      } else {
+        this.errorMessage = 'Invalid postal code or postal code not found.';
+      }
+    });
   }
 
   updateEmployee() {

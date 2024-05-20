@@ -19,10 +19,12 @@
         </h2>
         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
           aria-labelledby="panelsStayOpen-headingOne">
-          <div class="col-auto">
-            <button class="edit-button" (click)="toggleEdit(1)">
-              <i class="fa fa-edit fa-lg"></i>
-            </button>
+          <div class="row">
+            <div class="col" style="margin-right: 10px;">
+              <button class="edit-button" (click)="toggleEdit(1)">
+                <i class="fa fa-edit fa-lg"></i>
+              </button>
+            </div>
           </div>
           <div class="accordion-body">
             <div class="row">
@@ -136,11 +138,13 @@
                 </div>
                 <div class="values">{{ employeeInfo?.Designation }}</div>
               </div>
-              <div class="col p-3">
-                <div>
-                  <span style="color: gray">Date of Joining</span>
+              <div class="row">
+                <div class="col p-3">
+                  <div>
+                    <span style="color: gray">Date of Joining</span>
+                  </div>
+                  <div class="values">{{ dateFormate?.doj }}</div>
                 </div>
-                <div class="values">{{ employeeInfo?.doj }}</div>
               </div>
             </div>
           </div>
@@ -172,10 +176,12 @@
         </h2>
         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingTwo">
-          <div class="col-auto">
-            <button class="edit-button" (click)="toggleEdit(2)">
-              <i class="fa fa-edit fa-lg"></i>
-            </button>
+          <div class="row">
+            <div class="col" style="margin-right: 10px;">
+              <button class="edit-button" (click)="toggleEdit(2)">
+                <i class="fa fa-edit fa-lg"></i>
+              </button>
+            </div>
           </div>
           <div class="accordion-body">
             <div class="row">
@@ -184,7 +190,7 @@
                   <span style="color: gray">Date of Birth <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
                 </div>
                 <div class="values" *ngIf="!editMode[2]">
-                  {{ employeeInfo?.dob }}
+                  {{ dateFormate?.dob }}
                 </div>
                 <input type="date" class="form-control" formControlName="dob" *ngIf="editMode[2]" />
                 <p class="error"
@@ -310,10 +316,12 @@
         </h2>
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
           aria-labelledby="panelsStayOpen-headingThree">
-          <div class="col-auto">
-            <button class="edit-button" (click)="toggleEdit(3)">
-              <i class="fa fa-edit fa-lg"></i>
-            </button>
+          <div class="row">
+            <div class="col" style="margin-right: 10px;">
+              <button class="edit-button" (click)="toggleEdit(3)">
+                <i class="fa fa-edit fa-lg"></i>
+              </button>
+            </div>
           </div>
           <div class="accordion-body">
             <div class="row">
@@ -370,13 +378,29 @@
             <div class="row">
               <div class="col p-3">
                 <div>
+                  <span style="color: gray">Zipcode <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[3]">
+                  {{ employeeInfo?.Location.Pincode }}
+                </div>
+                <div formGroupName="Location">
+                  <input class="form-control" formControlName="Pincode" *ngIf="editMode[3]" />
+                  <div *ngIf="this.updateForm.get('Location.Pincode')?.touched && this.updateForm.get('Location.Pincode')?.errors">
+                    <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p>
+                    <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
+                  </div>
+                  <p class="error">{{errorMessage}}</p>
+                </div>
+              </div>
+              <div class="col p-3">
+                <div>
                   <span style="color: gray">City <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.City }}
                 </div>
                 <div formGroupName="Location">
-                  <input class="form-control" formControlName="City" *ngIf="editMode[3]" />
+                  <input class="form-control" formControlName="City" *ngIf="editMode[3]" readonly/>
                   <p class="error"
                     *ngIf="this.updateForm.get('Location.City')?.touched && this.updateForm.get('Location.City')?.errors?.['required']">
                     City name is required
@@ -391,25 +415,10 @@
                   {{ employeeInfo?.Location.State }}
                 </div>
                 <div formGroupName="Location">
-                  <input class="form-control" formControlName="State" *ngIf="editMode[3]" />
+                  <input class="form-control" formControlName="State" *ngIf="editMode[3]" readonly/>
                   <p class="error"
                     *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">
                     State name is required
-                  </p>
-                </div>
-              </div>
-              <div class="col p-3">
-                <div>
-                  <span style="color: gray">Zipcode <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
-                </div>
-                <div class="values" *ngIf="!editMode[3]">
-                  {{ employeeInfo?.Location.Pincode }}
-                </div>
-                <div formGroupName="Location">
-                  <input class="form-control" formControlName="Pincode" *ngIf="editMode[3]" />
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Location.Pincode')?.touched && this.updateForm.get('Location.Pincode')?.errors?.['required']">
-                    Zipcode is required
                   </p>
                 </div>
               </div>
