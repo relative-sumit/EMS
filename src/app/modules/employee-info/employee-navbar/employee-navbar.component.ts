@@ -33,7 +33,7 @@ export class EmployeeNavbarComponent {
     },
     {
       number: 2,
-      name: 'SkillSet',
+      name: 'Skill Set',
       icon: faUserGroup,
       link: 'employee-info/skillset',
     },
