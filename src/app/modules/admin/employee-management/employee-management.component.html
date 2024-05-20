@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2><strong>Employee Information</strong></h2>
+    <h2><strong>Employee Management</strong></h2>
     
         <button class="btn btn-info" (click)="addEmployee()">Add</button>
         <input type="text" class="form-control" id="input-field" placeholder="search" [(ngModel)]="searchText">
@@ -23,7 +23,7 @@
                     *ngFor="let employee of sortedData | search: searchText |paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count}; let i = index;">
                     <td>
                         <i class="fa-solid fa-pen-to-square" (click)="updateEmployee(employee)" style="color: #089239;"></i>
-                        <i class="fa-solid fa-trash"  (click)="deleteEmployee()" style="color: #f10303;"></i>
+                        <i class="fa-solid fa-trash"  (click)="deleteEmployee(employee)" style="color: #f10303;"></i>
                     </td>
                     <td>{{tableSize * (page - 1) + i + 1}}</td>                   
                     <td>{{employee.FirstName}} {{employee.LastName}}</td>
@@ -39,7 +39,7 @@
 
     <div class="options">
         <strong class="tableSize">
-            page size: <select (change)="tableSizeChange($event)">
+            Page size: <select (change)="tableSizeChange($event)">
                 <option *ngFor="let size of tableSizes">{{size}}</option>
             </select>
         </strong>

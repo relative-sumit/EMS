@@ -12,6 +12,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { EmployeeService } from '../../../services/employee.service';
 import { Router } from '@angular/router';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-update-employee',
@@ -27,7 +28,8 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
     MatDatepickerModule,
     MatRadioModule,
     NgxIntlTelInputModule,
-    NgSelectModule
+    NgSelectModule,
+    MatSelectModule
   ],
   templateUrl: './update-employee.component.html',
   styleUrl: './update-employee.component.css'
@@ -37,6 +39,7 @@ export class UpdateEmployeeComponent implements OnInit{
   fileSizeError: boolean = false;
   encryptedUserName:any;
   userName: String = '';
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -48,39 +51,44 @@ export class UpdateEmployeeComponent implements OnInit{
   ngOnInit(): void {
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
+    this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+      if (this.updateForm.get('Location.Pincode')?.valid) {
+        this.onPostalCodeChange(value);
+      }
+    });
     this.employeeService.employeeInfo
     .subscribe(
       (data)=>{
-        console.log(data);
+        // console.log(data);
         this._id = data._id
-        console.log(this._id);
+        // console.log(this._id);
         this.updateForm.patchValue(data);
       }
     )
   }
 
   updateForm = this.fb.group({
-    FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    EmployeeCode: [''],
-    UserId: [''],
-    Photo: [''],
+    FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    MiddleName: [''],
+    LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    EmployeeCode: ['', [Validators.required]],
+    UserId: ['', [Validators.required]],
+    Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
-      CountryCode: ['', [Validators.required]],
+      CountryCode: [''],
       Primary: ['', [Validators.required]],
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
-      CompanyMail: [''],
-      PersonalMail: ['', [Validators.required]],
+      CompanyMail: ['', [Validators.required, Validators.email]],
+      PersonalMail: ['', [Validators.required, Validators.email]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
     }),
@@ -88,15 +96,15 @@ export class UpdateEmployeeComponent implements OnInit{
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
     Department: this.fb.group({
-      DepartmentId: [''],
-      DepartmentName: [''],
+      DepartmentId: ['', [Validators.required]],
+      DepartmentName: ['', [Validators.required]],
     }),
     SkillSet: this.fb.group({
-      EmployeeSkillsetId: ['', [Validators.required]],
+      EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
       SecondarySkillset: ['', [Validators.required]],
       SkillLevel: ['', [Validators.required]],
-      Experience: ['', [Validators.required]],
+      Experience: ['', [Validators.required, this.validExperience]],
       Certification: this.fb.group({
         CertificationName: ['', [Validators.required]],
         CertificationDate: ['', [Validators.required]]
@@ -114,7 +122,29 @@ export class UpdateEmployeeComponent implements OnInit{
       return { 'onlyAlfa': true }
     }
   }
+  validExperience(control: any) {
+    const experience = control.value;
+    if (!experience.match(/^(0|[1-9]|[1-2][0-9]|29)(\.[0-9]{1,2})? years?$/)) {
+      return { invalidExperience: true };
+    }
+    return null;
+  }
 
+  onPostalCodeChange(postalCode: any) {
+    this.employeeService.getLocation(postalCode).subscribe(location => {
+      if (location) {
+        this.updateForm.patchValue({
+          Location: {
+            City: location.city,
+            State: location.state
+          }
+        });
+        this.errorMessage = '';
+      } else {
+        this.errorMessage = 'Invalid postal code or postal code not found.';
+      }
+    });
+  }
   SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
   getSelectedPrimarySkills() {
     return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
@@ -133,8 +163,6 @@ export class UpdateEmployeeComponent implements OnInit{
   get primaryE164Number() {
     const primaryControl = this.updateForm.get('Contact.Primary');
     if (primaryControl && typeof primaryControl.value === 'object') {
-      console.log('inside');
-
       return (primaryControl.value as unknown as { e164Number: string })
         .e164Number;
     }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatSortModule, Sort } from '@angular/material/sort'
 import { SearchPipe } from '../../../pipes/search.pipe';
@@ -18,7 +18,10 @@ import { EmployeeService } from '../../../services/employee.service';
 })
 export class EmployeeManagementComponent implements OnInit{
   encrptedUserId: any
+  encryptedUserName: any
+  _id:String = '';
   userId: string = '';
+  userName: string = '';
   employeeInfo: any;
   count: number = 0;
   page: number = 1;
@@ -32,12 +35,24 @@ export class EmployeeManagementComponent implements OnInit{
     private auth: AuthService, 
     private ed: EncryptingDecryptingService,
     private route: Router,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private fb: FormBuilder
   ){}
 
   ngOnInit(): void {
     this.get();
+    this.encryptedUserName = sessionStorage.getItem('username');
+    this.userName = this.ed.decrypt(this.encryptedUserName);
+    this.employeeService.employeeInfo
+    .subscribe(
+      (data)=>{
+        console.log(data);
+        // this._id = data._id
+        // console.log(this._id);
+      }
+    )
   }
+
 
   get(){
     this.auth.getAllEmployeesInfo()
@@ -97,8 +112,20 @@ export class EmployeeManagementComponent implements OnInit{
     this.employeeService.setEmployeeInfo(employee);
     this.route.navigate(['admin/update-employee']);
   }
-  deleteEmployee(){
-
+  deleteEmployee(employee: any){
+    console.log(employee);
+    this._id = employee._id;
+    if(confirm("Are you sure you want to delete this item?")){
+      this.employeeService.deleteEmployeeInfoById(this._id, this.userName, employee)
+      .subscribe(
+        data=>{
+          console.log(data);
+        }, error =>{
+          console.error(error);
+        }
+      )
+    }
+    // location.reload();
   }
 }
 

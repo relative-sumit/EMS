@@ -11,8 +11,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { EmployeeService } from '../../../services/employee.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
+import {  MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-create-employee-info',
@@ -28,7 +28,8 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
     MatDatepickerModule,
     MatRadioModule,
     NgxIntlTelInputModule,
-    NgSelectModule
+    NgSelectModule,
+    MatSelectModule
   ],
   templateUrl: './create-employee-info.component.html',
   styleUrl: './create-employee-info.component.css'
@@ -38,6 +39,9 @@ export class CreateEmployeeInfoComponent {
   fileSizeError: boolean = false;
   encryptedUserName: any;
   userName: String = '';
+  postalCode: String = '';
+  location: any;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -47,41 +51,37 @@ export class CreateEmployeeInfoComponent {
     ){}
 
   ngOnInit(): void {
-    // this.employeeService.employeeInfo
-    // .subscribe(
-    //   (data)=>{
-    //     console.log(data);
-    //     this._id = data._id
-    //     console.log(this._id);
-    //     this.updateForm.patchValue(data);
-    //   }
-    // )
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
+    this.addForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+      if (this.addForm.get('Location.Pincode')?.valid) {
+        this.onPostalCodeChange(value);
+      }
+    });
   }
 
   addForm = this.fb.group({
-    FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    EmployeeCode: [''],
-    UserId: [''],
-    Photo: [''],
+    FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    MiddleName: [''],
+    LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    EmployeeCode: ['', Validators.required],
+    UserId: ['', Validators.required],
+    Photo: ['', Validators.required],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
-      CountryCode: ['', [Validators.required]],
+      CountryCode: [''],
       Primary: ['', [Validators.required]],
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
-      CompanyMail: [''],
-      PersonalMail: ['', [Validators.required]],
+      CompanyMail: ['', [Validators.required,  Validators.email]],
+      PersonalMail: ['', [Validators.required, Validators.email]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
     }),
@@ -89,15 +89,15 @@ export class CreateEmployeeInfoComponent {
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
     Department: this.fb.group({
-      DepartmentId: [''],
-      DepartmentName: [''],
+      DepartmentId: ['', Validators.required],
+      DepartmentName: ['', Validators.required],
     }),
     SkillSet: this.fb.group({
-      EmployeeSkillsetId: ['', [Validators.required]],
+      EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
-      SecondarySkillset: ['', [Validators.required]],
+      SecondarySkillset: [''],
       SkillLevel: ['', [Validators.required]],
-      Experience: ['', [Validators.required]],
+      Experience: ['', [Validators.required, this.validExperience]],
       Certification: this.fb.group({
         CertificationName: ['', [Validators.required]],
         CertificationDate: ['', [Validators.required]]
@@ -114,6 +114,30 @@ export class CreateEmployeeInfoComponent {
     } else {
       return { 'onlyAlfa': true }
     }
+  }
+
+  validExperience(control: any) {
+    const experience = control.value;
+    if (!experience.match(/^(0|[1-9]|[1-2][0-9]|29)(\.[0-9]{1,2})? years?$/)) {
+      return { invalidExperience: true };
+    }
+    return null;
+  }
+
+  onPostalCodeChange(postalCode: any) {
+    this.employeeService.getLocation(postalCode).subscribe(location => {
+      if (location) {
+        this.addForm.patchValue({
+          Location: {
+            City: location.city,
+            State: location.state
+          }
+        });
+        this.errorMessage = '';
+      } else {
+        this.errorMessage = 'Invalid postal code or postal code not found.';
+      }
+    });
   }
  
   get primaryE164Number() {
