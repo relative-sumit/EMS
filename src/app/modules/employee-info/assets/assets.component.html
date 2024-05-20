@@ -14,34 +14,34 @@
                     </div>
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                    aria-labelledby="panelsStayOpen-headingOne">
+                    aria-labelledby="panelsStayOpen-headingOne" *ngFor="let data of assetsInfo">
                     <div class="accordion-body">
                         <div class="row">
                             <div class="col p-3">
                                 <div class="values-header"><small><span style="color: gray;">Asset Name</span></small></div>
-                                <div class="values" >Hello</div>
+                                <div class="values" >{{data.AssetName}}</div>
                             </div>
                             <div class="col p-3">
                               <div class="values-header"><small><span style="color: gray;">Asset Type</span></small></div>
-                              <div class="values">Hello</div>
+                              <div class="values">{{data.AssetType}}</div>
                           </div>
                           <div class="col p-3">
                               <div class="values-header"><small><span style="color: gray;">Asset Model</span></small></div>
-                              <div class="values">Hello</div>
+                              <div class="values">{{data.AssetModel}}</div>
                           </div>
                         </div>
                         <div class="row">
                             <div class="col p-3">
                                 <div class="values-header"><small><span style="color: gray;">Processor</span></small></div>
-                                <div class="values">Hello</div>
+                                <div class="values">{{data.Processor}}</div>
                             </div>
                             <div class="col p-3">
                                 <div class="values-header"><small><span style="color: gray;">Serial Number</span></small></div>
-                                <div class="values">Hello</div>
+                                <div class="values">{{data.SerialNumber}}</div>
                             </div>
                             <div class="col p-3">
                                 <div class="values-header"><small><span style="color: gray;">Assigned Date</span></small></div>
-                                <div class="values">Hello</div>
+                                <div class="values">{{data.AssignDate}}</div>
                             </div>
                         </div>
                     </div>

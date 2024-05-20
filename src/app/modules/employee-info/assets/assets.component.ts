@@ -28,7 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 export class AssetsComponent implements OnInit{
   expanded: { [key: string]: boolean } = {};
   encrptedUserId: any;
-  employeeInfo: any;
+  assetsInfo: any;
   userId: string = '';
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -49,7 +49,9 @@ export class AssetsComponent implements OnInit{
     this.userId = this.ed.decrypt(this.encrptedUserId);
     this.auth.getEmployeeInfo(this.userId).subscribe((data) => {
       if (data) {
-        this.employeeInfo = data;
+        this.assetsInfo = data.Assets;
+        console.log(data.Assets);
+        
       }
     });
   }

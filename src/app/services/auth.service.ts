@@ -19,8 +19,9 @@ const EMPLOYEE_LOGIN_QUERY = gql`
 `;
 
 const GET_EMPLOYEE_INFO = gql`
-query($UserId:String){
-  employeeInfoById(UserId: $UserId){
+query EmployeeInfoById($UserId: String) {
+  employeeInfoById(UserId: $UserId) {
+    _id
     FirstName
     MiddleName
     LastName
@@ -62,6 +63,31 @@ query($UserId:String){
         CertificationName
         CertificationDate
       }
+    }
+    Assets{
+      _id 
+    AssetName
+    AssetModel
+    AssetType
+    Memory
+    Processor
+    OperatingSystem
+    Warranty
+    AssetTag
+    SerialNumber
+    AssignTo
+    AssignDate
+    DischargeDate
+    Description
+    Addon
+    IsWorkable
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
+    Message
     }
     ManagerId
     Designation

@@ -8,11 +8,8 @@ import {
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faClipboardCheck,
   faHome,
-  faLaptop,
-  faUserGroup,
-  faUserTie,
+  faSitemap,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
@@ -36,18 +33,6 @@ export class SideNavbarComponent implements OnInit{
       name: 'Home',
       icon: faHome,
       link: '/dashboard/',
-    },
-    {
-      number: 2,
-      name: 'Organisation Structure',
-      icon: faUserGroup,
-      link: 'admin/employee-manage',
-    },
-    {
-      number: 3,
-      name: 'Asset Management',
-      icon: faLaptop,
-      link: 'dashboard/asset-details',
     },
   ];
 
