@@ -1,6 +1,6 @@
 
 .body {
-  /* border: solid 1px black; */
+  border: solid 1px rgb(255, 0, 0);
 height: 100vh;
 z-index: 0;
 position: relative;
@@ -9,8 +9,6 @@ transition: all 0.5s ease;
 background: #f4f7fa;
 padding-left: 1rem;
 overflow: auto;
-width: calc(100% - 16.5625rem);
-margin-left: 16.5625rem;
 }
 
 .body-trimmed {

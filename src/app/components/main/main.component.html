@@ -1,5 +1,5 @@
 <main>
-  <app-admin-sidebar *ngIf="isloggedIn()" (onToggleSidenav)="onToggleSidenav($event)"></app-admin-sidebar>
-  <app-side-navbar *ngIf="isloggedIn()" (onToggleSidenav)="onToggleSidenav($event)"></app-side-navbar>
+  <app-admin-sidebar *ngIf="isloggedIn() && isAdmin()" (onToggleSidenav)="onToggleSidenav($event)"></app-admin-sidebar>
+  <app-side-navbar *ngIf="isloggedIn() && !isAdmin()" (onToggleSidenav)="onToggleSidenav($event)"></app-side-navbar>
   <app-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></app-body>
 </main>

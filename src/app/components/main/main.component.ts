@@ -8,6 +8,7 @@ import {
 } from '../../modules/admin/admin-sidebar/admin-sidebar.component';
 import { SideNavbarComponent } from '../../modules/employee/side-navbar/side-navbar.component';
 import { BodyComponent } from '../body/body.component';
+import { EncryptingDecryptingService } from '../../services/encrypting-decrypting.service';
 
 @Component({
   selector: 'app-main',
@@ -24,22 +25,26 @@ import { BodyComponent } from '../body/body.component';
   encapsulation: ViewEncapsulation.None,
 })
 export class MainComponent implements OnInit {
-  userRole!: string;
   isSideNavCollapsed = true;
   screenWidth = 0;
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private encrDpcr: EncryptingDecryptingService
+  ) {}
   ngOnInit(): void {}
 
   isloggedIn() {
     return this.auth.isLoggedin();
   }
 
-  getRole() {
-    // console.log("M",this.userRole);
-    this.userRole = this.auth.getRole();
-
-    return this.userRole === 'admin';
+  isAdmin() {
+    const role = this.encrDpcr.decrypt('' + sessionStorage.getItem('role'));
+    if (role === 'admin') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   onToggleSidenav(data: SideNavToggle) {

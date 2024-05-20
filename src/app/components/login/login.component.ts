@@ -47,9 +47,7 @@ export class LoginComponent implements OnInit {
               this.auth.storeSession('userId', data.userId);
               this.auth.storeSession('username', data.username);
               this.auth.storeSession('role', data.role);
-              this.auth.setRole(data.role);
-              console.log("L:",data.role);
-              
+
               this.router.navigate(['/dashboard']);
             } else {
               this.errorMessage = data.errorMessage;
