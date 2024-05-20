@@ -1,6 +1,6 @@
 
 .body {
-  border: solid 1px rgb(255, 0, 0);
+  /* border: solid 1px rgb(255, 0, 0); */
 height: 100vh;
 z-index: 0;
 position: relative;
