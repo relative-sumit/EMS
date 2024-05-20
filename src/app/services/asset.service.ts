@@ -16,6 +16,8 @@ export interface Asset {
   AssetTag: string;
   SerialNumber: string;
   AssignTo: string;
+  AssignDate: string;
+  DischargeDate: string;
   Description: string;
   Addon: string;
   IsWorkable: number;
@@ -38,6 +40,8 @@ const ASSET_CREATE_MUTATION = gql`
     $assetTag: String
     $serialNumber: String
     $assignTo: String
+    $assignDate: String
+    $dischargeDate: String
     $description: String
     $addon: String
     $isWorkable: Int
@@ -54,6 +58,8 @@ const ASSET_CREATE_MUTATION = gql`
       AssetTag: $assetTag
       SerialNumber: $serialNumber
       AssignTo: $assignTo
+      AssignDate: $assignDate
+      DischargeDate: $dischargeDate
       Description: $description
       Addon: $addon
       IsWorkable: $isWorkable
@@ -70,6 +76,8 @@ const ASSET_CREATE_MUTATION = gql`
       AssetTag
       SerialNumber
       AssignTo
+      AssignDate
+      DischargeDate
       Description
       Addon
       IsWorkable
@@ -98,6 +106,7 @@ const ALL_ASSET_QUERY = gql`
       AssetTag
       SerialNumber
       AssignTo
+      AssignDate
       Description
       Addon
       IsWorkable
@@ -123,6 +132,8 @@ const UPDATE_ASSET_QUERY = gql`
       Warranty
       AssetTag
       SerialNumber
+      AssignTo
+      AssignDate
       Description
       Addon
       IsWorkable
@@ -180,6 +191,7 @@ export class AssetService {
           assetTag: form.assetTag,
           serialNumber: form.serialNumber,
           assignTo: form.assignTo,
+          assignDate: form.assignDate,
           description: form.description,
           addon: form.addon,
           isWorkable: form.isWorkable,
@@ -248,6 +260,8 @@ export class AssetService {
             Warranty: newObj.warranty,
             AssetTag: newObj.assetTag,
             SerialNumber: newObj.serialNumber,
+            AssignTo: newObj.AssignTo,
+            AssignDate: newObj.AssignDate,
             Description: newObj.description,
             Addon: newObj.addon,
             IsWorkable: newObj.isWorkable,

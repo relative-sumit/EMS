@@ -1,6 +1,13 @@
 <div class="container mt-4">
   <h2>Create Asset</h2>
-  <div *ngIf="notificationMessage" class="notification-box" [ngClass]="{'notification-success': creationSuccess, 'notification-fail': !creationSuccess}">
+  <div
+    *ngIf="notificationMessage"
+    class="notification-box"
+    [ngClass]="{
+      'notification-success': creationSuccess,
+      'notification-fail': !creationSuccess
+    }"
+  >
     <h2>{{ notificationMessage }}</h2>
   </div>
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
@@ -174,7 +181,23 @@
           <input matInput formControlName="assignTo" />
         </mat-form-field>
       </div>
-      
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Assign date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="assignDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
       <div class="form-group">
         <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>

@@ -66,6 +66,12 @@
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
+          <th (click)="sort('AssignTo')">
+            <div class="table-head-container">
+              <div>Working</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -101,6 +107,7 @@
           <td>{{ asset.Processor }}</td>
           <td>{{ asset.SerialNumber }}</td>
           <td>{{ asset.AssignTo }}</td>
+          <td> <i *ngIf="asset.IsWorkable === 1" class="fa-solid fa-check" style="color: #089239;"> </i> <i *ngIf="asset.IsWorkable === 0" class="fa-solid fa-xmark" style="color: #ff0000;"> </i> </td>
         </tr>
       </tbody>
     </table>

@@ -9,6 +9,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { AssetService } from '../../../services/asset.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -22,6 +24,8 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     CommonModule,
   ],
   templateUrl: './update-asset.component.html',
@@ -67,6 +71,7 @@ export class UpdateAssetComponent implements OnInit {
     AssetTag: ['', Validators.required],
     SerialNumber: ['', Validators.required],
     AssignTo: [''],
+    AssignDate: [''],
     Description: [''],
     Addon: [''],
     IsWorkable: [false],
@@ -74,6 +79,8 @@ export class UpdateAssetComponent implements OnInit {
 
   ngOnInit() {
     this.asset.asset.subscribe((data) => {
+      console.log(data);
+      
       this.assetForm.patchValue(data);
       this.assetId = data._id;
     });

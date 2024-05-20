@@ -11,13 +11,11 @@ import {
   faClipboardCheck,
   faHome,
   faLaptop,
-  faSitemap,
   faUserGroup,
   faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
-import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 
 export interface SideNavToggle {
   screenWidth: number;
@@ -64,10 +62,6 @@ export class AdminSidebarComponent implements OnInit {
     },
   ];
 
-  encrptedUserId: any;
-  userId: string = '';
-  photoPreview!: string;
-  name!: string;
 
   collapsed = true;
   screenWidth = 0;
@@ -86,19 +80,10 @@ export class AdminSidebarComponent implements OnInit {
   }
   constructor(
     private auth: AuthService,
-    private ed: EncryptingDecryptingService
   ) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    this.encrptedUserId = sessionStorage.getItem('userId');
-    this.userId = this.ed.decrypt(this.encrptedUserId);
-    this.auth.getEmployeeInfo(this.userId).subscribe((data) => {
-      if (data) {
-        this.photoPreview = data.Photo;
-        this.name = data.FirstName;
-      }
-    });
   }
 
   logout() {

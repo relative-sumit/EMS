@@ -19,7 +19,7 @@ export class BodyComponent {
     if (this.collapsed && this.screenWidth <= 768 && this.screenWidth > 0) {
       styleClass = 'body-md-screen';
     } else if (this.collapsed) {
-      styleClass = 'body-trimmed';
+      styleClass = '';
     } else {
       styleClass = 'body-md-screen';
     }

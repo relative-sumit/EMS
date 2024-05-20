@@ -26,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   styleUrl: './assets.component.css',
 })
 export class AssetsComponent implements OnInit{
+  expanded: { [key: string]: boolean } = {};
   encrptedUserId: any;
   employeeInfo: any;
   userId: string = '';

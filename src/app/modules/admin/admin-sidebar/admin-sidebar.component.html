@@ -8,11 +8,6 @@
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
-  <div class="side-profile">
-    <img [src]="photoPreview" alt="Profile-picture" />
-    <h2 *ngIf="collapsed">{{name}}</h2>
-    <a href="employee-info/personal" *ngIf="collapsed">View info</a>
-  </div>
   <ul class="sidenav-nav">
     <li class="sidenav-nav-item" *ngFor="let data of navbarListItem">
       <a
