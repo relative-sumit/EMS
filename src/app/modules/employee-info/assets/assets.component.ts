@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
@@ -22,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     NgSelectModule,
   ],
+
   templateUrl: './assets.component.html',
   styleUrl: './assets.component.css',
 })
@@ -30,6 +31,7 @@ export class AssetsComponent implements OnInit{
   encrptedUserId: any;
   assetsInfo: any;
   userId: string = '';
+  formateDate: any;
   @ViewChild('accordion') accordion!: ElementRef;
 
   toggleAccordion(id: string) {
@@ -41,7 +43,7 @@ export class AssetsComponent implements OnInit{
     private auth: AuthService,
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
-    private route: Router
+    private route: Router,
   ) {}
 
   ngOnInit(): void {
@@ -55,5 +57,6 @@ export class AssetsComponent implements OnInit{
       }
     });
   }
+
 
 }
