@@ -38,31 +38,31 @@ export class EmployeeService {
       }
       return of(null);
     } 
-    // else if (/^\d{6}$/.test(postalCode)) {
-    //   // Indian PIN Code
-    //   return this.http.get(`https://api.postalpincode.in/pincode/${postalCode}`).pipe(
-    //     map((data: any) => {
-    //       const postOffice = data[0]?.PostOffice[0];
-    //       return {
-    //         city: postOffice.District,
-    //         state: postOffice.State,
-    //         // country: 'IN'
-    //       };
-    //     }),
-    //     catchError((error: HttpErrorResponse) => {
-    //       let errorMessage = 'Unknown error';
-    //       if (error.error instanceof ErrorEvent) {
-    //         // Client-side errors
-    //         errorMessage = `Error: ${error.error.message}`;
-    //       } else {
-    //         // Server-side errors
-    //         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    //       }
-    //       console.error(errorMessage);
-    //       return of(null);
-    //     })
-    //   );
-    // }
+    else if (/^\d{6}$/.test(postalCode)) {
+      // Indian PIN Code
+      return this.http.get(`https://cors-anywhere.herokuapp.com/https://api.postalpincode.in/pincode/${postalCode}`).pipe(
+        map((data: any) => {
+          const postOffice = data[0]?.PostOffice[0];
+          return {
+            city: postOffice.District,
+            state: postOffice.State,
+            // country: 'IN'
+          };
+        }),
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = 'Unknown error';
+          if (error.error instanceof ErrorEvent) {
+            // Client-side errors
+            errorMessage = `Error: ${error.error.message}`;
+          } else {
+            // Server-side errors
+            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+          }
+          console.error(errorMessage);
+          return of(null);
+        })
+      );
+    }
     return of(null);
   }
 

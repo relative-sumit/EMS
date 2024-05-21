@@ -19,84 +19,103 @@ const EMPLOYEE_LOGIN_QUERY = gql`
 `;
 
 const GET_EMPLOYEE_INFO = gql`
-  query EmployeeInfoById($UserId: String) {
-    employeeInfoById(UserId: $UserId) {
-      _id
-      FirstName
-      MiddleName
-      LastName
-      EmployeeCode
+query EmployeeInfoById($userId: String) {
+  employeeInfoById(UserId: $userId) {
+    _id
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+    UserId {
       UserId
-      Photo
-      Gender
-      Contact {
-        CountryCode
-        Primary
-        Emergency
-      }
-      Email {
-        CompanyMail
-        PersonalMail
-      }
-      Location {
-        Flat
-        Area
-        Landmark
-        Pincode
-        City
-        State
-      }
-      dob
-      doj
-      doc
-      Department {
-        DepartmentId
-        DepartmentName
-      }
-      SkillSet {
-        EmployeeSkillsetId
-        PrimarySkillset
-        SecondarySkillset
-        SkillLevel
-        Experience
-        Certification {
-          CertificationName
-          CertificationDate
-        }
-      }
-      Assets {
-        _id
-        AssetName
-        AssetModel
-        AssetType
-        Memory
-        Processor
-        OperatingSystem
-        Warranty
-        AssetTag
-        SerialNumber
-        AssignTo
-        AssignDate
-        DischargeDate
-        Description
-        Addon
-        IsWorkable
-        CreatedBy
-        CreatedDate
-        UpdatedBy
-        UpdatedDate
-        IsActive
-        IsDeleted
-        Message
-      }
-      ManagerId
-      Designation
+      FirstName
+      LastName
+      UserName
+      Email
+      Password
+      Role
       CreatedBy
       UpdatedBy
       IsActive
       IsDeleted
     }
+    Photo
+    Gender
+    Contact {
+      CountryCode
+      Primary
+      Emergency
+    }
+    Email {
+      CompanyMail
+      PersonalMail
+    }
+    Location {
+      Flat
+      Area
+      Landmark
+      Pincode
+      City
+      State
+    }
+    dob
+    doj
+    doc
+    Department {
+      DepartmentName
+      Description
+      CreatedBy
+      UpdatedBy
+      IsActive
+      IsDeleted
+      _id
+      CreatedDate
+      UpdatedDate
+    }
+    SkillSet {
+      EmployeeSkillsetId
+      PrimarySkillset
+      SecondarySkillset
+      SkillLevel
+      Experience
+      Certification {
+        CertificationName
+        CertificationDate
+      }
+    }
+    Assets {
+      _id
+      AssetName
+      AssetModel
+      AssetType
+      Memory
+      Processor
+      OperatingSystem
+      Warranty
+      AssetTag
+      SerialNumber
+      AssignTo
+      AssignDate
+      DischargeDate
+      Description
+      Addon
+      IsWorkable
+      CreatedBy
+      CreatedDate
+      UpdatedBy
+      UpdatedDate
+      IsActive
+      IsDeleted
+      Message
+    }
+    ManagerId
+    Designation
+    CreatedBy
+    UpdatedBy
+    IsActive
+    IsDeleted
   }
+}
 `;
 const GET_ALL_EMPLOYEES_INFO = gql`
   query {
@@ -106,7 +125,6 @@ const GET_ALL_EMPLOYEES_INFO = gql`
       MiddleName
       LastName
       EmployeeCode
-      UserId
       Photo
       Gender
       Contact {
@@ -208,7 +226,7 @@ export class AuthService {
       .watchQuery<any>({
         query: GET_EMPLOYEE_INFO,
         variables: {
-          UserId: userId,
+          userId: userId,
         },
       })
       .valueChanges.pipe(map((info) => info.data.employeeInfoById));
