@@ -111,7 +111,6 @@ export class PersonalComponent implements OnInit {
       [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
     EmployeeCode: [''],
-    UserId: [''],
     Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
@@ -134,10 +133,6 @@ export class PersonalComponent implements OnInit {
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
-    Department: this.fb.group({
-      DepartmentId: [''],
-      DepartmentName: [''],
-    }),
     SkillSet: this.fb.group({
       EmployeeSkillsetId: ['', [Validators.required]],
       PrimarySkillset: ['', [Validators.required]],

@@ -81,8 +81,8 @@ export class UpdateEmployeeComponent implements OnInit{
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
-      CompanyMail: ['', [Validators.required, Validators.email]],
-      PersonalMail: ['', [Validators.required, Validators.email]],
+      CompanyMail: ['', [Validators.required, Validators.email, this.validEmail]],
+      PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
@@ -126,6 +126,13 @@ export class UpdateEmployeeComponent implements OnInit{
     const experience = control.value;
     if (!experience.match(/^(0|[1-9]|[1-2][0-9]|29)(\.[0-9]{1,2})? years?$/)) {
       return { invalidExperience: true };
+    }
+    return null;
+  }
+  validEmail(control: any) {
+    const email = control.value;
+    if (!email.match(/^(?!.*\.\..*)(?!.*\.{2,}@)[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/)) {
+      return { invalidEmail: true };
     }
     return null;
   }

@@ -25,8 +25,8 @@ export class EmployeeManagementComponent implements OnInit{
   employeeInfo: any;
   count: number = 0;
   page: number = 1;
-  tableSize: number = 1;
-  tableSizes: any = [1, 2, 6];
+  tableSize: number = 5;
+  tableSizes: any = [5, 10, 20];
   searchText: any = '';
   // fullList: any;
   // users: any[] = [];

@@ -78,7 +78,7 @@
                         *ngIf="this.updateForm.get('Email.CompanyMail')?.errors?.['required']">
                         Email is required
                     </p>
-                    <p *ngIf="this.updateForm.get('Email.CompanyMail')?.errors?.['email']">Invalid email formate</p>
+                    <p *ngIf="(this.updateForm.get('Email.CompanyMail')?.errors?.['email'] || this.updateForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.CompanyMail')?.errors?.['required']">Invalid email formate(eg: employeeName&#64;emp.com)</p>
                 </div>
                 </div>
                 <div class="col">
@@ -206,7 +206,7 @@
                     *ngIf="this.updateForm.get('Email.PersonalMail')?.errors?.['required']">
                     Email is required
                     </p>
-                    <p *ngIf="this.updateForm.get('Email.PersonalMail')?.errors?.['email']">Invalid email formate</p>
+                    <p *ngIf="(this.updateForm.get('Email.PersonalMail')?.errors?.['email'] || this.updateForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email formate (eg: example&#64;gmail.com)</p>
                 </div>
                 </div>
                 <div class="col" formGroupName="Contact">
@@ -263,7 +263,9 @@
                         <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p>
                         <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
                     </div>
-                    <p class="error">{{errorMessage}}</p>
+                    <p class="error">
+                        {{errorMessage}}
+                    </p>
                 </div>
                 <div class="col">
                     <mat-form-field formGroupName="Location">

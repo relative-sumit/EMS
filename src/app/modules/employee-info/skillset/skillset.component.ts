@@ -70,7 +70,6 @@ export class SkillsetComponent implements OnInit{
     MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
     LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
     EmployeeCode: [''],
-    UserId: [''],
     Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
@@ -93,10 +92,6 @@ export class SkillsetComponent implements OnInit{
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
-    Department: this.fb.group({
-      DepartmentId: [''],
-      DepartmentName: [''],
-    }),
     SkillSet: this.fb.group({
       EmployeeSkillsetId: ['', [Validators.required]],
       PrimarySkillset: ['', [Validators.required]],
