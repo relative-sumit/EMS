@@ -58,7 +58,7 @@ export class EmployeeManagementComponent implements OnInit{
     this.auth.getAllEmployeesInfo()
     .subscribe(
       (data)=>{
-        // console.log(data);
+        console.log(data);
         this.employeeInfo = data;
         // this.users = this.employeeInfo['data'];
         this.sortedData = this.employeeInfo;

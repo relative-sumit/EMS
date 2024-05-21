@@ -78,7 +78,7 @@
                             *ngIf="this.addForm.get('Email.CompanyMail')?.errors?.['required']">
                             Email is required
                         </p>
-                        <p *ngIf="this.addForm.get('Email.CompanyMail')?.errors?.['email']">Invalid email formate</p>
+                        <p *ngIf="(this.addForm.get('Email.CompanyMail')?.errors?.['email'] || this.addForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.CompanyMail')?.errors?.['required']">Invalid email formate</p>
                     </div>
                 </div>
                 <div class="col">
@@ -207,7 +207,8 @@
                         *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['required']">
                         Email is required
                         </p>
-                        <p *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['email']">Invalid email formate</p>
+                        <p *ngIf="(this.addForm.get('Email.PersonalMail')?.errors?.['email'] || this.addForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email formate</p>
+                        <!-- <p *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['invalidEmail'] && !this.addForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email</p> -->
                     </div>
                 </div>
                 <div class="col" formGroupName="Contact">
