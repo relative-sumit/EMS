@@ -50,12 +50,12 @@ export class AssetDetailsComponent implements OnInit {
   }
 
   addNew() {
-    this.router.navigate(['dashboard/create-asset']);
+    this.router.navigate(['admin/create-asset']);
   }
 
   updateAsset(asset: Asset) {
     this.asset.setAsset(asset);
-    this.router.navigate(['dashboard/update-asset']);
+    this.router.navigate(['admin/update-asset']);
   }
 
   deleteAsset(asset: Asset) {

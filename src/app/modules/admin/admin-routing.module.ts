@@ -37,6 +37,27 @@ const routes: Routes = [
         (c) => c.CreateEmployeeInfoComponent
       ),
   },
+  {
+    path: 'asset-details',
+    loadComponent: () =>
+      import('../admin/asset-details/asset-details.component').then(
+        (c) => c.AssetDetailsComponent
+      ),
+  },
+  {
+    path: 'create-asset',
+    loadComponent: () =>
+      import('../admin/create-asset/create-asset.component').then(
+        (c) => c.CreateAssetComponent
+      ),
+  },
+  {
+    path: 'update-asset',
+    loadComponent: () =>
+      import('../admin/update-asset/update-asset.component').then(
+        (c) => c.UpdateAssetComponent
+      ),
+  },
 ];
 
 @NgModule({

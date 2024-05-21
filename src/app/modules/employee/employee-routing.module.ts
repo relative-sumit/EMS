@@ -10,13 +10,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'asset-details',
-    loadComponent: () =>
-      import('./asset-details/asset-details.component').then(
-        (c) => c.AssetDetailsComponent
-      ),
-  },
-  {
     path: 'org-structure',
     loadComponent: () =>
       import('./org-structure/org-structure.component').then(
@@ -24,23 +17,9 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'create-asset',
-    loadComponent: () =>
-      import('./create-asset/create-asset.component').then(
-        (c) => c.CreateAssetComponent
-      ),
-  },
-  {
-    path: 'update-asset',
-    loadComponent: () =>
-      import('./update-asset/update-asset.component').then(
-        (c) => c.UpdateAssetComponent
-      ),
-  },
-  {
     path: 'asset',
     loadComponent: () =>
-      import('./asset-details/asset-details.component').then(
+      import('../admin/asset-details/asset-details.component').then(
         (c) => c.AssetDetailsComponent
       ),
   },

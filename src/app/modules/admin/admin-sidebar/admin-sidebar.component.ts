@@ -46,7 +46,7 @@ export class AdminSidebarComponent implements OnInit {
       number: 3,
       name: 'Asset Management',
       icon: faLaptop,
-      link: 'dashboard/asset-details',
+      link: 'admin/asset-details',
     },
     {
       number: 4,

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,7 +18,7 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./modules/admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard],
   },
   {
     path: 'employee-info',
@@ -25,12 +26,6 @@ export const routes: Routes = [
       import('./modules/employee-info/employee-info.module').then(
         (m) => m.EmployeeInfoModule
       ),
-    canActivate: [authGuard],
-  },
-  {
-    path: 'admin',
-    loadChildren: () =>
-      import('./modules/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [authGuard],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
