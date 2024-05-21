@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
@@ -26,7 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   templateUrl: './assets.component.html',
   styleUrl: './assets.component.css',
 })
-export class AssetsComponent implements OnInit{
+export class AssetsComponent implements OnInit {
   expanded: { [key: string]: boolean } = {};
   encrptedUserId: any;
   assetsInfo: any;
@@ -43,7 +43,7 @@ export class AssetsComponent implements OnInit{
     private auth: AuthService,
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
-    private route: Router,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -53,10 +53,23 @@ export class AssetsComponent implements OnInit{
       if (data) {
         this.assetsInfo = data.Assets;
         console.log(data.Assets);
-        
       }
     });
   }
 
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
 
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date string');
+    }
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDay = day < 10 ? '0' + day : day.toString();
+    const formattedMonth = month < 10 ? '0' + month : month.toString();
+
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  }
 }
