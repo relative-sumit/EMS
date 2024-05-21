@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AssetService } from '../../../services/asset.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { EnumValuesService } from '../../../services/enum-values.service';
 
 @Component({
   selector: 'app-create-asset',
@@ -31,33 +32,25 @@ import { Router } from '@angular/router';
   templateUrl: './create-asset.component.html',
   styleUrl: './create-asset.component.css',
 })
-export class CreateAssetComponent {
+export class CreateAssetComponent implements OnInit {
   notificationMessage: string = '';
   creationSuccess: boolean = false;
   errorMessage: string = '';
-  assetTypes: string[] = [
-    'Laptop',
-    'Mobile',
-    'Keyboard',
-    'Mouse',
-    'Wifi Router',
-  ];
+  assetTypes!: string[];
 
-  warrantyYears: string[] = [
-    '1 Year',
-    '2 Year',
-    '3 Year',
-    '4 Year',
-    '5 Year',
-    '6 Year',
-    '7 Year',
-  ];
+  warrantyYears!: string[];
 
   constructor(
     private formBuilder: FormBuilder,
     private asset: AssetService,
-    private router: Router
+    private enumValues: EnumValuesService
   ) {}
+  ngOnInit(): void {
+    this.enumValues.getAllEnumValues().subscribe((data) => {
+      this.assetTypes = data.AssetType;
+      this.warrantyYears = data.Warranty;
+    });
+  }
 
   assetForm = this.formBuilder.group({
     assetName: ['', [Validators.required, Validators.maxLength(15)]],
@@ -105,7 +98,7 @@ export class CreateAssetComponent {
         },
         (error) => {
           console.log('Error:', error.message);
-          this.notificationMessage = "Failure! Asset not created";
+          this.notificationMessage = 'Failure! Asset not created';
           this.creationSuccess = false;
         }
       );

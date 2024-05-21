@@ -8,11 +8,9 @@ import {
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faClipboardCheck,
   faHome,
   faLaptop,
   faUserGroup,
-  faUserTie,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
@@ -47,18 +45,6 @@ export class AdminSidebarComponent implements OnInit {
       name: 'Asset Management',
       icon: faLaptop,
       link: 'admin/asset-details',
-    },
-    {
-      number: 4,
-      name: 'Permission',
-      icon: faClipboardCheck,
-      link: 'admin/create-permission',
-    },
-    {
-      number: 5,
-      name: 'Role',
-      icon: faUserTie,
-      link: 'admin/create-role',
     },
   ];
 
