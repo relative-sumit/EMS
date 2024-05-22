@@ -48,7 +48,7 @@
                                 <div formGroupName="SkillSet">
                                     <select *ngIf="editMode[1]" class="form-control" formControlName="SkillLevel">
                                       <option style="width: 50px;" value="" disabled selected>Select a skill level</option>
-                                      <option style="width: 50px;" *ngFor="let option of options" [value]="option.id">{{ option.name }}</option>
+                                      <option style="width: 50px;" *ngFor="let option of skillLevel" [value]="option">{{option}}</option>
                                     </select>
                                 </div>
                             </div>

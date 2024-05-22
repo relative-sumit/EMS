@@ -13,6 +13,7 @@ import { EmployeeService } from '../../../services/employee.service';
 import { Router } from '@angular/router';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 import { MatSelectModule } from '@angular/material/select';
+import { EnumValuesService } from '../../../services/enum-values.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -40,12 +41,16 @@ export class UpdateEmployeeComponent implements OnInit{
   encryptedUserName:any;
   userName: String = '';
   errorMessage: string = '';
+  skillSet!: [string];
+  designations!: [string];
+  skillLevel!:[string];
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private route: Router ,
-    private ed: EncryptingDecryptingService
+    private ed: EncryptingDecryptingService,
+    private enumValues: EnumValuesService
     ){}
 
   ngOnInit(): void {
@@ -65,6 +70,14 @@ export class UpdateEmployeeComponent implements OnInit{
         this.updateForm.patchValue(data);
       }
     )
+    this.enumValues.getAllEnumValues()
+    .subscribe(
+      data=>{
+        this.skillSet = data.Skillset
+        this.designations = data.Designation
+        this.skillLevel = data.SkillLevel
+      }
+    )
   }
 
   updateForm = this.fb.group({
@@ -72,7 +85,6 @@ export class UpdateEmployeeComponent implements OnInit{
     MiddleName: [''],
     LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
     EmployeeCode: ['', [Validators.required]],
-    UserId: ['', [Validators.required]],
     Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
@@ -95,10 +107,6 @@ export class UpdateEmployeeComponent implements OnInit{
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
-    Department: this.fb.group({
-      DepartmentId: ['', [Validators.required]],
-      DepartmentName: ['', [Validators.required]],
-    }),
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
@@ -152,7 +160,7 @@ export class UpdateEmployeeComponent implements OnInit{
       }
     });
   }
-  SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
+
   getSelectedPrimarySkills() {
     return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
   }
@@ -160,10 +168,10 @@ export class UpdateEmployeeComponent implements OnInit{
     return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
   }
   getRemainingPrimarySkills() {
-    return this.SecondarySkills.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
+    return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
   }
   getRemainingSecondarySkills() {
-    return this.SecondarySkills.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
+    return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
   }
 
 

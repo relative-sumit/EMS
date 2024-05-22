@@ -125,6 +125,19 @@ const GET_ALL_EMPLOYEES_INFO = gql`
       MiddleName
       LastName
       EmployeeCode
+      UserId {
+        UserId
+        FirstName
+        LastName
+        UserName
+        Email
+        Password
+        Role
+        CreatedBy
+        UpdatedBy
+        IsActive
+        IsDeleted
+      }
       Photo
       Gender
       Contact {
@@ -148,8 +161,15 @@ const GET_ALL_EMPLOYEES_INFO = gql`
       doj
       doc
       Department {
-        DepartmentId
         DepartmentName
+        Description
+        CreatedBy
+        UpdatedBy
+        IsActive
+        IsDeleted
+        _id
+        CreatedDate
+        UpdatedDate
       }
       SkillSet {
         EmployeeSkillsetId
@@ -161,6 +181,31 @@ const GET_ALL_EMPLOYEES_INFO = gql`
           CertificationName
           CertificationDate
         }
+      }
+      Assets {
+        _id
+        AssetName
+        AssetModel
+        AssetType
+        Memory
+        Processor
+        OperatingSystem
+        Warranty
+        AssetTag
+        SerialNumber
+        AssignTo
+        AssignDate
+        DischargeDate
+        Description
+        Addon
+        IsWorkable
+        CreatedBy
+        CreatedDate
+        UpdatedBy
+        UpdatedDate
+        IsActive
+        IsDeleted
+        Message
       }
       ManagerId
       Designation
