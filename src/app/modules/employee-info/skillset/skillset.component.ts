@@ -6,6 +6,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EnumValuesService } from '../../../services/enum-values.service';
 
 @Component({
   selector: 'app-skillset',
@@ -21,6 +22,8 @@ export class SkillsetComponent implements OnInit{
   expanded: { [key: string]: boolean } = {};
   encrptedUsername:any;
   username: string = '';
+  skillSet!:[string];
+  skillLevel!: [string];
 
   @ViewChild('accordion') accordion!: ElementRef;
   
@@ -34,24 +37,15 @@ export class SkillsetComponent implements OnInit{
     private auth: AuthService, 
     private ed: EncryptingDecryptingService,
     private fb: FormBuilder,
-    private route: Router
+    private route: Router,
+    private enumValues: EnumValuesService
   ){}
-
-  SecondarySkills = ['C#', 'C++', 'Python', 'Java', 'Ruby', 'Angular', 'Graphql', 'Node js'];
-  options = [
-    { id: 'Basic', name: 'Basic' },
-    { id: 'Intermediate', name: 'Intermediate' },
-    { id: 'Advance', name: 'Advance' }
-  ];
-  // onOptionChange() {
-  //   console.log(this.updateForm.value.SkillSet?.SkillLevel); // Log the selected option value
-  // }
 
   ngOnInit(): void {
     this.encrptedUserId = sessionStorage.getItem('userId');
-     this.userId = this.ed.decrypt(this.encrptedUserId);
-     this.encrptedUsername = sessionStorage.getItem('username');
-     this.username = this.ed.decrypt(this.encrptedUsername);
+    this.userId = this.ed.decrypt(this.encrptedUserId);
+    this.encrptedUsername = sessionStorage.getItem('username');
+    this.username = this.ed.decrypt(this.encrptedUsername);
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
         data => {
@@ -60,8 +54,14 @@ export class SkillsetComponent implements OnInit{
             this.employeeInfo = data
           }
         }
-      )
-      ;
+    );
+    this.enumValues.getAllEnumValues()
+    .subscribe(
+      data=>{
+        this.skillSet = data.Skillset
+        this.skillLevel = data.SkillLevel
+      }
+    )  
   }
 
 
@@ -132,10 +132,10 @@ export class SkillsetComponent implements OnInit{
     return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
   }
   getRemainingPrimarySkills() {
-    return this.SecondarySkills.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
+    return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
   }
   getRemainingSecondarySkills() {
-    return this.SecondarySkills.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
+    return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
   }
 
 

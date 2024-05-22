@@ -13,7 +13,7 @@
                     <th scope="col">S.No</th>
                     <th scope="col" mat-sort-header="FirstName">Name</th>
                     <th scope="col" mat-sort-header="Email.CompanyMail">Company Mail</th>
-                    <th scope="col" mat-sort-header="Department.DepartmentName">Department Name</th>
+                    <!-- <th scope="col" mat-sort-header="Department.DepartmentName">Department Name</th> -->
                     <th scope="col" mat-sort-header="Designation">Designation</th>
                     <th scope="col" mat-sort-header="Gender">Gender</th>
                 </tr>
@@ -28,7 +28,7 @@
                     <td>{{tableSize * (page - 1) + i + 1}}</td>                   
                     <td>{{employee.FirstName}} {{employee.LastName}}</td>
                     <td>{{employee.Email.CompanyMail}}</td>
-                    <td>{{employee.Department.DepartmentName}}</td>
+                    <!-- <td>{{employee.Department.DepartmentName}}</td> -->
                     <td>{{employee.Designation}}</td>
                     <td>{{employee.Gender}}</td>
                 </tr>

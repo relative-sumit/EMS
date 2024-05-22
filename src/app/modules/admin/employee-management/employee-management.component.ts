@@ -93,8 +93,8 @@ export class EmployeeManagementComponent implements OnInit{
           return compare(a.FirstName, b.FirstName, isAsc);
         case 'Email.CompanyMail':
           return compare(a.Email.CompanyMail, b.Email.CompanyMail, isAsc);
-        case 'Department.DepartmentName':
-          return compare(a.Department.DepartmentName, b.Department.DepartmentName, isAsc);
+        // case 'Department.DepartmentName':
+        //   return compare(a.Department.DepartmentName, b.Department.DepartmentName, isAsc);
         case 'Designation':
           return compare(a.Designation, b.Designation, isAsc);
         case 'Gender':

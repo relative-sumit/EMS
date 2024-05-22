@@ -256,10 +256,10 @@
                 <div formGroupName="Contact">
                   <!-- <input class="form-control" formControlName="Primary" *ngIf="editMode[2]"> -->
                   <ngx-intl-tel-input formControlName="Primary" *ngIf="editMode[2]"></ngx-intl-tel-input>
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Contact.Primary')?.touched && this.updateForm.get('Contact.Primary')?.errors?.['required']">
-                    Contact number is required
-                  </p>
+                  <div class="error" *ngIf="this.updateForm.get('Contact.Primary')?.touched && this.updateForm.get('Contact.Primary')?.errors">
+                    <p *ngIf="this.updateForm.get('Contact.Primary')?.errors?.['required']">Contact number is required</p>
+                    <p *ngIf="this.updateForm.get('Contact.Primary')?.errors && !this.updateForm.get('Contact.Primary')?.errors?.['required']">Phone number is invalid for selected country! check again</p>
+                  </div>
                 </div>
               </div>
               <div class="col p-3">
@@ -271,10 +271,10 @@
                 </div>
                 <div formGroupName="Contact">
                   <ngx-intl-tel-input formControlName="Emergency" *ngIf="editMode[2]"></ngx-intl-tel-input>
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Contact.Emergency')?.touched && this.updateForm.get('Contact.Emergency')?.errors?.['required']">
-                    Emergency contact number is required
-                  </p>
+                  <div class="error" *ngIf="this.updateForm.get('Contact.Emergency')?.touched && this.updateForm.get('Contact.Emergency')?.errors">
+                    <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors?.['required']">Contact number is required</p>
+                    <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors && !this.updateForm.get('Contact.Emergency')?.errors?.['required']">Phone number is invalid for selected country! check again</p>
+                  </div>
                 </div>
               </div>
               <div class="col p-3"></div>
