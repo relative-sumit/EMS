@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<!-- <div class="container mt-4">
   <h2>Create Asset</h2>
   <div
     *ngIf="notificationMessage"
@@ -175,12 +175,13 @@
         </mat-form-field>
       </div>
 
-      <div class="form-group">
-        <mat-form-field appearance="fill">
-          <mat-label>Assign To</mat-label>
-          <input matInput formControlName="assignTo" />
-        </mat-form-field>
-      </div>
+      <ng-multiselect-dropdown
+        [placeholder]="'Assign To'"
+        [data]="assignToDropdownList"
+        [settings]="dropdownSettings"
+        formControlName="assignTo"
+      >
+      </ng-multiselect-dropdown>
 
       <div class="form-group">
         <mat-form-field appearance="fill">
@@ -231,4 +232,86 @@
       </button>
     </div>
   </form>
-</div>
+</div> -->
+<form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="AssetName">Asset Name</label>
+    <input id="AssetName" formControlName="AssetName" />
+  </div>
+
+  <div>
+    <label for="AssetModel">Asset Model</label>
+    <input id="AssetModel" formControlName="AssetModel" />
+  </div>
+
+  <div>
+    <label for="AssetType">Asset Type</label>
+    <select id="AssetType" formControlName="AssetType">
+      <option *ngFor="let type of assetTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="currentOperatingSystems.length > 0">
+    <label for="OperatingSystem">Operating System</label>
+    <select id="OperatingSystem" formControlName="OperatingSystem">
+      <option *ngFor="let os of currentOperatingSystems" [value]="os">{{ os }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="Memory">Memory</label>
+    <input id="Memory" formControlName="Memory" />
+  </div>
+
+  <div>
+    <label for="Processor">Processor</label>
+    <input id="Processor" formControlName="Processor" />
+  </div>
+
+  <div>
+    <label for="Warranty">Warranty</label>
+    <select id="Warranty" formControlName="Warranty">
+      <option *ngFor="let year of warrantyYears" [value]="year">{{ year }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="AssetTag">Asset Tag</label>
+    <input id="AssetTag" formControlName="AssetTag" />
+  </div>
+
+  <div>
+    <label for="SerialNumber">Serial Number</label>
+    <input id="SerialNumber" formControlName="SerialNumber" />
+  </div>
+
+  <ng-multiselect-dropdown
+        [placeholder]="'Assign To'"
+        [data]="assignToDropdownList"
+        [settings]="dropdownSettings"
+        formControlName="AssignTo"
+      >
+      </ng-multiselect-dropdown>
+
+  <div>
+    <label for="AssignDate">Assign Date</label>
+    <input id="AssignDate" formControlName="AssignDate" type="date" />
+  </div>
+
+  <div>
+    <label for="Description">Description</label>
+    <textarea id="Description" formControlName="Description"></textarea>
+  </div>
+
+  <div>
+    <label for="Addon">Addon</label>
+    <input id="Addon" formControlName="Addon" />
+  </div>
+
+  <div>
+    <label for="IsWorkable">Is Workable</label>
+    <input id="IsWorkable" formControlName="IsWorkable" type="checkbox" />
+  </div>
+
+  <button type="submit" [disabled]="assetForm.invalid">Submit</button>
+</form>

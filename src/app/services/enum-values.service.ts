@@ -3,17 +3,19 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable, map } from 'rxjs';
 
 const ALL_ENUM_VALUES_QUERY = gql`
-  query GetAllEnumValues {
-    getAllEnumValues {
-      AssetType
-      Warranty
-      Skillset
-      SkillLevel
-      Department
-      Designation
-      Role
-    }
+query GetAllEnumValues {
+  getAllEnumValues {
+    AssetType
+    Warranty
+    LaptopOperatingSystem
+    MobileOperatingSystem
+    Skillset
+    SkillLevel
+    Department
+    Designation
+    Role
   }
+}
 `;
 
 @Injectable({
