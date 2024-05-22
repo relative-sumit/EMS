@@ -118,103 +118,103 @@ query EmployeeInfoById($userId: String) {
 }
 `;
 const GET_ALL_EMPLOYEES_INFO = gql`
-  query {
-    employeeInfo {
-      _id
+query EmployeeInfo {
+  employeeInfo {
+    _id
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+    UserId {
+      UserId
       FirstName
-      MiddleName
       LastName
-      EmployeeCode
-      UserId {
-        UserId
-        FirstName
-        LastName
-        UserName
-        Email
-        Password
-        Role
-        CreatedBy
-        UpdatedBy
-        IsActive
-        IsDeleted
-      }
-      Photo
-      Gender
-      Contact {
-        CountryCode
-        Primary
-        Emergency
-      }
-      Email {
-        CompanyMail
-        PersonalMail
-      }
-      Location {
-        Flat
-        Area
-        Landmark
-        Pincode
-        City
-        State
-      }
-      dob
-      doj
-      doc
-      Department {
-        DepartmentName
-        Description
-        CreatedBy
-        UpdatedBy
-        IsActive
-        IsDeleted
-        _id
-        CreatedDate
-        UpdatedDate
-      }
-      SkillSet {
-        EmployeeSkillsetId
-        PrimarySkillset
-        SecondarySkillset
-        SkillLevel
-        Experience
-        Certification {
-          CertificationName
-          CertificationDate
-        }
-      }
-      Assets {
-        _id
-        AssetName
-        AssetModel
-        AssetType
-        Memory
-        Processor
-        OperatingSystem
-        Warranty
-        AssetTag
-        SerialNumber
-        AssignTo
-        AssignDate
-        DischargeDate
-        Description
-        Addon
-        IsWorkable
-        CreatedBy
-        CreatedDate
-        UpdatedBy
-        UpdatedDate
-        IsActive
-        IsDeleted
-        Message
-      }
-      ManagerId
-      Designation
+      UserName
+      Email
+      Password
+      Role
       CreatedBy
       UpdatedBy
       IsActive
       IsDeleted
     }
+    Photo
+    Gender
+    Contact {
+      CountryCode
+      Primary
+      Emergency
+    }
+    Email {
+      CompanyMail
+      PersonalMail
+    }
+    Location {
+      Flat
+      Area
+      Landmark
+      Pincode
+      City
+      State
+    }
+    dob
+    doj
+    doc
+    Department {
+      DepartmentName
+      Description
+      CreatedBy
+      UpdatedBy
+      IsActive
+      IsDeleted
+      _id
+      CreatedDate
+      UpdatedDate
+    }
+    SkillSet {
+      EmployeeSkillsetId
+      PrimarySkillset
+      SecondarySkillset
+      SkillLevel
+      Experience
+      Certification {
+        CertificationName
+        CertificationDate
+      }
+    }
+    Assets {
+      _id
+      AssetName
+      AssetModel
+      AssetType
+      Memory
+      Processor
+      OperatingSystem
+      Warranty
+      AssetTag
+      SerialNumber
+      AssignTo
+      AssignDate
+      DischargeDate
+      Description
+      Addon
+      IsWorkable
+      CreatedBy
+      CreatedDate
+      UpdatedBy
+      UpdatedDate
+      IsActive
+      IsDeleted
+      Message
+    }
+    ManagerId
+    Designation
+    CreatedBy
+    UpdatedBy
+    IsActive
+    IsDeleted
   }
+}
 `;
 
 const UPDATE_EMPLOYEE_INFO = gql`

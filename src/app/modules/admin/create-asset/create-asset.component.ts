@@ -15,6 +15,11 @@ import { AssetService } from '../../../services/asset.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EnumValuesService } from '../../../services/enum-values.service';
+import { AuthService } from '../../../services/auth.service';
+import {
+  IDropdownSettings,
+  NgMultiSelectDropDownModule,
+} from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-create-asset',
@@ -28,6 +33,7 @@ import { EnumValuesService } from '../../../services/enum-values.service';
     MatDatepickerModule,
     MatNativeDateModule,
     CommonModule,
+    NgMultiSelectDropDownModule,
   ],
   templateUrl: './create-asset.component.html',
   styleUrl: './create-asset.component.css',
@@ -37,37 +43,93 @@ export class CreateAssetComponent implements OnInit {
   creationSuccess: boolean = false;
   errorMessage: string = '';
   assetTypes!: string[];
-
   warrantyYears!: string[];
+  laptopOS!: string[];
+  mobileOS!: string[];
+  assignToList: any[] = [];
+  assignToDropdownList: any[] = [];
+  operatingSystems: { [key: string]: string[] } = {};
+  currentOperatingSystems: string[] = [];
+
+  dropdownSettings = {
+    singleSelection: true,
+    idField: 'FirstName',
+    textField: 'View',
+    allowSearchFilter: true,
+    noDataAvailablePlaceholderText: 'No employee found',
+  };
 
   constructor(
     private formBuilder: FormBuilder,
     private asset: AssetService,
-    private enumValues: EnumValuesService
+    private enumValues: EnumValuesService,
+    private auth: AuthService
   ) {}
   ngOnInit(): void {
     this.enumValues.getAllEnumValues().subscribe((data) => {
       this.assetTypes = data.AssetType;
       this.warrantyYears = data.Warranty;
+      this.laptopOS = data.LaptopOperatingSystem;
+      this.mobileOS = data.MobileOperatingSystem;
+
+      this.operatingSystems = {
+        Laptop: this.laptopOS,
+        Mobile: this.mobileOS,
+        Mouse: [],
+      };
     });
+
+    this.auth.getAllEmployeesInfo().subscribe((data) => {
+      data.forEach((item: any) => {
+        const newObj = {
+          FirstName: item.FirstName,
+          LastName: item.LastName,
+          EmployeeCode: item.EmployeeCode,
+          View: item.FirstName + ' ' + item.LastName + '-' + item.EmployeeCode,
+        };
+
+        this.assignToList.push(newObj);
+      });
+      this.assignToDropdownList = this.assignToList;
+    });
+
+    this.onAssetTypeChange();
   }
 
   assetForm = this.formBuilder.group({
-    assetName: ['', [Validators.required, Validators.maxLength(15)]],
-    assetModel: ['', [Validators.required, Validators.maxLength(15)]],
-    assetType: ['', Validators.required],
-    memory: ['', [Validators.required, Validators.maxLength(15)]],
-    processor: ['', [Validators.required, Validators.maxLength(15)]],
-    operatingSystem: ['', [Validators.required, Validators.maxLength(15)]],
-    warranty: ['', Validators.required],
-    assetTag: ['', [Validators.required, Validators.maxLength(15)]],
-    serialNumber: ['', [Validators.required, Validators.maxLength(15)]],
-    assignTo: [''],
-    assignDate: [''],
-    description: [''],
-    addon: [''],
-    isWorkable: [false],
+    AssetName: ['', [Validators.required, Validators.maxLength(15)]],
+    AssetModel: ['', [Validators.required, Validators.maxLength(15)]],
+    AssetType: ['', Validators.required],
+    Memory: ['', [Validators.required, Validators.maxLength(15)]],
+    Processor: ['', [Validators.required, Validators.maxLength(15)]],
+    OperatingSystem: [''],
+    Warranty: ['', Validators.required],
+    AssetTag: ['', [Validators.required, Validators.maxLength(15)]],
+    SerialNumber: ['', [Validators.required, Validators.maxLength(15)]],
+    AssignTo: [''],
+    AssignDate: [''],
+    Description: [''],
+    Addon: [''],
+    IsWorkable: [false],
   });
+
+  onAssetTypeChange() {
+    this.assetForm.get('AssetType')?.valueChanges.subscribe((selectedType) => {
+      if (selectedType) {
+        this.currentOperatingSystems =
+          this.operatingSystems[selectedType] || [];
+        if (selectedType === 'Mouse') {
+          this.assetForm.get('OperatingSystem')?.clearValidators();
+          this.assetForm.get('OperatingSystem')?.setValue('');
+        } else {
+          this.assetForm
+            .get('OperatingSystem')
+            ?.setValidators([Validators.required, Validators.maxLength(15)]);
+        }
+        this.assetForm.get('OperatingSystem')?.updateValueAndValidity();
+      }
+    });
+  }
 
   clearForm() {
     this.assetForm.reset();
@@ -83,29 +145,28 @@ export class CreateAssetComponent implements OnInit {
 
   onSubmit() {
     console.log(this.assetForm.getRawValue());
-    console.log(typeof this.assetForm.getRawValue().assignDate);
 
-    if (
-      this.assetForm.valid &&
-      this.assetForm.getRawValue().serialNumber !== null
-    ) {
-      this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
-        (data) => {
-          console.log('Data:', data);
-          this.creationSuccess = true;
-          this.errorMessage = '';
-          this.notificationMessage = 'Asset created sucessfully';
-        },
-        (error) => {
-          console.log('Error:', error.message);
-          this.notificationMessage = 'Failure! Asset not created';
-          this.creationSuccess = false;
-        }
-      );
-    } else {
-      this.errorMessage = '*Please provide all the required fields';
-      this.creationSuccess = false;
-      this.assetForm.markAllAsTouched();
-    }
+    // if (
+    //   this.assetForm.valid &&
+    //   this.assetForm.getRawValue().serialNumber !== null
+    // ) {
+    //   this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
+    //     (data) => {
+    //       console.log('Data:', data);
+    //       this.creationSuccess = true;
+    //       this.errorMessage = '';
+    //       this.notificationMessage = 'Asset created sucessfully';
+    //     },
+    //     (error) => {
+    //       console.log('Error:', error.message);
+    //       this.notificationMessage = 'Failure! Asset not created';
+    //       this.creationSuccess = false;
+    //     }
+    //   );
+    // } else {
+    //   this.errorMessage = '*Please provide all the required fields';
+    //   this.creationSuccess = false;
+    //   this.assetForm.markAllAsTouched();
+    // }
   }
 }

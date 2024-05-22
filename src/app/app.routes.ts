@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { userGuard } from './guards/user.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -26,7 +27,7 @@ export const routes: Routes = [
       import('./modules/employee-info/employee-info.module').then(
         (m) => m.EmployeeInfoModule
       ),
-    canActivate: [authGuard],
+    canActivate: [authGuard, userGuard],
   },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },

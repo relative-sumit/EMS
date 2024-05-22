@@ -37,6 +37,13 @@
           <mat-error *ngIf="form.get('permissions')?.invalid">Permission is required</mat-error>
         </mat-form-field>
       </div>
+      <ng-multiselect-dropdown
+        [placeholder]="'Assign To'"
+        [data]="permissionDropdownList"
+        [settings]="dropdownSettings"
+        formControlName="permissions"
+      >
+      </ng-multiselect-dropdown>
     </div>
     <div *ngIf="errorMessage" class="submit-error-message">
       {{ errorMessage }}
