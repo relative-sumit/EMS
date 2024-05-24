@@ -1,1 +1,17 @@
-<p>certificate works!</p>
+<div class="containers">
+  <div class="show-goals" *ngFor="let data of goalList">
+    <h1 class="goal-header">{{ data.GoalName }}</h1>
+    <h2>Certificates</h2>
+    <div class="show-certificate" *ngFor="let item of data.CertificateId">
+      <div class="certificate-header">
+        <h3>{{ item.CertificateName }}</h3>
+        <div class="date">
+          <h3 class="date-inside">Completion Date</h3>
+          <h3 class="date-inside">{{ formatDate(item.CompletedDate) }}</h3>
+        </div>
+      </div>
+      <p>{{ item.Description }}</p>
+    </div>
+  </div>
+  <div class="message" *ngIf="goalList.length === 0">No Record Found</div>
+</div>

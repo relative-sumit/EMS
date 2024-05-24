@@ -17,6 +17,19 @@ query GetAllEnumValues {
   }
 }
 `;
+const ALL_HOLIDAY_QUERY = gql`
+query GetAllHoliday {
+  getAllHoliday {
+    Dates
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
+  }
+}
+`;
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +43,12 @@ export class EnumValuesService {
         query: ALL_ENUM_VALUES_QUERY,
       })
       .valueChanges.pipe(map((result) => result.data.getAllEnumValues[0]));
+  }
+  getHolidayList(): Observable<any> {
+    return this.apollo
+      .watchQuery<any>({
+        query: ALL_HOLIDAY_QUERY,
+      })
+      .valueChanges.pipe(map((result) => result.data.getAllHoliday[0]));
   }
 }
