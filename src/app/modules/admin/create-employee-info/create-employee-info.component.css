@@ -5,10 +5,33 @@
 .mat-mdc-form-field {
     margin-top: 16px;
 }
-.dateSize{
+/* .dateSize{
     width: 76%;
-}
+} */
 
 .error{
     color: red;
+}
+.custom-secondary {
+    background-color: #007bff !important; /* Bootstrap primary color */
+    border-color: #007bff !important; /* Match border color with background color */
+    color: white !important; /* Ensure text is readable */
+}
+
+.custom-secondary:hover {
+    background-color: #0069d9 !important; /* Bootstrap primary hover color */
+    border-color: #0062cc !important;
+}
+
+.package{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width:768px) {
+    .package{
+        margin-top: 0px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

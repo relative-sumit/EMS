@@ -72,7 +72,46 @@
                         Email is required
                     </p>
                     <p *ngIf="(this.updateForm.get('Email.CompanyMail')?.errors?.['email'] || this.updateForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.CompanyMail')?.errors?.['required']">Invalid email formate(eg: employeeName&#64;emp.com)</p>
+                    </div>
                 </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Name</mat-label>
+                        <mat-select formControlName="DepartmentName" required>
+                            <mat-option *ngFor="let depart of department" [value]="depart">
+                              {{ depart }}
+                            </mat-option>                    
+                        </mat-select>
+                        </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('Department')?.touched && this.updateForm.get('Department')?.errors?.['required']">Department name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Designation</mat-label>
+                        <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
+                        <mat-select formControlName="Designation" required>
+                            <mat-option *ngFor="let designation of designations" [value]="designation">
+                                {{ designation }}
+                              </mat-option>
+                            <!-- <mat-option value="two">Second option</mat-option> -->
+                          </mat-select>
+                    </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('Designation')?.touched && this.updateForm.get('Designation')?.errors?.['required']">Designation is required</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="padding-top: 30px;">
+                    <!-- <mat-form-field> -->
+                        <!-- <mat-label>Manager ID</mat-label> -->
+                        <ng-multiselect-dropdown
+                        [placeholder]="'Manager Name'"
+                        [settings]="managerDropdownSettings"
+                        [data]="viewManager"
+                        formControlName="ManagerId"
+                        >
+                        </ng-multiselect-dropdown>                    
+                    <!-- </mat-form-field> -->
+                    <!-- <p class="error" *ngIf="this.updateForm.get('ManagerId')?.touched && this.updateForm.get('ManagerId')?.errors?.['required']">Manager id is required</p> -->
                 </div>
                 <div class="col">
                     <mat-form-field class="dateSize">
@@ -97,105 +136,29 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <mat-form-field formGroupName="Department">
-                        <mat-label>Department Name</mat-label>
-                        <mat-select formControlName="DepartmentName" required>
-                            <mat-option *ngFor="let depart of department" [value]="depart">
-                              {{ depart }}
-                            </mat-option>                    
-                        </mat-select>
-                        </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('Department')?.touched && this.updateForm.get('Department')?.errors?.['required']">Department name is required</p>
-                </div>
-                <div class="col">
-                    <!-- <mat-form-field> -->
-                        <!-- <mat-label>Manager ID</mat-label> -->
-                        <ng-multiselect-dropdown
-                        [placeholder]="'Manager Name'"
-                        [settings]="managerDropdownSettings"
-                        [data]="viewManager"
-                        formControlName="ManagerId"
-                        >
-                        </ng-multiselect-dropdown>                    
-                    <!-- </mat-form-field> -->
-                    <!-- <p class="error" *ngIf="this.updateForm.get('ManagerId')?.touched && this.updateForm.get('ManagerId')?.errors?.['required']">Manager id is required</p> -->
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Designation</mat-label>
-                        <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
-                        <mat-select formControlName="Designation" required>
-                            <mat-option *ngFor="let designation of designations" [value]="designation">
-                                {{ designation }}
-                              </mat-option>
-                            <!-- <mat-option value="two">Second option</mat-option> -->
-                          </mat-select>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('Designation')?.touched && this.updateForm.get('Designation')?.errors?.['required']">Designation is required</p>
-                </div>
-            </div>
-            <div>
-                <button mat-button class="btn btn-secondary" matStepperNext>Next</button>
-                <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">update</button>
+            <div style="display: flex;">
+                <button mat-button class="btn btn-primary custom-secondary" id="bnButton" matStepperNext>Next</button>
+                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="updateForm" label="PERSONAL">
         <form [formGroup]="updateForm">
             <div class="row">
-                <div class="col">
-                    <div><mat-label>Gender <span style="font-size: 15px;">*</span></mat-label></div>
-                    <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio1"
-                          value="Male"
-                        />
-                        <label class="form-check-label" for="inlineRadio1"
-                          >Male</label
-                        >
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio2"
-                          value="Female"
-                        />
-                        <label class="form-check-label" for="inlineRadio2"
-                          >Female</label
-                        >
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio3"
-                          value="Other"
-                        />
-                        <label class="form-check-label" for="inlineRadio3"
-                          >Other</label
-                        >
-                      </div>
-                      <p
-                        class="error"
-                        *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']"
-                      >
-                        Gender is required
-                      </p>
-                    </div>
-                <div class="col">
+                <div class="col" style="margin-top: 20px;">
                     <!-- <mat-form-field> -->
-                        <mat-label>Photo <span style="font-size: 15px;">*</span></mat-label>
-                        <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required>
-                        <p><small>(*note: Photo size should be less than 100kb)</small></p>
-                        <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p>
+                        <!-- <mat-label>Photo <span style="font-size: 15px;">*</span></mat-label> -->
+                        <button class="btn btn-default" style="border: 1px solid lightslategray;" (click)="fileInput.click()">
+                            <i class="fa-solid fa-user fa-lg"></i> Upload photo
+                        </button>
+                        <!-- <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required> -->
+                        <input type="file" #fileInput class="form-control" (change)="onFileChange($event)"
+                        style="position: absolute; top: 0; left: 0; opacity: 0; cursor: pointer;" />
+                        <p class="error"
+                        *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">
+                        Photo is required</p>
+                        <!-- <p><small>(*note: Photo size should be less than 100kb)</small></p> -->
+                        <!-- <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p> -->
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
@@ -210,9 +173,72 @@
                     Email is required
                     </p>
                     <p *ngIf="(this.updateForm.get('Email.PersonalMail')?.errors?.['email'] || this.updateForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email formate (eg: example&#64;gmail.com)</p>
+                    </div>
                 </div>
+                <div class="col"  style="margin-top: 16px;">
+                    <div><mat-label>Gender <span style="font-size: 15px;">*</span></mat-label></div>
+                    <mat-radio-group style="width: 80px;"  formControlName="Gender">
+                        <mat-radio-button value="Male">Male</mat-radio-button>
+                        <mat-radio-button value="Female">Female</mat-radio-button>
+                        <mat-radio-button value="Other">Other</mat-radio-button>
+                    </mat-radio-group>
+                      
+                    <!-- <div class="form-check form-check-inline">
+
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          value="Male"
+                          id="inlineRadio1"
+                        />
+                        <label class="form-check-label" for="inlineRadio1"
+                          >Male</label
+                        >
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          id="inlineRadio2"
+                          value="Female"
+                        />
+                        <label class="form-check-label" for="inlineRadio2"
+                          >Female</label
+                        >
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          formControlName="Gender"
+                          id="inlineRadio3"
+                          value="Other"
+                        />
+                        <label class="form-check-label" for="inlineRadio3"
+                          >Other</label
+                        >
+                    </div> -->
+                      <p
+                        class="error"
+                        *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']"
+                      >
+                        Gender is required
+                      </p>
                 </div>
-                <div class="col" formGroupName="Contact">
+                <div class="col">
+                    <mat-form-field style="width: 75%;">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="birth" formControlName="dob" placeholder="Date of birth">
+                        <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
+                        <mat-datepicker #birth></mat-datepicker>
+                    </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">Date of birth is required</p>
+                </div>
+            </div>
+            <div class="row" id="contactId">
+                <div class="col" id="contactnum" formGroupName="Contact">
                     <!-- <mat-form-field formGroupName="Contact"> -->
                         <mat-label>Primary Contact No <span style="font-size: 15px;">*</span></mat-label>
                         <ngx-intl-tel-input
@@ -225,9 +251,7 @@
                     </div>                    
                     <!-- </mat-form-field> -->
                 </div>
-            </div>
-            <div class="row">
-                <div class="col"  formGroupName="Contact">
+                <div class="col" id="contactnum" formGroupName="Contact">
                     <!-- <mat-form-field  formGroupName="Contact"> -->
                         <mat-label>Emergency Contact No <span style="font-size: 15px;">*</span></mat-label>
                         <ngx-intl-tel-input
@@ -240,30 +264,7 @@
                       </div>                    
                     <!-- </mat-form-field> -->
                 </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Flat, Society/ Building Name</mat-label>
-                        <textarea matInput placeholder="Flat No, Society/ Building name" formControlName="Flat" required></textarea>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">Flat number/ building name is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Area</mat-label>
-                        <textarea matInput placeholder="Area name" formControlName="Area" required></textarea>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">Area is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Landmark</mat-label>
-                        <input matInput placeholder="Landmark" formControlName="Landmark" required>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">Landmark is required</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
+                <div class="col" id="contactnum">
                     <mat-form-field formGroupName="Location">
                         <mat-label>State</mat-label>
                         <mat-select formControlName="State" (selectionChange)="onStateChange()" required>
@@ -273,7 +274,19 @@
                     </mat-form-field>
                     <p class="error" *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">State name is required</p>
                 </div>
-                <div class="col">
+                <div class="col" id="contactnum">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="State" (selectionChange)="onStateChange()" required>
+                            <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</mat-option>
+                        </mat-select>
+                        <!-- <input matInput placeholder="State name" formControlName="State" required readonly> -->
+                    </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">State name is required</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="contactnum">
                     <mat-form-field formGroupName="Location">
                         <mat-label>City</mat-label>
                         <mat-select formControlName="City" required>
@@ -297,29 +310,43 @@
                     </p>
                 </div>
                 <div class="col">
-                    <mat-form-field>
-                        <mat-label>Date of Birth</mat-label>
-                        <input matInput [matDatepicker]="birth" formControlName="dob" placeholder="Date of birth">
-                        <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
-                        <mat-datepicker #birth></mat-datepicker>
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Flat, Society/ Building Name</mat-label>
+                        <textarea matInput placeholder="Flat No, Society/ Building name" formControlName="Flat" required></textarea>
                     </mat-form-field>
-                    <p class="error" *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">Date of birth is required</p>
+                    <p class="error" *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">Flat number/ building name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Area</mat-label>
+                        <textarea matInput placeholder="Area name" formControlName="Area" required></textarea>
+                    </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">Area is required</p>
                 </div>
             </div>
-            <div>
-                <button mat-button class="btn btn-dark" matStepperPrevious>Back</button>
-                <button mat-button class="btn btn-secondary" matStepperNext>Next</button>
-                <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">update</button>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Landmark</mat-label>
+                        <input matInput placeholder="Landmark" formControlName="Landmark" required>
+                    </mat-form-field>
+                    <p class="error" *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">Landmark is required</p>
+                </div>
+            </div>
+            <div style="display: flex;">
+                <button mat-button class="custom-secondary" id="bnButton" matStepperPrevious>Back</button>
+                <button mat-button class="custom-secondary" id="bnButton" matStepperNext>Next</button>
+                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="updateForm" label="SKILLSET">
+    <mat-step [stepControl]="updateForm" label="SKILL SET">
         <form [formGroup]="updateForm">
             <div class="row">
                 <div class="col" formGroupName="SkillSet">
                     <!-- <mat-form-field formGroupName="SkillSet"> -->
                         <mat-label>Primary Skill Set <span style="font-size: 15px;">*</span></mat-label>
-                        <ng-select [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
+                        <ng-select style="width: 80%;" [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
                             <ng-option *ngFor="let skill of getSelectedPrimarySkills() " [value]="skill">{{skill}}</ng-option>
                             <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
                         </ng-select>
@@ -329,12 +356,14 @@
                 <div class="col" formGroupName="SkillSet">
                     <!-- <mat-form-field> -->
                         <mat-label>Secondary Skill Set</mat-label>
-                        <ng-select [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
+                        <ng-select style="width: 80%;" [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
                             <ng-option *ngFor="let skill of getSelectedSecondarySkills()" [value]="skill">{{skill}}</ng-option>
                             <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
                         </ng-select>
                     <!-- </mat-form-field> -->
                 </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     <mat-form-field formGroupName="SkillSet">
                         <mat-label>Skill Level</mat-label>
@@ -344,8 +373,6 @@
                     </mat-form-field>
                     <p class="error" *ngIf="this.updateForm.get('SkillSet.SkillLevel')?.touched && this.updateForm.get('SkillSet.SkillLevel')?.errors?.['required']">Skill level is required</p>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <mat-form-field formGroupName="SkillSet">
                         <mat-label>Experience</mat-label>
@@ -376,17 +403,18 @@
                     <p class="error" *ngIf="this.updateForm.get('SkillSet.Certification.CertificationDate')?.touched && this.updateForm.get('SkillSet.Certification.CertificationDate')?.errors?.['required']"> Certification date is required</p>
                 </div> -->
             </div>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+            <div style="display: flex;">
+                <button mat-button class="custom-secondary" id="bnButton" matStepperPrevious>Back</button>
+                <!-- <button mat-button class="btn btn-secondary" matStepperNext>Next</button> -->
+                <button class="btn btn-primary" id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>
-    <mat-step>
+    <!-- <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         <div>
-            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button class="btn btn-dark" matStepperPrevious>Back</button>
             <button class="btn btn-primary" (click)="updateEmployee()" [disabled]="updateForm.invalid">update</button>
         </div>
-    </mat-step>
+    </mat-step> -->
 </mat-stepper>

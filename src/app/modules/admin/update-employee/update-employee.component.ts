@@ -261,7 +261,7 @@ export class UpdateEmployeeComponent implements OnInit{
     const reader = new FileReader();    
     if (event.target.files && event.target.files.length) {
       // console.log(event.target.files[0].size);
-      if(event.target.files[0].size < 10000){
+      // if(event.target.files[0].size < 10000){
         this.fileSizeError = false;
         const [file] = event.target.files;
         reader.readAsDataURL(file);
@@ -270,9 +270,9 @@ export class UpdateEmployeeComponent implements OnInit{
             Photo: reader.result as string,
           });
         };
-      }else{
-        this.fileSizeError = true;
-      }
+      // }else{
+      //   this.fileSizeError = true;
+      // }
     }
   }
 
