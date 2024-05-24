@@ -14,6 +14,9 @@ import { Router } from '@angular/router';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 import {  MatSelectModule } from '@angular/material/select';
 import { EnumValuesService } from '../../../services/enum-values.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { State, City } from 'country-state-city';
+
 
 @Component({
   selector: 'app-create-employee-info',
@@ -30,7 +33,8 @@ import { EnumValuesService } from '../../../services/enum-values.service';
     MatRadioModule,
     NgxIntlTelInputModule,
     NgSelectModule,
-    MatSelectModule
+    MatSelectModule,
+    NgMultiSelectDropDownModule
   ],
   templateUrl: './create-employee-info.component.html',
   styleUrl: './create-employee-info.component.css'
@@ -46,6 +50,23 @@ export class CreateEmployeeInfoComponent implements OnInit{
   skillSet!:[string];
   designations!:[string];
   skillLevel!:[string];
+  managerInfo: any[] = [];
+  viewManager: any[] = [];
+  department!:[string];
+  managerId: any;
+  setEmployeeCodeToManagerId!:string
+  states: any[] = [];
+  cities: any[] = [];
+  selectedState!: string;
+  selectedCity!: string;
+
+  managerDropdownSettings = {
+    singleSelection: true,
+    idField: 'EmployeeCode',
+    textField: 'view',
+    allowSearchFilter: true,
+    noDataAvailablePlaceholderText: 'No manager found',
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -58,20 +79,38 @@ export class CreateEmployeeInfoComponent implements OnInit{
   ngOnInit(): void {
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
-    this.addForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-      if (this.addForm.get('Location.Pincode')?.valid) {
-        this.onPostalCodeChange(value);
-      }
-    });
+    // this.addForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+    //   if (this.addForm.get('Location.Pincode')?.valid) {
+    //     this.onPostalCodeChange(value);
+    //   }
+    // });
 
+    this.states = State.getStatesOfCountry('IN');
     this.enumValues.getAllEnumValues()
     .subscribe(
       data=>{
-        console.log(data);
-        console.log(data.Skillset)
         this.skillSet = data.Skillset
         this.designations = data.Designation
         this.skillLevel = data.SkillLevel
+        this.department = data.Department
+      }
+    )
+
+    this.employeeService.getAllManagers().subscribe(
+      data =>{
+        data.forEach((item: any) => {
+          const newObj = {
+            FirstName: item.FirstName,
+            LastName: item.LastName,
+            EmployeeCode: item.EmployeeCode,
+            view: item.FirstName + ' ' + item.LastName + ' - ' + item.EmployeeCode
+          };
+          this.managerInfo.push(newObj);
+        });
+        console.log(this.managerInfo);
+        this.viewManager = this.managerInfo;
+      },error=>{
+        console.error(error);
       }
     )
   }
@@ -80,7 +119,7 @@ export class CreateEmployeeInfoComponent implements OnInit{
     FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
     MiddleName: [''],
     LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
-    EmployeeCode: ['', Validators.required],
+    EmployeeCode: [''],
     Photo: ['', Validators.required],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
@@ -110,11 +149,14 @@ export class CreateEmployeeInfoComponent implements OnInit{
       SkillLevel: ['', [Validators.required]],
       Experience: ['', [Validators.required, this.validExperience]],
       Certification: this.fb.group({
-        CertificationName: ['', [Validators.required]],
-        CertificationDate: ['', [Validators.required]]
+        CertificationName: [''],
+        CertificationDate: ['']
       })
     }),
-    ManagerId: ['', [Validators.required]],
+    ManagerId: [''],
+    Department: this.fb.group({
+      DepartmentName:['', [Validators.required]]
+    }),
     Designation: ['', [Validators.required]],
   });
 
@@ -142,20 +184,26 @@ export class CreateEmployeeInfoComponent implements OnInit{
     return null;
   }
 
-  onPostalCodeChange(postalCode: any) {
-    this.employeeService.getLocation(postalCode).subscribe(location => {
-      if (location) {
-        this.addForm.patchValue({
-          Location: {
-            City: location.city,
-            State: location.state
-          }
-        });
-        this.errorMessage = '';
-      } else {
-        this.errorMessage = 'Invalid postal code or postal code not found.';
-      }
-    });
+  // onPostalCodeChange(postalCode: any) {
+  //   this.employeeService.getLocation(postalCode).subscribe(location => {
+  //     if (location) {
+  //       this.addForm.patchValue({
+  //         Location: {
+  //           City: location.city,
+  //           State: location.state
+  //         }
+  //       });
+  //       this.errorMessage = '';
+  //     } else {
+  //       this.errorMessage = 'Invalid postal code or postal code not found.';
+  //     }
+  //   });
+  // }
+
+  onStateChange() {
+    const selectedState = this.addForm.get('Location.State')?.value;
+    this.cities = City.getCitiesOfState('IN', selectedState as string);
+    this.addForm.get('Location.City')?.setValue('');
   }
  
   get primaryE164Number() {
@@ -196,31 +244,37 @@ export class CreateEmployeeInfoComponent implements OnInit{
     }
   }
 
-  getSelectedPrimarySkills() {
-    return this.addForm.get('SkillSet.PrimarySkillset')?.value;
-  }
-  getSelectedSecondarySkills() {
-    return this.addForm.get('SkillSet.SecondarySkillset')?.value;
-  }
-  getRemainingPrimarySkills() {
-    return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
-  }
-  getRemainingSecondarySkills() {
-    return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
-  }
+  // getSelectedPrimarySkills() {
+  //   return this.addForm.get('SkillSet.PrimarySkillset')?.value;
+  // }
+  // getSelectedSecondarySkills() {
+  //   return this.addForm.get('SkillSet.SecondarySkillset')?.value;
+  // }
+  // getRemainingPrimarySkills() {
+  //   return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
+  // }
+  // getRemainingSecondarySkills() {
+  //   return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
+  // }
 
   addEmployee(){
+    console.log(this.managerId)
+    this.managerId = this.addForm.value.ManagerId;
+    if(this.managerId && this.managerId.length>0){
+       this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
+    }
     this.addForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
         Emergency: this.emergencyE164Number
-      }
+      },
+      ManagerId: this.setEmployeeCodeToManagerId
     });
     console.log(this.addForm.value);
     this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
     .subscribe(
       (data)=>{
-        console.log(data);
+        // console.log(data);
         this.route.navigate(['admin/employee-manage']);
       },error=>{
         console.error(error);

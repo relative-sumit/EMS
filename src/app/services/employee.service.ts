@@ -4,6 +4,17 @@ import { Apollo, gql } from 'apollo-angular';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as usZipcodes from 'zipcodes';
 
+const GET_ALL_MANAGERS_INFO = gql`
+query ManagerInfo {
+  managerInfo {
+    _id
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+  }
+}
+`;
 
 const UPDATE_EMPLOYEE_INFO = gql`
   mutation updateEmployeeInfoById($_id: String!, $Username: String!, $input: EmployeeInfoInput!) {
@@ -75,6 +86,8 @@ export class EmployeeService {
 
   updateEmployeeInfoById(_id: String, Username: String, input:any){
     // console.log("from service","_id: ", _id, "Data: ", input)
+    input.Department = input.Department.DepartmentName
+    console.log("InputData: ", input);
     return this.apollo.mutate<any>({
       mutation:UPDATE_EMPLOYEE_INFO,
       variables:{
@@ -146,6 +159,7 @@ export class EmployeeService {
 
   createEmployeeInfo(Username: String, input:any){
     // console.log("from service","_id: ", _id, "Data: ", input)
+    input.Department = input.Department.DepartmentName
     return this.apollo.mutate<any>({
       mutation:CREATE_EMPLOYEE_INFO,
       variables:{
@@ -155,4 +169,10 @@ export class EmployeeService {
     })
   }
 
+  getAllManagers(){
+    return this.apollo.watchQuery<any>({
+      query:GET_ALL_MANAGERS_INFO
+    })
+    .valueChanges.pipe(map((info) => info.data.managerInfo));
+  }
 }

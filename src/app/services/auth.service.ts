@@ -133,10 +133,6 @@ query EmployeeInfo {
       Email
       Password
       Role
-      CreatedBy
-      UpdatedBy
-      IsActive
-      IsDeleted
     }
     Photo
     Gender
@@ -163,16 +159,9 @@ query EmployeeInfo {
     Department {
       DepartmentName
       Description
-      CreatedBy
-      UpdatedBy
-      IsActive
-      IsDeleted
       _id
-      CreatedDate
-      UpdatedDate
     }
     SkillSet {
-      EmployeeSkillsetId
       PrimarySkillset
       SecondarySkillset
       SkillLevel
@@ -199,20 +188,10 @@ query EmployeeInfo {
       Description
       Addon
       IsWorkable
-      CreatedBy
-      CreatedDate
-      UpdatedBy
-      UpdatedDate
-      IsActive
-      IsDeleted
       Message
     }
     ManagerId
     Designation
-    CreatedBy
-    UpdatedBy
-    IsActive
-    IsDeleted
   }
 }
 `;
