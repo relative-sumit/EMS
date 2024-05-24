@@ -12,7 +12,7 @@ export const userGuard: CanActivateFn = (route, state) => {
     return true;
   } else {
     alert("You are not authorized to visit this page.")
-    router.navigate([''])
+    router.navigate(['/admin'])
     return false;
   }
 };

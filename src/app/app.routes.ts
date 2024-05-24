@@ -13,7 +13,7 @@ export const routes: Routes = [
       import('./modules/employee/employee.module').then(
         (m) => m.EmployeeModule
       ),
-    canActivate: [authGuard],
+    canActivate: [authGuard, userGuard],
   },
   {
     path: 'admin',

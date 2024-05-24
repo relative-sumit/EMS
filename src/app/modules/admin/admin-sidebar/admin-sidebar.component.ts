@@ -32,7 +32,7 @@ export class AdminSidebarComponent implements OnInit {
       number: 1,
       name: 'Home',
       icon: faHome,
-      link: '/dashboard/',
+      link: '/admin/',
     },
     {
       number: 2,

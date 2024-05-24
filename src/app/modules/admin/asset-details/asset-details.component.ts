@@ -6,6 +6,17 @@ import { SearchPipe } from '../../../pipes/search.pipe';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+interface AssetType {
+  SrNo: number;
+  AssetName: string;
+  AssetModel: string;
+  AssetType: string;
+  Processor: string;
+  SerialNumber: string;
+  AssignTo: string;
+  IsWorkable: string;
+}
+
 @Component({
   selector: 'app-asset-details',
   standalone: true,
@@ -14,7 +25,7 @@ import { Router } from '@angular/router';
   styleUrl: './asset-details.component.css',
 })
 export class AssetDetailsComponent implements OnInit {
-  assetList: Asset[] = [];
+  assetList: any[] = [];
   tableSize: number = 5;
   tableSizes: any = [5, 10, 20];
   page: number = 1;
@@ -29,9 +40,23 @@ export class AssetDetailsComponent implements OnInit {
     this.get();
   }
 
-  get(){
+  get() {
     this.asset.getAllAsset().subscribe((data) => {
-      this.assetList = data;
+      let count = 1;
+      data.forEach((item: any) => {
+        const newObj = {
+          SrNo: count,
+          AssetName: item.AssetName,
+          AssetModel: item.AssetModel,
+          AssetType: item.AssetType,
+          Processor: item.Processor,
+          SerialNumber: item.SerialNumber,
+          AssignTo: item.AssignTo,
+          IsWorkable: item.IsWorkable,
+        };
+        this.assetList.push(newObj);
+        count++;
+      });
     });
   }
 
@@ -39,11 +64,10 @@ export class AssetDetailsComponent implements OnInit {
     this.asset.setSearchText(this.searchText);
   }
 
-  tableDataChange(event: any){
+  tableDataChange(event: any) {
     this.page = event;
-    this.get();
   }
-  tableSizeChange(event: any){
+  tableSizeChange(event: any) {
     this.tableSize = event.target.value;
     this.page = 1;
     this.get();
@@ -60,7 +84,7 @@ export class AssetDetailsComponent implements OnInit {
 
   deleteAsset(asset: Asset) {
     console.log(asset);
-    
+
     if (confirm('Are you sure, delete asset?')) {
       this.asset.deleteAsset(asset).subscribe(
         (data) => {
@@ -77,7 +101,7 @@ export class AssetDetailsComponent implements OnInit {
     }
   }
 
-  sort(key: keyof Asset) {
+  sort(key: keyof AssetType) {
     if (this.reverse === false) {
       this.assetList = this.assetList.slice().sort((a, b) => {
         if (a[key] < b[key]) {
@@ -103,5 +127,4 @@ export class AssetDetailsComponent implements OnInit {
       }
     }
   }
-
 }

@@ -48,7 +48,11 @@ export class LoginComponent implements OnInit {
               this.auth.storeSession('username', data.username);
               this.auth.storeSession('role', data.role);
 
-              this.router.navigate(['/dashboard']);
+              if (data.role === 'user') {
+                this.router.navigate(['/dashboard']);
+              } else if (data.role === 'admin') {
+                this.router.navigate(['/admin']);
+              }
             } else {
               this.errorMessage = data.errorMessage;
               throw new Error('Faulty credentials!');

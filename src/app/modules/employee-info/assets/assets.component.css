@@ -47,6 +47,16 @@
   .col-auto {
     margin-right: 20px;
   }
+
+  .accordion-body{
+    border-bottom: solid 1px lightblue;
+  }
+
+  .asset-header{
+    font-size: 18px;
+    font-weight: bold;
+  }
+
   /* .values-header {
     text-align: center;
   }

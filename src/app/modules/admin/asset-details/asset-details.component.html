@@ -24,7 +24,7 @@
       <thead class="table-primary">
         <tr>
           <th scope="col">Actions</th>
-          <th scope="col">
+          <th (click)="sort('SrNo')" >
             <div class="table-head-container">
               <div>S.No</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
@@ -66,10 +66,9 @@
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
-          <th (click)="sort('AssignTo')">
+          <th>
             <div class="table-head-container">
               <div>Working</div>
-              <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
         </tr>
@@ -100,7 +99,7 @@
               (click)="deleteAsset(asset)"
             ></i>
           </td>
-          <td>{{ tableSize * (page - 1) + i + 1 }}</td>
+          <td>{{asset.SrNo}}</td>
           <td scope="row">{{ asset.AssetName }}</td>
           <td>{{ asset.AssetModel }}</td>
           <td>{{ asset.AssetType }}</td>

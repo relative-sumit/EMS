@@ -1,0 +1,31 @@
+.container {
+  margin: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
+  gap: 10px;
+}
+
+.top-left {
+  /* background-color: red; */
+  padding: 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8e9291 #f1f1f1;
+}
+
+.top-right {
+  /* background-color: green; */
+  padding: 20px;
+}
+
+.bottom-left {
+  /* background-color: blue; */
+  padding: 20px;
+}
+
+.bottom-right {
+  /* background-color: yellow; */
+  padding: 20px;
+}

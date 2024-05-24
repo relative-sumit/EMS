@@ -3,6 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./dashboard/dashboard.component').then(
+        (c) => c.DashboardComponent
+      ),
+  },
+  {
     path: 'create-permission',
     loadComponent: () =>
       import('./create-permission/create-permission.component').then(
