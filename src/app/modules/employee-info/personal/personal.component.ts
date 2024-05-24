@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EmployeeService } from '../../../services/employee.service';
+import { State, City } from 'country-state-city';
 
 @Component({
   selector: 'app-personal',
@@ -42,6 +43,10 @@ export class PersonalComponent implements OnInit {
   expanded: { [key: string]: boolean } = {};
   errorMessage: string = '';
   dateFormate: any;
+  states: any[] = [];
+  cities: any[] = [];
+  selectedState!: string;
+  selectedCity!: string;
 
   @ViewChild('accordion') accordion!: ElementRef;
 
@@ -68,11 +73,12 @@ export class PersonalComponent implements OnInit {
     this.encrptedUsername = sessionStorage.getItem('username');
     this.username = this.ed.decrypt(this.encrptedUsername);
     this.userId = this.ed.decrypt(this.encrptedUserId);
-    this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-      if (this.updateForm.get('Location.Pincode')?.valid) {
-        this.onPostalCodeChange(value);
-      }
-    });
+    // this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+      //   if (this.updateForm.get('Location.Pincode')?.valid) {
+        //     this.onPostalCodeChange(value);
+      //   }
+    // });
+    this.states = State.getStatesOfCountry('IN');
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
         data => {
@@ -80,7 +86,11 @@ export class PersonalComponent implements OnInit {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
             this.dateFormate = this.transformDateFormate(this.employeeInfo);
-            this.updateForm.patchValue(this.employeeInfo);
+            this.updateForm.patchValue(this.dateFormate);
+            const selectedState = this.updateForm.get('Location.State')?.value;
+            if (selectedState) {
+              this.onStateChange(selectedState, this.employeeInfo.Location.City);
+            }
           }
         }
       );
@@ -111,37 +121,37 @@ export class PersonalComponent implements OnInit {
       [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
     EmployeeCode: [''],
-    Photo: [''],
+    Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
-      CountryCode: ['', [Validators.required]],
+      CountryCode: [''],
       Primary: ['', [Validators.required]],
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
       CompanyMail: [''],
-      PersonalMail: ['', [Validators.required, Validators.email]],
+      PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
-      City: ['', [Validators.required]],
       State: ['', [Validators.required]],
+      City: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
     }),
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
     SkillSet: this.fb.group({
-      EmployeeSkillsetId: ['', [Validators.required]],
+      EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
-      SecondarySkillset: ['', [Validators.required]],
+      SecondarySkillset: [''],
       SkillLevel: ['', [Validators.required]],
       Experience: ['', [Validators.required]],
       Certification: this.fb.group({
-        CertificationName: ['', [Validators.required]],
-        CertificationDate: ['', [Validators.required]],
+        CertificationName: [''],
+        CertificationDate: [''],
       }),
     }),
     ManagerId: ['', [Validators.required]],
@@ -157,7 +167,13 @@ export class PersonalComponent implements OnInit {
       return { onlyAlfa: true };
     }
   }
-
+  validEmail(control: any) {
+    const email = control.value;
+    if (!email.match(/^(?!.*\.\..*)(?!.*\.{2,}@)[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/)) {
+      return { invalidEmail: true };
+    }
+    return null;
+  }
   get primaryE164Number() {
     const primaryControl = this.updateForm.get('Contact.Primary');
     if (primaryControl && typeof primaryControl.value === 'object') {
@@ -197,20 +213,37 @@ export class PersonalComponent implements OnInit {
     }
   }
 
-  onPostalCodeChange(postalCode: any) {
-    this.employeeService.getLocation(postalCode).subscribe(location => {
-      if (location) {
-        this.updateForm.patchValue({
-          Location: {
-            City: location.city,
-            State: location.state
-          }
-        });
-        this.errorMessage = '';
+  // onPostalCodeChange(postalCode: any) {
+  //   this.employeeService.getLocation(postalCode).subscribe(location => {
+  //     if (location) {
+  //       this.updateForm.patchValue({
+  //         Location: {
+  //           City: location.city,
+  //           State: location.state
+  //         }
+  //       });
+  //       this.errorMessage = '';
+  //     } else {
+  //       this.errorMessage = 'Invalid postal code or postal code not found.';
+  //     }
+  //   });
+  // }
+
+  // onStateChange() {
+  //   const selectedState = this.updateForm.get('Location.State')?.value;
+  //   this.cities = City.getCitiesOfState('IN', selectedState as string);
+  //   this.updateForm.get('Location.City')?.setValue('');
+  // }
+  onStateChange(stateCode?: string, cityName?: string): void {
+    const selectedState = stateCode || this.updateForm.get('Location.State')?.value;
+    if (selectedState) {
+      this.cities = City.getCitiesOfState('IN', selectedState);
+      if (cityName) {
+        this.updateForm.get('Location.City')?.setValue(cityName);
       } else {
-        this.errorMessage = 'Invalid postal code or postal code not found.';
+        this.updateForm.get('Location.City')?.setValue('');
       }
-    });
+    }
   }
 
   updateEmployee() {

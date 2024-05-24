@@ -66,26 +66,32 @@ export class SkillsetComponent implements OnInit{
 
 
   updateForm = this.fb.group({
-    FirstName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    MiddleName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
-    LastName: ['', [Validators.required, Validators.minLength(4), this.nameValidator]],
+    FirstName: [
+      '',
+      [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
+    ],
+    MiddleName: [''],
+    LastName: [
+      '',
+      [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
+    ],
     EmployeeCode: [''],
     Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
-      CountryCode: ['', [Validators.required]],
+      CountryCode: [''],
       Primary: ['', [Validators.required]],
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
       CompanyMail: [''],
-      PersonalMail: ['', [Validators.required]],
+      PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
     }),
@@ -93,15 +99,15 @@ export class SkillsetComponent implements OnInit{
     doj: ['', [Validators.required]],
     doc: ['', [Validators.required]],
     SkillSet: this.fb.group({
-      EmployeeSkillsetId: ['', [Validators.required]],
+      EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
       SecondarySkillset: [''],
       SkillLevel: ['', [Validators.required]],
-      Experience: ['', [Validators.required,  this.validExperience]],
+      Experience: ['', [Validators.required]],
       Certification: this.fb.group({
-        CertificationName: ['', [Validators.required]],
-        CertificationDate: ['', [Validators.required]]
-      })
+        CertificationName: [''],
+        CertificationDate: [''],
+      }),
     }),
     ManagerId: ['', [Validators.required]],
     Designation: ['', [Validators.required]],
@@ -115,6 +121,13 @@ export class SkillsetComponent implements OnInit{
     }else{
       return {'onlyAlfa': true}
     }
+  }
+  validEmail(control: any) {
+    const email = control.value;
+    if (!email.match(/^(?!.*\.\..*)(?!.*\.{2,}@)[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/)) {
+      return { invalidEmail: true };
+    }
+    return null;
   }
   validExperience(control: any) {
     const experience = control.value;

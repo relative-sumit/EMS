@@ -14,6 +14,9 @@ import { Router } from '@angular/router';
 import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 import { MatSelectModule } from '@angular/material/select';
 import { EnumValuesService } from '../../../services/enum-values.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { State, City } from 'country-state-city';
+
 
 @Component({
   selector: 'app-update-employee',
@@ -30,7 +33,8 @@ import { EnumValuesService } from '../../../services/enum-values.service';
     MatRadioModule,
     NgxIntlTelInputModule,
     NgSelectModule,
-    MatSelectModule
+    MatSelectModule,
+    NgMultiSelectDropDownModule
   ],
   templateUrl: './update-employee.component.html',
   styleUrl: './update-employee.component.css'
@@ -44,6 +48,23 @@ export class UpdateEmployeeComponent implements OnInit{
   skillSet!: [string];
   designations!: [string];
   skillLevel!:[string];
+  department!:[string];
+  managerInfo: any[] = [];
+  viewManager: any[] = [];
+  managerId: any;
+  setEmployeeCodeToManagerId!:string
+  states: any[] = [];
+  cities: any[] = [];
+  selectedState!: string;
+  selectedCity!: string;
+
+  managerDropdownSettings = {
+    singleSelection: true,
+    idField: 'EmployeeCode',
+    textField: 'view',
+    allowSearchFilter: true,
+    noDataAvailablePlaceholderText: 'No manager found',
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -56,18 +77,24 @@ export class UpdateEmployeeComponent implements OnInit{
   ngOnInit(): void {
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
-    this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-      if (this.updateForm.get('Location.Pincode')?.valid) {
-        this.onPostalCodeChange(value);
-      }
-    });
+    // this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
+    //   if (this.updateForm.get('Location.Pincode')?.valid) {
+    //     this.onPostalCodeChange(value);
+    //   }
+    // });
+    this.states = State.getStatesOfCountry('IN');
+
     this.employeeService.employeeInfo
     .subscribe(
       (data)=>{
-        // console.log(data);
+        console.log(data); 
         this._id = data._id
         // console.log(this._id);
         this.updateForm.patchValue(data);
+        const selectedState = this.updateForm.get('Location.State')?.value;
+        if (selectedState) {
+          this.onStateChange(selectedState, data.Location.City);
+        }
       }
     )
     this.enumValues.getAllEnumValues()
@@ -76,6 +103,24 @@ export class UpdateEmployeeComponent implements OnInit{
         this.skillSet = data.Skillset
         this.designations = data.Designation
         this.skillLevel = data.SkillLevel
+        this.department = data.Department
+      }
+    )
+    this.employeeService.getAllManagers().subscribe(
+      data =>{
+        data.forEach((item: any) => {
+          const newObj = {
+            FirstName: item.FirstName,
+            LastName: item.LastName,
+            EmployeeCode: item.EmployeeCode,
+            view: item.FirstName + ' ' + item.LastName + ' - ' + item.EmployeeCode
+          };
+          this.managerInfo.push(newObj);
+        });
+        console.log(this.managerInfo);
+        this.viewManager = this.managerInfo;
+      },error=>{
+        console.error(error);
       }
     )
   }
@@ -84,7 +129,7 @@ export class UpdateEmployeeComponent implements OnInit{
     FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
     MiddleName: [''],
     LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
-    EmployeeCode: ['', [Validators.required]],
+    EmployeeCode: [''],
     Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
@@ -100,9 +145,9 @@ export class UpdateEmployeeComponent implements OnInit{
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
-      City: ['', [Validators.required]],
       State: ['', [Validators.required]],
+      City: ['', [Validators.required]],
+      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
     }),
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
@@ -110,15 +155,18 @@ export class UpdateEmployeeComponent implements OnInit{
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
-      SecondarySkillset: ['', [Validators.required]],
+      SecondarySkillset: [''],
       SkillLevel: ['', [Validators.required]],
       Experience: ['', [Validators.required, this.validExperience]],
       Certification: this.fb.group({
-        CertificationName: ['', [Validators.required]],
-        CertificationDate: ['', [Validators.required]]
+        CertificationName: [''],
+        CertificationDate: ['']
       })
     }),
-    ManagerId: ['', [Validators.required]],
+    ManagerId: [''],
+    Department: this.fb.group({
+      DepartmentName:['', [Validators.required]],
+    }),
     Designation: ['', [Validators.required]],
   });
 
@@ -145,21 +193,21 @@ export class UpdateEmployeeComponent implements OnInit{
     return null;
   }
 
-  onPostalCodeChange(postalCode: any) {
-    this.employeeService.getLocation(postalCode).subscribe(location => {
-      if (location) {
-        this.updateForm.patchValue({
-          Location: {
-            City: location.city,
-            State: location.state
-          }
-        });
-        this.errorMessage = '';
-      } else {
-        this.errorMessage = 'Invalid postal code or postal code not found.';
-      }
-    });
-  }
+  // onPostalCodeChange(postalCode: any) {
+  //   this.employeeService.getLocation(postalCode).subscribe(location => {
+  //     if (location) {
+  //       this.updateForm.patchValue({
+  //         Location: {
+  //           City: location.city,
+  //           State: location.state
+  //         }
+  //       });
+  //       this.errorMessage = '';
+  //     } else {
+  //       this.errorMessage = 'Invalid postal code or postal code not found.';
+  //     }
+  //   });
+  // }
 
   getSelectedPrimarySkills() {
     return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
@@ -167,13 +215,29 @@ export class UpdateEmployeeComponent implements OnInit{
   getSelectedSecondarySkills() {
     return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
   }
-  getRemainingPrimarySkills() {
-    return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
-  }
-  getRemainingSecondarySkills() {
-    return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
-  }
+  // getRemainingPrimarySkills() {
+  //   return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
+  // }
+  // getRemainingSecondarySkills() {
+  //   return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
+  // }
 
+  // onStateChange() {
+  //   const selectedState = this.updateForm.get('Location.State')?.value;
+  //   this.cities = City.getCitiesOfState('IN', selectedState as any);
+  //   this.updateForm.get('Location.City')?.setValue('');
+  // }
+  onStateChange(stateCode?: string, cityName?: string): void {
+    const selectedState = stateCode || this.updateForm.get('Location.State')?.value;
+    if (selectedState) {
+      this.cities = City.getCitiesOfState('IN', selectedState);
+      if (cityName) {
+        this.updateForm.get('Location.City')?.setValue(cityName);
+      } else {
+        this.updateForm.get('Location.City')?.setValue('');
+      }
+    }
+  }
 
   get primaryE164Number() {
     const primaryControl = this.updateForm.get('Contact.Primary');
@@ -211,13 +275,21 @@ export class UpdateEmployeeComponent implements OnInit{
       }
     }
   }
+
   updateEmployee(){
+    this.managerId = this.updateForm.value.ManagerId;
+    if(this.managerId && this.managerId.length>0){
+       this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
+    }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
         Emergency: this.emergencyE164Number
-      }
+      },
+      ManagerId: this.setEmployeeCodeToManagerId,
     });
+    
+
     console.log(this.updateForm.value);
     this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
     .subscribe(

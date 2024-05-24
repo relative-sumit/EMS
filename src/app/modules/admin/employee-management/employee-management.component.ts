@@ -58,7 +58,7 @@ export class EmployeeManagementComponent implements OnInit{
     this.auth.getAllEmployeesInfo()
     .subscribe(
       (data)=>{
-        console.log(data);
+        // console.log(data);
         this.employeeInfo = data;
         // this.users = this.employeeInfo['data'];
         this.sortedData = this.employeeInfo;
@@ -93,8 +93,8 @@ export class EmployeeManagementComponent implements OnInit{
           return compare(a.FirstName, b.FirstName, isAsc);
         case 'Email.CompanyMail':
           return compare(a.Email.CompanyMail, b.Email.CompanyMail, isAsc);
-        // case 'Department.DepartmentName':
-        //   return compare(a.Department.DepartmentName, b.Department.DepartmentName, isAsc);
+        case 'Department.DepartmentName':
+          return compare(a.Department.DepartmentName, b.Department.DepartmentName, isAsc);
         case 'Designation':
           return compare(a.Designation, b.Designation, isAsc);
         case 'Gender':
