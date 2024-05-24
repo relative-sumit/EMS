@@ -86,7 +86,7 @@ export class PersonalComponent implements OnInit {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
             this.dateFormate = this.transformDateFormate(this.employeeInfo);
-            this.updateForm.patchValue(this.dateFormate);
+            this.updateForm.patchValue(this.employeeInfo);
             const selectedState = this.updateForm.get('Location.State')?.value;
             if (selectedState) {
               this.onStateChange(selectedState, this.employeeInfo.Location.City);

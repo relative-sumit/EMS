@@ -7,7 +7,8 @@
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="First name" formControlName="FirstName" required>
                     </mat-form-field>
-                    <div *ngIf="addForm.controls['FirstName']?.['touched'] && addForm.controls['FirstName']?.['errors']" class="error">
+                    <div *ngIf="addForm.controls['FirstName']?.['touched'] && addForm.controls['FirstName']?.['errors']"
+                        class="error">
                         <p *ngIf="addForm.controls['FirstName']?.['errors']?.['required']">
                             First name is required
                         </p>
@@ -17,7 +18,8 @@
                         <p *ngIf="addForm.controls['FirstName']?.['errors']?.['maxlength']">
                             Last name should be maximum 15 letters
                         </p>
-                        <p *ngIf="addForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !addForm.controls['FirstName']?.['errors']?.['required']">
+                        <p
+                            *ngIf="addForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !addForm.controls['FirstName']?.['errors']?.['required']">
                             First name contains only alphabets & no whitespaces before
                             and after
                         </p>
@@ -34,20 +36,21 @@
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Last name" formControlName="LastName" required>
                     </mat-form-field>
-                    <div *ngIf="addForm.controls['LastName']?.['touched'] && addForm.controls['LastName']?.['errors']" class="error">
+                    <div *ngIf="addForm.controls['LastName']?.['touched'] && addForm.controls['LastName']?.['errors']"
+                        class="error">
                         <p *ngIf="addForm.controls['LastName']?.['errors']?.['required']">
-                        Last name is required
+                            Last name is required
                         </p>
                         <p *ngIf="addForm.controls['LastName']?.['errors']?.['minLength']">
-                        Last name should have minimum 4 letters
+                            Last name should have minimum 4 letters
                         </p>
                         <p *ngIf="addForm.controls['LastName']?.['errors']?.['maxlength']">
-                        First name should be maximum 15 letters
+                            First name should be maximum 15 letters
                         </p>
                         <p
-                        *ngIf="addForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !addForm.controls['LastName']?.['errors']?.['required']">
-                        Last name contains only alphabets & no whitespaces before
-                        and after
+                            *ngIf="addForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !addForm.controls['LastName']?.['errors']?.['required']">
+                            Last name contains only alphabets & no whitespaces before
+                            and after
                         </p>
                     </div>
                 </div>
@@ -67,12 +70,52 @@
                     </mat-form-field>
                     <div class="error"
                         *ngIf="this.addForm.get('Email.CompanyMail')?.touched && this.addForm.get('Email.CompanyMail')?.errors">
-                        <p class="error"
-                            *ngIf="this.addForm.get('Email.CompanyMail')?.errors?.['required']">
+                        <p class="error" *ngIf="this.addForm.get('Email.CompanyMail')?.errors?.['required']">
                             Email is required
                         </p>
-                        <p *ngIf="(this.addForm.get('Email.CompanyMail')?.errors?.['email'] || this.addForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.CompanyMail')?.errors?.['required']">Invalid email formate</p>
+                        <p
+                            *ngIf="(this.addForm.get('Email.CompanyMail')?.errors?.['email'] || this.addForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.CompanyMail')?.errors?.['required']">
+                            Invalid email formate</p>
                     </div>
+                </div>
+                <div class="col" >
+                    <mat-form-field formGroupName="Department">
+                        <mat-label>Department Name</mat-label>
+                        <mat-select formControlName="DepartmentName" required>
+                            <mat-option *ngFor="let depart of department" [value]="depart">
+                                {{ depart }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Department.DepartmentName')?.touched && this.addForm.get('Department.DepartmentName')?.errors?.['required']">
+                        Department name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field>
+                        <mat-label>Designation</mat-label>
+                        <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
+                        <mat-select formControlName="Designation" required>
+                            <mat-option *ngFor="let designation of designations" [value]="designation">
+                                {{ designation }}
+                            </mat-option>
+                            <!-- <mat-option value="two">Second option</mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Designation')?.touched && this.addForm.get('Designation')?.errors?.['required']">
+                        Designation is required</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="padding-top: 30px;">
+                    <!-- <mat-form-field> -->
+                    <!-- <mat-label>Manager ID</mat-label> -->
+                    <ng-multiselect-dropdown [placeholder]="'Manager Name'" [settings]="managerDropdownSettings"
+                        [data]="viewManager" formControlName="ManagerId">
+                    </ng-multiselect-dropdown>
+                    <!-- </mat-form-field> -->
+                    <!-- <p class="error" *ngIf="this.addForm.get('ManagerId')?.touched && this.addForm.get('ManagerId')?.errors?.['required']">Manager id is required</p> -->
                 </div>
                 <div class="col">
                     <mat-form-field class="dateSize">
@@ -88,7 +131,8 @@
                 <div class="col">
                     <mat-form-field class="dateSize">
                         <mat-label>Date of Confirmation</mat-label>
-                        <input matInput [matDatepicker]="conform" formControlName="doc" placeholder="Date of conformation">
+                        <input matInput [matDatepicker]="conform" formControlName="doc"
+                            placeholder="Date of conformation">
                         <mat-datepicker-toggle matSuffix [for]="conform"></mat-datepicker-toggle>
                         <mat-datepicker #conform></mat-datepicker>
                     </mat-form-field>
@@ -97,105 +141,29 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <mat-form-field formGroupName="Department">
-                        <mat-label>Department Name</mat-label>
-                        <mat-select formControlName="DepartmentName" required>
-                            <mat-option *ngFor="let depart of department" [value]="depart">
-                                {{ depart }}
-                            </mat-option>
-                        </mat-select>                    
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Department.DepartmentName')?.touched && this.addForm.get('Department.DepartmentName')?.errors?.['required']">Department name is required</p>
-                </div>
-                <div class="col">
-                    <!-- <mat-form-field> -->
-                        <!-- <mat-label>Manager ID</mat-label> -->
-                        <ng-multiselect-dropdown
-                        [placeholder]="'Manager Name'"
-                        [settings]="managerDropdownSettings"
-                        [data]="viewManager"
-                        formControlName="ManagerId"
-                        >
-                        </ng-multiselect-dropdown>                    
-                    <!-- </mat-form-field> -->
-                    <!-- <p class="error" *ngIf="this.addForm.get('ManagerId')?.touched && this.addForm.get('ManagerId')?.errors?.['required']">Manager id is required</p> -->
-                </div>
-                <div class="col">
-                    <mat-form-field>
-                        <mat-label>Designation</mat-label>
-                        <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
-                        <mat-select formControlName="Designation" required>
-                            <mat-option *ngFor="let designation of designations" [value]="designation">
-                                {{ designation }}
-                            </mat-option>
-                            <!-- <mat-option value="two">Second option</mat-option> -->
-                        </mat-select>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Designation')?.touched && this.addForm.get('Designation')?.errors?.['required']">Designation is required</p>
-                </div>
-            </div>
             <div>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button class="btn btn-secondary custom-secondary" matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="addForm" label="PERSONAL">
         <form [formGroup]="addForm">
             <div class="row">
-                <div class="col">
-                    <div><mat-label>Gender</mat-label></div>
-                    <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio1"
-                          value="Male"
-                        />
-                        <label class="form-check-label" for="inlineRadio1"
-                          >Male</label
-                        >
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio2"
-                          value="Female"
-                        />
-                        <label class="form-check-label" for="inlineRadio2"
-                          >Female</label
-                        >
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          formControlName="Gender"
-                          id="inlineRadio3"
-                          value="Other"
-                        />
-                        <label class="form-check-label" for="inlineRadio3"
-                          >Other</label
-                        >
-                      </div>
-                      <p
-                        class="error"
-                        *ngIf="this.addForm.get('Gender')?.touched && this.addForm.get('Gender')?.errors?.['required']"
-                      >
-                        Gender is required
-                      </p>
-                    </div>
-                <div class="col">
+                <div class="col" style="margin-top: 20px;">
                     <!-- <mat-form-field> -->
-                        <mat-label>Photo</mat-label>
-                        <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required>
-                        <p><small>(*note: Photo size should be less than 100kb)</small></p>
-                        <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p>
-                        <p class="error" *ngIf="this.addForm.get('Photo')?.touched && this.addForm.get('Photo')?.errors?.['required']">Photo is required</p>
+                    <!-- <mat-label>Photo</mat-label> -->
+                    <button class="btn btn-default" style="border: 1px solid lightslategray;" (click)="fileInput.click()">
+                        <i class="fa-solid fa-user fa-lg"></i> Upload photo<span style="font-size: 15px;">*</span>
+                    </button>
+                    <!-- <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required> -->
+                    <input type="file" #fileInput class="form-control" (change)="onFileChange($event)"
+                    style="position: absolute; top: 0; left: 0; opacity: 0; cursor: pointer;" />
+                    <!-- <input type="file" (change)="onFileChange($event)" placeholder="Upload photo" required> -->
+                    <!-- <p><small>(*note: Photo size should be less than 100kb)</small></p> -->
+                    <!-- <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p> -->
+                    <p class="error"
+                        *ngIf="this.addForm.get('Photo')?.touched && this.addForm.get('Photo')?.errors?.['required']">
+                        Photo is required</p>
                     <!-- </mat-form-field> -->
                 </div>
                 <div class="col">
@@ -205,96 +173,41 @@
                     </mat-form-field>
                     <div class="error"
                         *ngIf="this.addForm.get('Email.PersonalMail')?.touched && this.addForm.get('Email.PersonalMail')?.errors">
-                        <p class="error"
-                        *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['required']">
-                        Email is required
+                        <p class="error" *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['required']">
+                            Email is required
                         </p>
-                        <p *ngIf="(this.addForm.get('Email.PersonalMail')?.errors?.['email'] || this.addForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email formate</p>
+                        <p
+                            *ngIf="(this.addForm.get('Email.PersonalMail')?.errors?.['email'] || this.addForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.addForm.get('Email.PersonalMail')?.errors?.['required']">
+                            Invalid email formate</p>
                         <!-- <p *ngIf="this.addForm.get('Email.PersonalMail')?.errors?.['invalidEmail'] && !this.addForm.get('Email.PersonalMail')?.errors?.['required']">Invalid email</p> -->
                     </div>
                 </div>
-                <div class="col" formGroupName="Contact">
-                    <!-- <mat-form-field formGroupName="Contact"> -->
-                        <mat-label>Primary Contact No</mat-label>
-                        <ngx-intl-tel-input
-                        id="primary"
-                        formControlName="Primary"
-                      ></ngx-intl-tel-input>
-                    <!-- </mat-form-field> -->
-                    <div class="error" *ngIf="this.addForm.get('Contact.Primary')?.touched && this.addForm.get('Contact.Primary')?.errors">
-                        <p *ngIf="this.addForm.get('Contact.Primary')?.errors?.['required']">Contact number is required</p>
-                        <p *ngIf="this.addForm.get('Contact.Primary')?.errors && !this.addForm.get('Contact.Primary')?.errors?.['required']">Phone number is invalid for selected country</p>
+                <div class="col" style="margin-top: 16px;">
+                    <div><mat-label>Gender <span style="font-size: 15px;">*</span></mat-label></div>
+                    <mat-radio-group style="width: 80px;"  formControlName="Gender">
+                        <mat-radio-button value="Male">Male</mat-radio-button>
+                        <mat-radio-button value="Female">Female</mat-radio-button>
+                        <mat-radio-button value="Other">Other</mat-radio-button>
+                    </mat-radio-group>
+                    <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="Gender" id="inlineRadio1"
+                            value="Male" />
+                        <label class="form-check-label" for="inlineRadio1">Male</label>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col"  formGroupName="Contact">
-                    <!-- <mat-form-field  formGroupName="Contact"> -->
-                        <mat-label>Emergency Contact No</mat-label>
-                        <ngx-intl-tel-input
-                        id="emergency"
-                        formControlName="Emergency"
-                      ></ngx-intl-tel-input>
-                      <div class="error" *ngIf="this.addForm.get('Contact.Emergency')?.touched && this.addForm.get('Contact.Emergency')?.errors">
-                        <p *ngIf="this.addForm.get('Contact.Emergency')?.errors?.['required']">Contact number is required</p>
-                        <p *ngIf="this.addForm.get('Contact.Emergency')?.errors && !this.addForm.get('Contact.Emergency')?.errors?.['required']">Phone number is invalid for selected country</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="Gender" id="inlineRadio2"
+                            value="Female" />
+                        <label class="form-check-label" for="inlineRadio2">Female</label>
                     </div>
-                    <!-- </mat-form-field> -->
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Flat, Society/ Building Name</mat-label>
-                        <textarea matInput placeholder="Flat No, Society/ Building name" formControlName="Flat" required></textarea>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Location.Flat')?.touched && this.addForm.get('Location.Flat')?.errors?.['required']">Flat number/ building name is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Area</mat-label>
-                        <textarea matInput placeholder="Area name" formControlName="Area" required></textarea>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Location.Area')?.touched && this.addForm.get('Location.Area')?.errors?.['required']">Area is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Landmark</mat-label>
-                        <input matInput placeholder="Landmark" formControlName="Landmark" required>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Location.Landmark')?.touched && this.addForm.get('Location.Landmark')?.errors?.['required']">Landmark is required</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>State</mat-label>
-                        <!-- <input matInput  placeholder="State name" formControlName="State" required> -->
-                        <mat-select formControlName="State" (selectionChange)="onStateChange()" required>
-                            <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Location.State')?.touched && this.addForm.get('Location.State')?.errors?.['required']">State name is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>City</mat-label>
-                        <!-- <input matInput placeholder="City name" formControlName="City" required> -->
-                        <mat-select formControlName="City" required>
-                            <mat-option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</mat-option>
-                          </mat-select>
-                    </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('Location.City')?.touched && this.addForm.get('Location.City')?.errors?.['required']">City name is required</p>
-                </div>
-                <div class="col">
-                    <mat-form-field formGroupName="Location">
-                        <mat-label>Zipcode</mat-label>
-                        <!-- <input matInput placeholder="Enter zipcode" (ngModelChange)="onPostalCodeChange($event)" formControlName="Pincode" required> -->
-                        <input matInput placeholder="Enter zipcode" formControlName="Pincode" required>
-                    </mat-form-field>
-                    <div *ngIf="this.addForm.get('Location.Pincode')?.touched && this.addForm.get('Location.Pincode')?.errors">
-                        <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p>
-                        <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
-                    </div>
-                    <p class="error">{{errorMessage}}</p>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" formControlName="Gender" id="inlineRadio3"
+                            value="Other" />
+                        <label class="form-check-label" for="inlineRadio3">Other</label>
+                    </div> -->
+                    <p class="error"
+                        *ngIf="this.addForm.get('Gender')?.touched && this.addForm.get('Gender')?.errors?.['required']">
+                        Gender is required
+                    </p>
                 </div>
                 <div class="col">
                     <mat-form-field>
@@ -303,57 +216,168 @@
                         <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
                         <mat-datepicker #birth></mat-datepicker>
                     </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('dob')?.touched && this.addForm.get('dob')?.errors?.['required']">Date of birth is required</p>
+                    <p class="error"
+                        *ngIf="this.addForm.get('dob')?.touched && this.addForm.get('dob')?.errors?.['required']">Date
+                        of birth is required</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="package">
+                    <div class="col" formGroupName="Contact">
+                        <!-- <mat-form-field formGroupName="Contact"> -->
+                            <mat-label>Primary Contact No <span style="font-size: 15px;">*</span></mat-label>
+                            <ngx-intl-tel-input
+                            id="primary"
+                            formControlName="Primary"
+                          ></ngx-intl-tel-input>
+                        <!-- </mat-form-field> -->
+                        <div class="error" *ngIf="this.addForm.get('Contact.Primary')?.touched && this.addForm.get('Contact.Primary')?.errors">
+                            <p *ngIf="this.addForm.get('Contact.Primary')?.errors?.['required']">Contact number is required</p>
+                            <p *ngIf="this.addForm.get('Contact.Primary')?.errors && !this.addForm.get('Contact.Primary')?.errors?.['required']">Phone number is invalid for selected country</p>
+                        </div>
+                    </div>
+                    <div class="col" formGroupName="Contact">
+                        <!-- <mat-form-field  formGroupName="Contact"> -->
+                        <mat-label>Emergency Contact No <span style="font-size: 15px;">*</span></mat-label>
+                        <ngx-intl-tel-input id="emergency" formControlName="Emergency"></ngx-intl-tel-input>
+                        <div class="error"
+                            *ngIf="this.addForm.get('Contact.Emergency')?.touched && this.addForm.get('Contact.Emergency')?.errors">
+                            <p *ngIf="this.addForm.get('Contact.Emergency')?.errors?.['required']">Contact number is
+                                required</p>
+                            <p
+                                *ngIf="this.addForm.get('Contact.Emergency')?.errors && !this.addForm.get('Contact.Emergency')?.errors?.['required']">
+                                Phone number is invalid for selected country</p>
+                        </div>
+                        <!-- </mat-form-field> -->
+                    </div>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>State</mat-label>
+                        <!-- <input matInput  placeholder="State name" formControlName="State" required> -->
+                        <mat-select formControlName="State" (selectionChange)="onStateChange()" required>
+                            <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Location.State')?.touched && this.addForm.get('Location.State')?.errors?.['required']">
+                        State name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>City</mat-label>
+                        <!-- <input matInput placeholder="City name" formControlName="City" required> -->
+                        <mat-select formControlName="City" required>
+                            <mat-option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Location.City')?.touched && this.addForm.get('Location.City')?.errors?.['required']">
+                        City name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Zipcode</mat-label>
+                        <!-- <input matInput placeholder="Enter zipcode" (ngModelChange)="onPostalCodeChange($event)" formControlName="Pincode" required> -->
+                        <input matInput placeholder="Enter zipcode" formControlName="Pincode" required>
+                    </mat-form-field>
+                    <div
+                        *ngIf="this.addForm.get('Location.Pincode')?.touched && this.addForm.get('Location.Pincode')?.errors">
+                        <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['required']">Zipcode is
+                            required</p>
+                        <p class="error" *ngIf="this.addForm.get('Location.Pincode')?.errors?.['pattern']">Invalid
+                            Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
+                    </div>
+                    <p class="error">{{errorMessage}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Flat, Society/ Building Name</mat-label>
+                        <textarea matInput placeholder="Flat No, Society/ Building name" formControlName="Flat"
+                            required></textarea>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Location.Flat')?.touched && this.addForm.get('Location.Flat')?.errors?.['required']">
+                        Flat number/ building name is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Area</mat-label>
+                        <textarea matInput placeholder="Area name" formControlName="Area" required></textarea>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Location.Area')?.touched && this.addForm.get('Location.Area')?.errors?.['required']">
+                        Area is required</p>
+                </div>
+                <div class="col">
+                    <mat-form-field formGroupName="Location">
+                        <mat-label>Landmark</mat-label>
+                        <input matInput placeholder="Landmark" formControlName="Landmark" required>
+                    </mat-form-field>
+                    <p class="error"
+                        *ngIf="this.addForm.get('Location.Landmark')?.touched && this.addForm.get('Location.Landmark')?.errors?.['required']">
+                        Landmark is required</p>
                 </div>
             </div>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button style="margin-right: 20px;" class="btn btn-secondary custom-secondary" matStepperPrevious>Back</button>
+                <button mat-button class="btn btn-secondary custom-secondary" matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="addForm" label="SKILLSET">
         <form [formGroup]="addForm">
             <div class="row">
-                <div class="col" formGroupName="SkillSet">
-                    <!-- <mat-form-field formGroupName="SkillSet"> -->
-                        <mat-label>Primary Skill Set</mat-label>
-                        <ng-select [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
+                <div class="package">
+                    <div class="col" formGroupName="SkillSet">
+                        <!-- <mat-form-field formGroupName="SkillSet"> -->
+                        <mat-label>Primary Skill Set <span style="font-size: 15px;">*</span></mat-label>
+                        <ng-select style="width: 80%;" [multiple]="true" formControlName="PrimarySkillset" [closeOnSelect]="false">
                             <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
                         </ng-select>
-                        <p class="error" *ngIf="this.addForm.get('SkillSet.PrimarySkillset')?.touched && this.addForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
-                    <!-- </mat-form-field> -->
-                </div>
-                <div class="col" formGroupName="SkillSet">
-                    <!-- <mat-form-field> -->
+                        <p class="error"
+                            *ngIf="this.addForm.get('SkillSet.PrimarySkillset')?.touched && this.addForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">
+                            Primary skill set is required</p>
+                        <!-- </mat-form-field> -->
+                    </div>
+                    <div class="col" formGroupName="SkillSet">
+                        <!-- <mat-form-field> -->
                         <mat-label>Secondary Skill Set</mat-label>
-                        <ng-select [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
+                        <ng-select style="width: 80%;" [multiple]="true" formControlName="SecondarySkillset" [closeOnSelect]="false">
                             <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
                         </ng-select>
-                    <!-- </mat-form-field> -->
+                        <!-- </mat-form-field> -->
+                    </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col">
                     <mat-form-field formGroupName="SkillSet">
                         <mat-label>Skill Level</mat-label>
                         <!-- <input matInput placeholder="Skill eg: Basic,Intermediate .." formControlName="SkillLevel" required> -->
                         <mat-select formControlName="SkillLevel" required>
-                          <mat-option *ngFor="let sLevel of skillLevel" [value]="sLevel">{{sLevel}}</mat-option>
+                            <mat-option *ngFor="let sLevel of skillLevel" [value]="sLevel">{{sLevel}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <p class="error" *ngIf="this.addForm.get('SkillSet.SkillLevel')?.touched && this.addForm.get('SkillSet.SkillLevel')?.errors?.['required']">Skill level is required</p>
+                    <p class="error"
+                        *ngIf="this.addForm.get('SkillSet.SkillLevel')?.touched && this.addForm.get('SkillSet.SkillLevel')?.errors?.['required']">
+                        Skill level is required</p>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
                     <mat-form-field formGroupName="SkillSet">
                         <mat-label>Experience</mat-label>
                         <input matInput placeholder="Experience eg: 2 years" formControlName="Experience" required>
                     </mat-form-field>
                     <p><small>*note: Experience is in between 0.00 years to 30 years</small></p>
-                    <div *ngIf="addForm.get('SkillSet.Experience')?.touched && addForm.get('SkillSet.Experience')?.errors" class="error">
+                    <div *ngIf="addForm.get('SkillSet.Experience')?.touched && addForm.get('SkillSet.Experience')?.errors"
+                        class="error">
                         <p *ngIf="addForm.get('SkillSet.Experience')?.errors?.['required']">Experience is required</p>
-                        <p *ngIf="addForm.get('SkillSet.Experience')?.errors?.['invalidExperience'] && !addForm.get('SkillSet.Experience')?.errors?.['required']">
-                          Invalid Experience. Eg: 5.4 years
+                        <p
+                            *ngIf="addForm.get('SkillSet.Experience')?.errors?.['invalidExperience'] && !addForm.get('SkillSet.Experience')?.errors?.['required']">
+                            Invalid Experience. Eg: 5.4 years
                         </p>
                     </div>
                 </div>
@@ -375,16 +399,17 @@
                 </div> -->
             </div>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button  style="margin-right: 20px;" class="btn btn-secondary custom-secondary" matStepperPrevious>Back</button>
+                <button mat-button class="btn btn-secondary custom-secondary" matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button class="btn btn-primary" (click)="addEmployee()" [disabled]="addForm.invalid">update</button>
+        <div style="display: flex;">
+            <button mat-button  style="margin-right: 20px;"class="btn btn-secondary custom-secondary" matStepperPrevious>Back</button>
+            <button class="btn btn-primary" (click)="addEmployee()"
+                [disabled]="addForm.invalid">update</button>
         </div>
     </mat-step>
 </mat-stepper>

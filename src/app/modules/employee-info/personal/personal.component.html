@@ -179,19 +179,6 @@
             <div class="row">
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Date of Birth <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
-                </div>
-                <div class="values" *ngIf="!editMode[2]">
-                  {{ dateFormate?.dob }}
-                </div>
-                <input type="date" class="form-control" formControlName="dob" *ngIf="editMode[2]" />
-                <p class="error"
-                  *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">
-                  Date of birth is required
-                </p>
-              </div>
-              <div class="col p-3">
-                <div>
                   <span style="color: gray">Personal Email <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
                 </div>
                 <div class="values" *ngIf="!editMode[2]">
@@ -234,6 +221,19 @@
                 <p class="error"
                   *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">
                   Gender is required
+                </p>
+              </div>
+              <div class="col p-3">
+                <div>
+                  <span style="color: gray">Date of Birth <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[2]">
+                  {{ dateFormate?.dob }}
+                </div>
+                <input type="date" class="form-control" formControlName="dob" *ngIf="editMode[2]" />
+                <p class="error"
+                  *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">
+                  Date of birth is required
                 </p>
               </div>
             </div>
@@ -319,57 +319,6 @@
             <div class="row">
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Flat No, Society/Building Name <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
-                </div>
-                <div class="values" *ngIf="!editMode[3]">
-                  {{ employeeInfo?.Location.Flat }}
-                </div>
-                <div formGroupName="Location">
-                  <!-- <input class="form-control" formControlName="Flat" *ngIf="editMode[3]"> -->
-                  <textarea class="form-control" formControlName="Flat" *ngIf="editMode[3]"
-                    id="exampleFormControlTextarea1" rows="3"></textarea>
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">
-                    Flat number is required
-                  </p>
-                </div>
-              </div>
-              <div class="col p-3">
-                <div>
-                  <span style="color: gray">Area <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
-                </div>
-                <div class="values" *ngIf="!editMode[3]">
-                  {{ employeeInfo?.Location.Area }}
-                </div>
-                <div formGroupName="Location">
-                  <!-- <input class="form-control" formControlName="Area" *ngIf="editMode[3]"> -->
-                  <textarea class="form-control" formControlName="Area" *ngIf="editMode[3]"
-                    id="exampleFormControlTextarea1" rows="3"></textarea>
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">
-                    Area name is required
-                  </p>
-                </div>
-              </div>
-              <div class="col p-3">
-                <div>
-                  <span style="color: gray">Landmark <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
-                </div>
-                <div class="values" *ngIf="!editMode[3]">
-                  {{ employeeInfo?.Location.Landmark }}
-                </div>
-                <div formGroupName="Location">
-                  <input class="form-control" formControlName="Landmark" *ngIf="editMode[3]" />
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">
-                    Landmark is required
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col p-3">
-                <div>
                   <span style="color: gray">State <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
@@ -418,6 +367,57 @@
                     <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
                   </div>
                   <p class="error">{{errorMessage}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col p-3">
+                <div>
+                  <span style="color: gray">Flat No, Society/Building Name <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[3]">
+                  {{ employeeInfo?.Location.Flat }}
+                </div>
+                <div formGroupName="Location">
+                  <!-- <input class="form-control" formControlName="Flat" *ngIf="editMode[3]"> -->
+                  <textarea class="form-control" formControlName="Flat" *ngIf="editMode[3]"
+                    id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <p class="error"
+                    *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">
+                    Flat number is required
+                  </p>
+                </div>
+              </div>
+              <div class="col p-3">
+                <div>
+                  <span style="color: gray">Area <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[3]">
+                  {{ employeeInfo?.Location.Area }}
+                </div>
+                <div formGroupName="Location">
+                  <!-- <input class="form-control" formControlName="Area" *ngIf="editMode[3]"> -->
+                  <textarea class="form-control" formControlName="Area" *ngIf="editMode[3]"
+                    id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <p class="error"
+                    *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">
+                    Area name is required
+                  </p>
+                </div>
+              </div>
+              <div class="col p-3">
+                <div>
+                  <span style="color: gray">Landmark <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[3]">
+                  {{ employeeInfo?.Location.Landmark }}
+                </div>
+                <div formGroupName="Location">
+                  <input class="form-control" formControlName="Landmark" *ngIf="editMode[3]" />
+                  <p class="error"
+                    *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">
+                    Landmark is required
+                  </p>
                 </div>
               </div>
             </div>
