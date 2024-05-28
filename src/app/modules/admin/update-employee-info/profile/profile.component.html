@@ -1,0 +1,177 @@
+<div class="personal-container">
+    <app-display></app-display>
+    <mat-stepper class="example-stepper">
+        <mat-step [stepControl]="updateForm" label="PROFILE">
+            <form [formGroup]="updateForm">
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="First name" formControlName="FirstName" required>
+                        </mat-form-field>
+                        <div *ngIf="updateForm.controls['FirstName']?.['touched'] && updateForm.controls['FirstName']?.['errors']"
+                            class="error">
+                            <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['required']">
+                                First name is required
+                            </p>
+                            <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['minLength']">
+                                First name should have minimum 4 letters
+                            </p>
+                            <p *ngIf="updateForm.controls['FirstName']?.['errors']?.['maxlength']">
+                                Last name should be maximum 15 letters
+                            </p>
+                            <p
+                                *ngIf="updateForm.controls['FirstName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['FirstName']?.['errors']?.['required']">
+                                First name contains only alphabets & no whitespaces before
+                                and after
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput placeholder="Middle name" formControlName="MiddleName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Last name" formControlName="LastName" required>
+                        </mat-form-field>
+                        <div *ngIf="updateForm.controls['LastName']?.['touched'] && updateForm.controls['LastName']?.['errors']"
+                            class="error">
+                            <p *ngIf="updateForm.controls['LastName']?.['errors']?.['required']">
+                                Last name is required
+                            </p>
+                            <p *ngIf="updateForm.controls['LastName']?.['errors']?.['minLength']">
+                                Last name should have minimum 4 letters
+                            </p>
+                            <p *ngIf="updateForm.controls['LastName']?.['errors']?.['maxlength']">
+                                First name should be maximum 15 letters
+                            </p>
+                            <p
+                                *ngIf="updateForm.controls['LastName']?.['errors']?.['onlyAlfa'] && !updateForm.controls['LastName']?.['errors']?.['required']">
+                                Last name contains only alphabets & no whitespaces before
+                                and after
+                            </p>
+                        </div>
+                    </div>
+                    <!-- <div class="col">
+                    <mat-form-field>
+                        <mat-label>Employee Code</mat-label>
+                        <input matInput placeholder="Employee code" formControlName="EmployeeCode" required>
+                    </mat-form-field>
+                    <p *ngIf="this.updateForm.get('EmployeeCode')?.touched && this.updateForm.get('EmployeeCode')?.errors?.['required']" class="error">Employee code is required</p>
+                </div> -->
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field formGroupName="Email">
+                            <mat-label>Company Email</mat-label>
+                            <input matInput placeholder="Company email" formControlName="CompanyMail" required>
+                        </mat-form-field>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('Email.CompanyMail')?.touched && this.updateForm.get('Email.CompanyMail')?.errors">
+                            <p class="error" *ngIf="this.updateForm.get('Email.CompanyMail')?.errors?.['required']">
+                                Email is required
+                            </p>
+                            <p
+                                *ngIf="(this.updateForm.get('Email.CompanyMail')?.errors?.['email'] || this.updateForm.get('Email.CompanyMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.CompanyMail')?.errors?.['required']">
+                                Invalid email formate. Eg: example&#64;gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <mat-form-field formGroupName="Department">
+                            <mat-label>Department Name</mat-label>
+                            <mat-select formControlName="DepartmentName" required>
+                                <mat-option *ngFor="let depart of department" [value]="depart">
+                                    {{ depart }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Department')?.touched && this.updateForm.get('Department')?.errors?.['required']">
+                            Department name is required</p>
+                    </div>
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Designation</mat-label>
+                            <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
+                            <mat-select formControlName="Designation" required>
+                                <mat-option *ngFor="let designation of designations" [value]="designation">
+                                    {{ designation }}
+                                </mat-option>
+                                <!-- <mat-option value="two">Second option</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Designation')?.touched && this.updateForm.get('Designation')?.errors?.['required']">
+                            Designation is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Team Lead Name</mat-label>
+                            <mat-select formControlName="TeamLead">
+                                <mat-option *ngFor="let teamLead of teamLeadInfo" [value]="teamLead.EmployeeCode">{{teamLead.view}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Manager Name</mat-label>
+                            <mat-select formControlName="ManagerId">
+                                <mat-option *ngFor="let manager of managerInfo" [value]="manager.EmployeeCode">{{manager.view}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col">
+                        <ng-multiselect-dropdown [placeholder]="'Team Lead Name'" [settings]="teamLeadDropdownSettings"
+                            [data]="viewTeamLead" formControlName="TeamLead">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    <div class="col">
+                        <ng-multiselect-dropdown [placeholder]="'Manager Name'" [settings]="managerDropdownSettings"
+                            [data]="viewManager" formControlName="ManagerId" class="custom-dropdown">
+                        </ng-multiselect-dropdown>
+                    </div> -->
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Date of Joining</mat-label>
+                            <input matInput [matDatepicker]="join" formControlName="doj" placeholder="Date of join">
+                            <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
+                            <mat-datepicker #join></mat-datepicker>
+                        </mat-form-field>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('doj')?.touched && this.updateForm.get('doj')?.errors">
+                            <p *ngIf="this.updateForm.get('doj')?.errors?.['required']">Date of joining is required</p>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Date of Confirmation</mat-label>
+                            <input matInput [matDatepicker]="conform" formControlName="doc"
+                                placeholder="Date of conformation ">
+                            <mat-datepicker-toggle matSuffix [for]="conform"></mat-datepicker-toggle>
+                            <mat-datepicker #conform></mat-datepicker>
+                        </mat-form-field>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('doc')?.touched && this.updateForm.get('doc')?.errors">
+                            <p *ngIf="this.updateForm.get('doc')?.errors?.['required']">Date of confirmation is required
+                            </p>
+                        </div>
+                    </div>
+                </div>    
+                </div>
+                <div style="display: flex;">
+                    <button class="btn btn-primary" id="bnButton" (click)="updateEmployee()"
+                        [disabled]="updateForm.invalid">Update</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-stepper>
+</div>
+
+<!-- style="width: 20%;" class="dateSize" -->

@@ -50,6 +50,7 @@ export class SkillsetComponent implements OnInit{
       .subscribe(
         data => {
           if (data) {
+            console.log(data);
             this.updateForm.patchValue(data)
             this.employeeInfo = data
           }
@@ -94,6 +95,7 @@ export class SkillsetComponent implements OnInit{
       Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
+      Country: ['', [Validators.required]],
     }),
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
@@ -109,7 +111,11 @@ export class SkillsetComponent implements OnInit{
         CertificationDate: [''],
       }),
     }),
-    ManagerId: ['', [Validators.required]],
+    ManagerId: [''],
+    TeamLead: [''],
+    Department: this.fb.group({
+      DepartmentName:[''],
+    }),
     Designation: ['', [Validators.required]],
   });
 

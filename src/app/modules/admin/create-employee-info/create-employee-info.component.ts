@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -15,7 +15,7 @@ import { EncryptingDecryptingService } from '../../../services/encrypting-decryp
 import {  MatSelectModule } from '@angular/material/select';
 import { EnumValuesService } from '../../../services/enum-values.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { State, City } from 'country-state-city';
+import { Country, State, City } from 'country-state-city';
 
 
 @Component({
@@ -52,9 +52,12 @@ export class CreateEmployeeInfoComponent implements OnInit{
   skillLevel!:[string];
   managerInfo: any[] = [];
   viewManager: any[] = [];
+  teamLeadInfo: any[] = [];
+  viewTeamLead: any[] = [];
   department!:[string];
   managerId: any;
   setEmployeeCodeToManagerId!:string
+  countries: any[] = [];
   states: any[] = [];
   cities: any[] = [];
   selectedState!: string;
@@ -67,13 +70,21 @@ export class CreateEmployeeInfoComponent implements OnInit{
     allowSearchFilter: true,
     noDataAvailablePlaceholderText: 'No manager found',
   }
+  teamLeadDropdownSettings = {
+    singleSelection: true,
+    idField: 'EmployeeCode',
+    textField: 'view',
+    allowSearchFilter: true,
+    noDataAvailablePlaceholderText: 'No manager found',
+  }
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private route: Router,
     private ed: EncryptingDecryptingService,
-    private enumValues: EnumValuesService
+    private enumValues: EnumValuesService,
+    private cdr: ChangeDetectorRef
     ){}
 
   ngOnInit(): void {
@@ -85,7 +96,28 @@ export class CreateEmployeeInfoComponent implements OnInit{
     //   }
     // });
 
-    this.states = State.getStatesOfCountry('IN');
+    this.countries = Country.getAllCountries();
+    this.addForm.get('Location.Country')?.valueChanges.subscribe((countryIsoCode) => {
+      console.log(countryIsoCode);
+      if (countryIsoCode) {
+        this.onCountryChange(countryIsoCode);
+      } else {
+        this.states = [];
+        this.cities = [];
+        this.addForm.get('Location.State')?.reset();
+        this.addForm.get('Location.City')?.reset();
+      }
+    })
+    this.addForm.get('Location.State')?.valueChanges.subscribe((stateIsoCode) => {
+      const countryIsoCode = this.addForm.get('Location.Country')?.value;
+      if (countryIsoCode && stateIsoCode) {
+        this.onStateChange(countryIsoCode, stateIsoCode);
+      } else {
+        this.cities = [];
+        this.addForm.get('Location.City')?.reset();
+      }
+    });
+    
     this.enumValues.getAllEnumValues()
     .subscribe(
       data=>{
@@ -109,6 +141,23 @@ export class CreateEmployeeInfoComponent implements OnInit{
         });
         console.log(this.managerInfo);
         this.viewManager = this.managerInfo;
+      },error=>{
+        console.error(error);
+      }
+    )
+
+    this.employeeService.getAllTeamLead().subscribe(
+      data=>{
+        data.forEach((item: any)=>{
+          const teamLeadObj = {
+            FirstName: item.FirstName,
+            LastName: item.LastName,
+            EmployeeCode: item.EmployeeCode,
+            view: item.FirstName + ' ' + item.LastName + ' - ' + item.EmployeeCode
+          };
+          this.teamLeadInfo.push(teamLeadObj);
+        });
+        this.viewTeamLead = this.teamLeadInfo 
       },error=>{
         console.error(error);
       }
@@ -138,6 +187,7 @@ export class CreateEmployeeInfoComponent implements OnInit{
       Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
       City: ['', [Validators.required]],
       State: ['', [Validators.required]],
+      Country: ['', [Validators.required]]
     }),
     dob: ['', [Validators.required]],
     doj: ['', [Validators.required]],
@@ -154,6 +204,7 @@ export class CreateEmployeeInfoComponent implements OnInit{
       })
     }),
     ManagerId: [''],
+    TeamLead: [''],
     Department: this.fb.group({
       DepartmentName:['', [Validators.required]]
     }),
@@ -199,11 +250,16 @@ export class CreateEmployeeInfoComponent implements OnInit{
   //     }
   //   });
   // }
+  onCountryChange(countryIsoCode: string) {
+    this.states = State.getStatesOfCountry(countryIsoCode);
+    this.addForm.get('Location.State')?.reset();
+    this.addForm.get('Location.City')?.reset();
+    this.cities = [];
+  }
 
-  onStateChange() {
-    const selectedState = this.addForm.get('Location.State')?.value;
-    this.cities = City.getCitiesOfState('IN', selectedState as string);
-    this.addForm.get('Location.City')?.setValue('');
+  onStateChange(countryIsoCode: string, stateIsoCode: string) {
+    this.cities = City.getCitiesOfState(countryIsoCode, stateIsoCode);
+    this.addForm.get('Location.City')?.reset();
   }
  
   get primaryE164Number() {
@@ -244,41 +300,27 @@ export class CreateEmployeeInfoComponent implements OnInit{
     }
   }
 
-  // getSelectedPrimarySkills() {
-  //   return this.addForm.get('SkillSet.PrimarySkillset')?.value;
-  // }
-  // getSelectedSecondarySkills() {
-  //   return this.addForm.get('SkillSet.SecondarySkillset')?.value;
-  // }
-  // getRemainingPrimarySkills() {
-  //   return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
-  // }
-  // getRemainingSecondarySkills() {
-  //   return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
-  // }
 
   addEmployee(){
-    console.log(this.managerId)
-    this.managerId = this.addForm.value.ManagerId;
-    if(this.managerId && this.managerId.length>0){
-       this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
+    if(this.addForm.valid){
+      this.addForm.patchValue({
+        Contact: {
+          Primary: this.primaryE164Number,
+          Emergency: this.emergencyE164Number
+        },
+      });
+      console.log(this.addForm.value);
+      this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
+      .subscribe(
+        (data)=>{
+          // console.log(data);
+          this.route.navigate(['admin/employee-manage']);
+        },error=>{
+          console.error(error);
+        }
+      )
+    }else{
+      this.addForm.markAllAsTouched();
     }
-    this.addForm.patchValue({
-      Contact: {
-        Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number
-      },
-      ManagerId: this.setEmployeeCodeToManagerId
-    });
-    console.log(this.addForm.value);
-    this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
-    .subscribe(
-      (data)=>{
-        // console.log(data);
-        this.route.navigate(['admin/employee-manage']);
-      },error=>{
-        console.error(error);
-      }
-    )
   }
 }

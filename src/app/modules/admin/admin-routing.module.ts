@@ -32,9 +32,9 @@ const routes: Routes = [
   },
   {
     path: 'update-employee',
-    loadComponent: () =>
-      import('./update-employee/update-employee.component').then(
-        (c) => c.UpdateEmployeeComponent
+    loadChildren: () =>
+      import('./update-employee-info/update-employee-info.module').then(
+        (c) => c.UpdateEmployeeInfoModule
       ),
   },
   {

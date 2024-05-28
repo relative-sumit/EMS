@@ -46,7 +46,7 @@ export class EmployeeManagementComponent implements OnInit{
     this.employeeService.employeeInfo
     .subscribe(
       (data)=>{
-        console.log(data);
+        // console.log(data);
         // this._id = data._id
         // console.log(this._id);
       }
@@ -110,7 +110,7 @@ export class EmployeeManagementComponent implements OnInit{
   }
   updateEmployee(employee: any){
     this.employeeService.setEmployeeInfo(employee);
-    this.route.navigate(['admin/update-employee']);
+    this.route.navigate(['admin/update-employee/profile']);
   }
   deleteEmployee(employee: any){
     console.log(employee);

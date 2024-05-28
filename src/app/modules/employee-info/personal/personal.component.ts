@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EmployeeService } from '../../../services/employee.service';
-import { State, City } from 'country-state-city';
+import { State, City, Country } from 'country-state-city';
 
 @Component({
   selector: 'app-personal',
@@ -43,6 +43,7 @@ export class PersonalComponent implements OnInit {
   expanded: { [key: string]: boolean } = {};
   errorMessage: string = '';
   dateFormate: any;
+  countries: any[] = [];
   states: any[] = [];
   cities: any[] = [];
   selectedState!: string;
@@ -73,12 +74,28 @@ export class PersonalComponent implements OnInit {
     this.encrptedUsername = sessionStorage.getItem('username');
     this.username = this.ed.decrypt(this.encrptedUsername);
     this.userId = this.ed.decrypt(this.encrptedUserId);
-    // this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-      //   if (this.updateForm.get('Location.Pincode')?.valid) {
-        //     this.onPostalCodeChange(value);
-      //   }
-    // });
-    this.states = State.getStatesOfCountry('IN');
+    this.countries = Country.getAllCountries();
+    this.updateForm.get('Location.Country')?.valueChanges.subscribe((countryIsoCode) => {
+      console.log(countryIsoCode);
+      if (countryIsoCode) {
+        this.onCountryChange(countryIsoCode);
+      } else {
+        this.states = [];
+        this.cities = [];
+        // this.updateForm.get('Location.State')?.reset();
+        // this.updateForm.get('Location.City')?.reset();
+      }
+    })
+    this.updateForm.get('Location.State')?.valueChanges.subscribe((stateIsoCode) => {
+      const countryIsoCode = this.updateForm.get('Location.Country')?.value;
+      if (countryIsoCode && stateIsoCode) {
+        console.log(countryIsoCode, stateIsoCode)
+        this.onStateChange(countryIsoCode, stateIsoCode);
+      } else {
+        this.cities = [];
+        // this.updateForm.get('Location.City')?.reset();
+      }
+    });
     this.auth.getEmployeeInfo(this.userId)
       .subscribe(
         data => {
@@ -86,11 +103,16 @@ export class PersonalComponent implements OnInit {
             this.photoPreview = data.Photo;
             this.employeeInfo = this.transformDates(data);
             this.dateFormate = this.transformDateFormate(this.employeeInfo);
+            console.log(data);
             this.updateForm.patchValue(this.employeeInfo);
-            const selectedState = this.updateForm.get('Location.State')?.value;
-            if (selectedState) {
-              this.onStateChange(selectedState, this.employeeInfo.Location.City);
-            }
+            const countryIsoCode = this.updateForm.get('Location.Country')?.value;
+            if (countryIsoCode) {
+              this.onCountryChange(countryIsoCode);
+              const stateIsoCode = this.updateForm.get('Location.State')?.value;
+              if (stateIsoCode) {
+                  this.onStateChange(countryIsoCode, stateIsoCode);
+              }
+          }
           }
         }
       );
@@ -136,6 +158,7 @@ export class PersonalComponent implements OnInit {
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
+      Country: ['', [Validators.required]],
       State: ['', [Validators.required]],
       City: ['', [Validators.required]],
       Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
@@ -154,7 +177,11 @@ export class PersonalComponent implements OnInit {
         CertificationDate: [''],
       }),
     }),
-    ManagerId: ['', [Validators.required]],
+    ManagerId: [''],
+    TeamLead: [''],
+    Department: this.fb.group({
+      DepartmentName:[''],
+    }),
     Designation: ['', [Validators.required]],
   });
 
@@ -234,16 +261,16 @@ export class PersonalComponent implements OnInit {
   //   this.cities = City.getCitiesOfState('IN', selectedState as string);
   //   this.updateForm.get('Location.City')?.setValue('');
   // }
-  onStateChange(stateCode?: string, cityName?: string): void {
-    const selectedState = stateCode || this.updateForm.get('Location.State')?.value;
-    if (selectedState) {
-      this.cities = City.getCitiesOfState('IN', selectedState);
-      if (cityName) {
-        this.updateForm.get('Location.City')?.setValue(cityName);
-      } else {
-        this.updateForm.get('Location.City')?.setValue('');
-      }
-    }
+  onCountryChange(countryIsoCode: string) {
+    this.states = State.getStatesOfCountry(countryIsoCode);
+    // this.updateForm.get('Location.State')?.reset();
+    // this.updateForm.get('Location.City')?.reset();
+    // this.cities = [];
+  }
+
+  onStateChange(countryIsoCode: string, stateIsoCode: string) {
+    this.cities = City.getCitiesOfState(countryIsoCode, stateIsoCode);
+    // this.updateForm.get('Location.City')?.reset();
   }
 
   updateEmployee() {

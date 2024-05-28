@@ -1,0 +1,33 @@
+/* app-display{
+    margin-right: 5px;
+    margin-top: 20px;
+    left: 0rem;
+    width: 12vw;
+    background: #f4f7fa;
+} */
+/* .personal-container{
+    display: flex;
+} */
+
+.example-stepper{
+    margin: 0px 10px;
+    border: solid 1px black;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+.error{
+    color: red;
+}
+/* ng-multiselect-dropdown {
+    border: solid 1px rebeccapurple;
+    width: 70%;
+} */
+
+mat-form-field{
+    width: 250px;
+}
+@media screen and (max-width: 407px){
+    mat-form-field{
+        width: 200px;
+    }
+}

@@ -15,6 +15,17 @@ query ManagerInfo {
   }
 }
 `;
+const GET_ALL_TEAMLEAD_INFO = gql`
+query TeamLeadInfo {
+  teamLeadInfo {
+    _id
+    FirstName
+    MiddleName
+    LastName
+    EmployeeCode
+  }
+}    
+`;
 
 const UPDATE_EMPLOYEE_INFO = gql`
   mutation updateEmployeeInfoById($_id: String!, $Username: String!, $input: EmployeeInfoInput!) {
@@ -86,7 +97,15 @@ export class EmployeeService {
 
   updateEmployeeInfoById(_id: String, Username: String, input:any){
     // console.log("from service","_id: ", _id, "Data: ", input)
+    // console.log("Before: ", input);
+    
     input.Department = input.Department.DepartmentName
+    if( typeof input.ManagerId === 'object'){
+      input.ManagerId = input.ManagerId.EmployeeCode
+    }
+    if( typeof input.TeamLead === 'object'){
+      input.TeamLead = input.TeamLead.EmployeeCode
+    }
     console.log("InputData: ", input);
     return this.apollo.mutate<any>({
       mutation:UPDATE_EMPLOYEE_INFO,
@@ -158,8 +177,11 @@ export class EmployeeService {
   }
 
   createEmployeeInfo(Username: String, input:any){
-    // console.log("from service","_id: ", _id, "Data: ", input)
     input.Department = input.Department.DepartmentName
+    // input.ManagerId = input.ManagerId[0].EmployeeCode
+    // input.TeamLead = input.TeamLead[0].EmployeeCode
+    console.log("from service", input)
+
     return this.apollo.mutate<any>({
       mutation:CREATE_EMPLOYEE_INFO,
       variables:{
@@ -174,5 +196,11 @@ export class EmployeeService {
       query:GET_ALL_MANAGERS_INFO
     })
     .valueChanges.pipe(map((info) => info.data.managerInfo));
+  }
+  getAllTeamLead(){
+    return this.apollo.watchQuery<any>({
+      query:GET_ALL_TEAMLEAD_INFO
+    })
+    .valueChanges.pipe(map((info) => info.data.teamLeadInfo));
   }
 }
