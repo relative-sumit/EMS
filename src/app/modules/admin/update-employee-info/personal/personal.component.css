@@ -1,0 +1,39 @@
+/* app-display{
+
+} */
+/* .personal-container{
+    display: flex;
+} */
+.example-stepper{
+    margin: 0px 10px;
+    border: solid 1px black;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+.error{
+    color: red;
+}
+::ng-deep ngx-intl-tel-input .iti__flag-container + input {
+    background-color:rgba(0, 0, 0, 0.054);
+    width: 250px; 
+}
+.upload{
+    background-color:rgba(0, 0, 0, 0.054);
+    margin-top: 10px;
+}
+
+mat-form-field{
+    width: 250px;
+}
+
+@media screen and (max-width: 524px){
+    .upload{
+        margin-top: 0px;
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width: 407px){
+    mat-form-field{
+        width: 200px;
+    }
+}

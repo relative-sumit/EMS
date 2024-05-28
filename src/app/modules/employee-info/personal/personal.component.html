@@ -319,13 +319,31 @@
             <div class="row">
               <div class="col p-3">
                 <div>
+                  <span style="color: gray">Country <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                </div>
+                <div class="values" *ngIf="!editMode[3]">
+                  {{ employeeInfo?.Location.Country }}
+                </div>
+                <div formGroupName="Location" *ngIf="editMode[3]">
+                  <select class="form-control" formControlName="Country" required>
+                    <option *ngFor="let country of countries" [value]="country.isoCode">{{ country.name }}</option>
+                  </select>
+                  <!-- <input class="form-control" formControlName="State" *ngIf="editMode[3]" readonly/> -->
+                  <p class="error"
+                    *ngIf="this.updateForm.get('Location.Country')?.touched && this.updateForm.get('Location.Country')?.errors?.['required']">
+                    Country name is required
+                  </p>
+                </div>
+              </div>
+              <div class="col p-3">
+                <div>
                   <span style="color: gray">State <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.State }}
                 </div>
                 <div formGroupName="Location" *ngIf="editMode[3]">
-                  <select class="form-control" formControlName="State"  (selectionChange)="onStateChange()" required>
+                  <select class="form-control" formControlName="State" required>
                     <option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</option>
                   </select>
                   <!-- <input class="form-control" formControlName="State" *ngIf="editMode[3]" readonly/> -->
@@ -353,6 +371,8 @@
                   </p>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col p-3">
                 <div>
                   <span style="color: gray">Zipcode <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
@@ -369,8 +389,6 @@
                   <p class="error">{{errorMessage}}</p>
                 </div>
               </div>
-            </div>
-            <div class="row">
               <div class="col p-3">
                 <div>
                   <span style="color: gray">Flat No, Society/Building Name <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
@@ -405,6 +423,8 @@
                   </p>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col p-3">
                 <div>
                   <span style="color: gray">Landmark <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>

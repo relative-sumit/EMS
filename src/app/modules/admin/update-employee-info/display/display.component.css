@@ -1,0 +1,33 @@
+/* .side-nav-content{
+    padding-top: 20px;
+} */
+/* .nav-list {
+    list-style: none;
+    height: 100%;
+    padding: 0%;
+    margin-bottom: 0%;
+    margin-left: 20px;
+} */
+/* a{
+    text-decoration: none;
+    color: white;
+    font-size: larger;
+    margin-bottom: 10px;
+} */
+
+/* .nav-list-item {
+    opacity: 0.3; 
+  }
+  
+  .nav-list-item.active {
+    opacity: 1; 
+} */
+nav ul li{
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    font-size: larger;
+}
+nav{
+    margin: 10px;
+}

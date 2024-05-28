@@ -1,0 +1,21 @@
+<!-- <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <ul class="navbar-nav"> -->
+      <!-- <li class="nav-item active" *ngFor="let item of navbarListItem"> --> <!--[ngClass]="{'active': item.name === activeItem}" -->
+           <!-- <a class="nav-link" (click)="setActiveItem(item.name)">{{item.name}}</a> --> <!--(click)="setActiveItem(item.name)">{{ item.name }}--> 
+      <!-- </li>
+    </ul>
+  </div>
+</nav> -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <ul class="navbar-nav">
+      <li class="nav-item active" *ngFor="let item of navbarListItem">
+          <a class="nav-link" (click)="setActiveItem(item.name)">{{item.name}}</a>
+      </li>
+    </ul>
+  </div>
+</nav>

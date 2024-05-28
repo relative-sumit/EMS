@@ -34,10 +34,6 @@ query EmployeeInfoById($userId: String) {
       Email
       Password
       Role
-      CreatedBy
-      UpdatedBy
-      IsActive
-      IsDeleted
     }
     Photo
     Gender
@@ -57,6 +53,7 @@ query EmployeeInfoById($userId: String) {
       Pincode
       City
       State
+      Country
     }
     dob
     doj
@@ -64,16 +61,9 @@ query EmployeeInfoById($userId: String) {
     Department {
       DepartmentName
       Description
-      CreatedBy
-      UpdatedBy
-      IsActive
-      IsDeleted
       _id
-      CreatedDate
-      UpdatedDate
     }
     SkillSet {
-      EmployeeSkillsetId
       PrimarySkillset
       SecondarySkillset
       SkillLevel
@@ -99,20 +89,25 @@ query EmployeeInfoById($userId: String) {
       Description
       Addon
       IsWorkable
-      CreatedBy
-      CreatedDate
-      UpdatedBy
-      UpdatedDate
-      IsActive
-      IsDeleted
       Message
     }
-    ManagerId
+    ManagerId {
+      _id
+      FirstName
+      MiddleName
+      LastName
+      EmployeeCode
+      Designation
+    }
+    TeamLead {
+      _id
+      FirstName
+      MiddleName
+      LastName
+      EmployeeCode
+      Designation
+    }
     Designation
-    CreatedBy
-    UpdatedBy
-    IsActive
-    IsDeleted
   }
 }
 `;
@@ -151,6 +146,7 @@ query EmployeeInfo {
       Pincode
       City
       State
+      Country
     }
     dob
     doj
@@ -188,7 +184,22 @@ query EmployeeInfo {
       IsWorkable
       Message
     }
-    ManagerId
+    ManagerId {
+      _id
+      FirstName
+      MiddleName
+      LastName
+      EmployeeCode
+      Designation
+    }
+    TeamLead {
+      _id
+      FirstName
+      MiddleName
+      LastName
+      EmployeeCode
+      Designation
+    }
     Designation
   }
 }
@@ -263,6 +274,9 @@ export class AuthService {
   }
 
   updateEmployeeInfo(UserId: String, Username: string, input: any) {
+    input.Department = input.Department.DepartmentName
+    input.ManagerId = input.ManagerId.EmployeeCode
+    input.TeamLead = input.TeamLead.EmployeeCode
     return this.apollo.mutate<any>({
       mutation: UPDATE_EMPLOYEE_INFO,
       variables: {

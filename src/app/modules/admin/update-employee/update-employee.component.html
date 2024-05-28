@@ -1,4 +1,4 @@
-<mat-stepper class="example-stepper">
+<mat-stepper class="example-stepper" #stepper>
     <mat-step [stepControl]="updateForm" label="PROFILE">
         <form [formGroup]="updateForm">
             <div class="row">
@@ -138,7 +138,7 @@
             </div>
             <div style="display: flex;">
                 <button mat-button class="btn btn-primary custom-secondary" id="bnButton" matStepperNext>Next</button>
-                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee(stepper.selectedIndex)" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>
@@ -266,7 +266,7 @@
                 </div>
                 <div class="col" id="contactnum">
                     <mat-form-field formGroupName="Location">
-                        <mat-label>State</mat-label>
+                        <mat-label>Country</mat-label>
                         <mat-select formControlName="State" (selectionChange)="onStateChange()" required>
                             <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</mat-option>
                         </mat-select>
@@ -336,7 +336,7 @@
             <div style="display: flex;">
                 <button mat-button class="custom-secondary" id="bnButton" matStepperPrevious>Back</button>
                 <button mat-button class="custom-secondary" id="bnButton" matStepperNext>Next</button>
-                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                <button class="btn btn-primary"  id="bnButton" (click)="updateEmployee(stepper.selectedIndex)" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>
@@ -406,7 +406,7 @@
             <div style="display: flex;">
                 <button mat-button class="custom-secondary" id="bnButton" matStepperPrevious>Back</button>
                 <!-- <button mat-button class="btn btn-secondary" matStepperNext>Next</button> -->
-                <button class="btn btn-primary" id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+                <button class="btn btn-primary" id="bnButton" (click)="updateEmployee(stepper.selectedIndex)" [disabled]="updateForm.invalid">Update</button>
             </div>
         </form>
     </mat-step>

@@ -1,0 +1,73 @@
+<div class="personal-container">
+<app-display></app-display>
+<mat-stepper class="example-stepper">
+<mat-step [stepControl]="updateForm" label="SKILL SET">
+    <form [formGroup]="updateForm">
+        <div class="row">
+            <div class="col p-3" formGroupName="SkillSet">
+                <!-- <mat-form-field formGroupName="SkillSet"> -->
+                    <mat-label>Primary Skill Set <span style="font-size: 15px;">*</span></mat-label>
+                    <ng-select [multiple]="true" style="width: 80%;" formControlName="PrimarySkillset" [closeOnSelect]="false">
+                        <ng-option *ngFor="let skill of getSelectedPrimarySkills() " [value]="skill">{{skill}}</ng-option>
+                        <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
+                    </ng-select>
+                    <p class="error" *ngIf="this.updateForm.get('SkillSet.PrimarySkillset')?.touched && this.updateForm.get('SkillSet.PrimarySkillset')?.errors?.['required']">Primary skill set is required</p>
+                <!-- </mat-form-field> -->
+            </div>
+            <div class="col p-3" formGroupName="SkillSet">
+                <!-- <mat-form-field> -->
+                    <mat-label>Secondary Skill Set</mat-label>
+                    <ng-select [multiple]="true" style="width: 80%;" formControlName="SecondarySkillset" [closeOnSelect]="false">
+                        <ng-option *ngFor="let skill of getSelectedSecondarySkills()" [value]="skill">{{skill}}</ng-option>
+                        <ng-option *ngFor="let s of skillSet" [value]="s">{{s}}</ng-option>
+                    </ng-select>
+                <!-- </mat-form-field> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col p-3">
+                <mat-form-field formGroupName="SkillSet">
+                    <mat-label>Skill Level</mat-label>
+                    <mat-select formControlName="SkillLevel" required>
+                        <mat-option *ngFor="let sLevel of skillLevel" [value]="sLevel">{{sLevel}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <p class="error" *ngIf="this.updateForm.get('SkillSet.SkillLevel')?.touched && this.updateForm.get('SkillSet.SkillLevel')?.errors?.['required']">Skill level is required</p>
+            </div>
+            <div class="col p-3">
+                <mat-form-field formGroupName="SkillSet">
+                    <mat-label>Experience</mat-label>
+                    <input matInput placeholder="Experience eg: 2 years" formControlName="Experience" required>
+                </mat-form-field>
+                <p><small>*note: Experience is in between 0.00 years to 30 years</small></p>
+                <div *ngIf="updateForm.get('SkillSet.Experience')?.touched && updateForm.get('SkillSet.Experience')?.errors" class="error">
+                    <p *ngIf="updateForm.get('SkillSet.Experience')?.errors?.['required']">Experience is required</p>
+                    <p *ngIf="updateForm.get('SkillSet.Experience')?.errors?.['invalidExperience'] && !updateForm.get('SkillSet.Experience')?.errors?.['required']">
+                      Invalid Experience. Eg: 5.4 years
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="col" formGroupName="SkillSet">
+                <mat-form-field formGroupName="Certification">
+                    <mat-label>Certification Name</mat-label>
+                    <input matInput placeholder="Certification name" formControlName="CertificationName" required>
+                </mat-form-field>
+                <p class="error" *ngIf="this.updateForm.get('SkillSet.Certification.CertificationName')?.touched && this.updateForm.get('SkillSet.Certification.CertificationName')?.errors?.['required']"> Certification name is required</p>
+            </div>
+            <div class="col" formGroupName="SkillSet">
+                <mat-form-field formGroupName="Certification">
+                    <mat-label>Certification Date</mat-label>
+                    <input matInput [matDatepicker]="certification" formControlName="CertificationDate" placeholder="Certification date">
+                    <mat-datepicker-toggle matSuffix [for]="certification"></mat-datepicker-toggle>
+                    <mat-datepicker #certification></mat-datepicker>
+                </mat-form-field>
+                <p class="error" *ngIf="this.updateForm.get('SkillSet.Certification.CertificationDate')?.touched && this.updateForm.get('SkillSet.Certification.CertificationDate')?.errors?.['required']"> Certification date is required</p>
+            </div> -->
+        </div>
+        <div style="display: flex;">
+            <button class="btn btn-primary" id="bnButton" (click)="updateEmployee()" [disabled]="updateForm.invalid">Update</button>
+        </div>
+    </form>
+</mat-step>
+</mat-stepper>
+</div>

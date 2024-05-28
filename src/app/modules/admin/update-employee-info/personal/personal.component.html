@@ -1,0 +1,242 @@
+<div class="personal-container">
+    <app-display></app-display>
+    <mat-stepper class="example-stepper">
+        <mat-step [stepControl]="updateForm" label="PERSONAL">
+            <form [formGroup]="updateForm">
+                <div class="row">
+                    <div class="col">
+                        <!-- <mat-form-field> -->
+                        <!-- <mat-label>Photo <span style="font-size: 15px;">*</span></mat-label> -->
+
+                        <div class="upload" style="position: relative; display: inline-block;">
+                            <button class="btn btn-default" style="border: 1px solid lightslategray;"
+                                (click)="fileInput.click()">
+                                <i class="fa-solid fa-user fa-lg"></i> Upload photo
+                            </button>
+                            <input type="file" #fileInput class="form-control" (change)="onFileChange($event)"
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" />
+                        </div>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">
+                            Photo is required</p>
+                        <!-- <p><small>(*note: Photo size should be less than 100kb)</small></p> -->
+                        <!-- <p *ngIf="fileSizeError" class="error">File size should be less than 100KB</p> -->
+                        <!-- </mat-form-field> -->
+                    </div>
+                    <div class="col">
+                        <mat-form-field formGroupName="Email">
+                            <mat-label>Personal Email</mat-label>
+                            <input matInput placeholder="Personal email" formControlName="PersonalMail" required>
+                        </mat-form-field>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('Email.PersonalMail')?.touched && this.updateForm.get('Email.PersonalMail')?.errors">
+                            <p class="error" *ngIf="this.updateForm.get('Email.PersonalMail')?.errors?.['required']">
+                                Email is required
+                            </p>
+                            <p
+                                *ngIf="(this.updateForm.get('Email.PersonalMail')?.errors?.['email'] || this.updateForm.get('Email.PersonalMail')?.errors?.['invalidEmail']) && !this.updateForm.get('Email.PersonalMail')?.errors?.['required']">
+                                Invalid email formate. Eg: example&#64;gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="radio">
+                            <div><mat-label>Gender <span style="font-size: 15px;">*</span></mat-label></div>
+                            <mat-radio-group formControlName="Gender">
+                                <mat-radio-button value="Male">Male</mat-radio-button>
+                                <mat-radio-button value="Female">Female</mat-radio-button>
+                                <mat-radio-button value="Other">Other</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <!-- <div class="form-check form-check-inline">
+
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="Gender"
+                      value="Male"
+                      id="inlineRadio1"
+                    />
+                    <label class="form-check-label" for="inlineRadio1"
+                      >Male</label
+                    >
+                </div>
+                <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="Gender"
+                      id="inlineRadio2"
+                      value="Female"
+                    />
+                    <label class="form-check-label" for="inlineRadio2"
+                      >Female</label
+                    >
+                </div>
+                <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      formControlName="Gender"
+                      id="inlineRadio3"
+                      value="Other"
+                    />
+                    <label class="form-check-label" for="inlineRadio3"
+                      >Other</label
+                    >
+                </div> -->
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Gender')?.touched && this.updateForm.get('Gender')?.errors?.['required']">
+                            Gender is required
+                        </p>
+                    </div>
+                </div>
+                <div class="row" id="contactId">
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="birth" formControlName="dob" placeholder="Date of birth">
+                            <mat-datepicker-toggle matSuffix [for]="birth"></mat-datepicker-toggle>
+                            <mat-datepicker #birth></mat-datepicker>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">
+                            Date of birth is required</p>
+                    </div>
+                    <div class="col" id="contactnum" formGroupName="Contact">
+                        <!-- <mat-form-field formGroupName="Contact"> -->
+                        <div class="contact"> 
+                            <div>
+                                <mat-label>Primary Contact No <span style="font-size: 15px;">*</span></mat-label>
+                            </div>
+                            <ngx-intl-tel-input id="primary" formControlName="Primary"></ngx-intl-tel-input>
+                        </div>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('Contact.Primary')?.touched && this.updateForm.get('Contact.Primary')?.errors">
+                            <p *ngIf="this.updateForm.get('Contact.Primary')?.errors?.['required']">Contact number is
+                                required</p>
+                            <p
+                                *ngIf="this.updateForm.get('Contact.Primary')?.errors && !this.updateForm.get('Contact.Primary')?.errors?.['required']">
+                                Phone number is invalid for selected country</p>
+                        </div>
+                        <!-- </mat-form-field> -->
+                    </div>
+                    <div style="margin-bottom: 10px;" class="col" id="contactnum" formGroupName="Contact">
+                        <!-- <mat-form-field  formGroupName="Contact"> -->
+                        <div>
+                            <mat-label>Emergency Contact No <span style="font-size: 15px;">*</span></mat-label>
+                        </div>
+                        <ngx-intl-tel-input id="emergency" formControlName="Emergency"></ngx-intl-tel-input>
+                        <div class="error"
+                            *ngIf="this.updateForm.get('Contact.Emergency')?.touched && this.updateForm.get('Contact.Emergency')?.errors">
+                            <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors?.['required']">Contact number is
+                                required</p>
+                            <p
+                                *ngIf="this.updateForm.get('Contact.Emergency')?.errors && !this.updateForm.get('Contact.Emergency')?.errors?.['required']">
+                                Phone number is invalid for selected country</p>
+                        </div>
+                        <!-- </mat-form-field> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" id="contactnum">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>Country</mat-label>
+                            <!-- <input matInput  placeholder="State name" formControlName="State" required> -->
+                            <mat-select formControlName="Country" required>
+                                <mat-option *ngFor="let country of countries" [value]="country.isoCode">{{
+                                    country.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.Country')?.touched && this.updateForm.get('Location.Country')?.errors?.['required']">
+                            Country name is required</p>
+                        <!-- <input matInput placeholder="State name" formControlName="State" required readonly> -->
+                        <!-- <p class="error"
+                            *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">
+                            State name is required</p> -->
+                    </div>
+                    <div class="col" id="contactnum">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>State</mat-label>
+                            <mat-select formControlName="State" required>
+                                <mat-option *ngFor="let state of states" [value]="state.isoCode">{{
+                                    state.name}}</mat-option>
+                            </mat-select>
+                            <!-- <input matInput placeholder="State name" formControlName="State" required readonly> -->
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">
+                            State name is required</p>
+                    </div>
+                    <div class="col" id="contactnum">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>City</mat-label>
+                            <mat-select formControlName="City" required>
+                                <mat-option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</mat-option>
+                            </mat-select>
+                            <!-- <input matInput placeholder="City name" formControlName="City" required readonly> -->
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.City')?.touched && this.updateForm.get('Location.City')?.errors?.['required']">
+                            City name is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>Zipcode</mat-label>
+                            <input matInput placeholder="Enter pincode" formControlName="Pincode" required>
+                        </mat-form-field>
+                        <div
+                            *ngIf="this.updateForm.get('Location.Pincode')?.touched && this.updateForm.get('Location.Pincode')?.errors">
+                            <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['required']">
+                                Zipcode
+                                is required</p>
+                            <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['pattern']">
+                                Invalid
+                                Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
+                        </div>
+                        <p class="error">
+                            {{errorMessage}}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>Flat, Society/ Building Name</mat-label>
+                            <textarea matInput placeholder="Flat No, Society/ Building name" formControlName="Flat"
+                                required></textarea>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">
+                            Flat number/ building name is required</p>
+                    </div>
+                    <div class="col">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>Area</mat-label>
+                            <textarea matInput placeholder="Area name" formControlName="Area" required></textarea>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">
+                            Area is required</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field formGroupName="Location">
+                            <mat-label>Landmark</mat-label>
+                            <input matInput placeholder="Landmark" formControlName="Landmark" required>
+                        </mat-form-field>
+                        <p class="error"
+                            *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">
+                            Landmark is required</p>
+                    </div>
+                </div>
+                <div style="display: flex;">
+                    <button class="btn btn-primary" id="bnButton" (click)="updateEmployee()"
+                        [disabled]="updateForm.invalid">Update</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-stepper>
+</div>

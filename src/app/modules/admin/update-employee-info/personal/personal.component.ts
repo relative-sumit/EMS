@@ -1,27 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DisplayComponent } from '../display/display.component';
+import { EmployeeService } from '../../../../services/employee.service';
+import { EnumValuesService } from '../../../../services/enum-values.service';
+import { Country, State, City } from 'country-state-city';
+import { Router } from '@angular/router';
+import { EncryptingDecryptingService } from '../../../../services/encrypting-decrypting.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatStepperModule} from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { EmployeeService } from '../../../services/employee.service';
-import { Router } from '@angular/router';
-import { EncryptingDecryptingService } from '../../../services/encrypting-decrypting.service';
 import { MatSelectModule } from '@angular/material/select';
-import { EnumValuesService } from '../../../services/enum-values.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { State, City } from 'country-state-city';
 
 
 @Component({
-  selector: 'app-update-employee',
+  selector: 'app-personal',
   standalone: true,
-  imports: [    
+  imports: [
     MatButtonModule,
     MatStepperModule,
     FormsModule,
@@ -34,12 +35,13 @@ import { State, City } from 'country-state-city';
     NgxIntlTelInputModule,
     NgSelectModule,
     MatSelectModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    DisplayComponent
   ],
-  templateUrl: './update-employee.component.html',
-  styleUrl: './update-employee.component.css'
+  templateUrl: './personal.component.html',
+  styleUrl: './personal.component.css'
 })
-export class UpdateEmployeeComponent implements OnInit{
+export class PersonalComponent implements OnInit{
   _id:String = '';
   fileSizeError: boolean = false;
   encryptedUserName:any;
@@ -53,10 +55,12 @@ export class UpdateEmployeeComponent implements OnInit{
   viewManager: any[] = [];
   managerId: any;
   setEmployeeCodeToManagerId!:string
+  countries: any[] = [];
   states: any[] = [];
   cities: any[] = [];
   selectedState!: string;
   selectedCity!: string;
+  employeeInfo: any;
 
   managerDropdownSettings = {
     singleSelection: true,
@@ -67,34 +71,58 @@ export class UpdateEmployeeComponent implements OnInit{
   }
 
   constructor(
-    private fb: FormBuilder,
     private employeeService: EmployeeService,
-    private route: Router ,
-    private ed: EncryptingDecryptingService,
-    private enumValues: EnumValuesService
-    ){}
+    private fb: FormBuilder,
+    private enumValues: EnumValuesService,
+    private route: Router,
+    private ed: EncryptingDecryptingService
+  ){}
 
   ngOnInit(): void {
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
-    // this.updateForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-    //   if (this.updateForm.get('Location.Pincode')?.valid) {
-    //     this.onPostalCodeChange(value);
-    //   }
-    // });
-    this.states = State.getStatesOfCountry('IN');
-
+    // this.states = State.getStatesOfCountry('IN');
+    this.countries = Country.getAllCountries();
+    this.updateForm.get('Location.Country')?.valueChanges.subscribe((countryIsoCode) => {
+      console.log(countryIsoCode);
+      if (countryIsoCode) {
+        this.onCountryChange(countryIsoCode);
+      } else {
+        this.states = [];
+        this.cities = [];
+        // this.updateForm.get('Location.State')?.reset();
+        // this.updateForm.get('Location.City')?.reset();
+      }
+    })
+    this.updateForm.get('Location.State')?.valueChanges.subscribe((stateIsoCode) => {
+      const countryIsoCode = this.updateForm.get('Location.Country')?.value;
+      if (countryIsoCode && stateIsoCode) {
+        console.log(countryIsoCode, stateIsoCode)
+        this.onStateChange(countryIsoCode, stateIsoCode);
+      } else {
+        this.cities = [];
+        // this.updateForm.get('Location.City')?.reset();
+      }
+    });
     this.employeeService.employeeInfo
     .subscribe(
       (data)=>{
         console.log(data); 
         this._id = data._id
+        this.employeeInfo = data
         // console.log(this._id);
-        this.updateForm.patchValue(data);
-        const selectedState = this.updateForm.get('Location.State')?.value;
-        if (selectedState) {
-          this.onStateChange(selectedState, data.Location.City);
-        }
+        // if(this.employeeInfo && this.employeeInfo.Location){
+          this.updateForm.patchValue(this.employeeInfo);
+          const countryIsoCode = this.updateForm.get('Location.Country')?.value;
+          if (countryIsoCode) {
+              this.onCountryChange(countryIsoCode);
+              const stateIsoCode = this.updateForm.get('Location.State')?.value;
+              if (stateIsoCode) {
+                  this.onStateChange(countryIsoCode, stateIsoCode);
+              }
+          }
+      },error=>{
+        console.error(error);
       }
     )
     this.enumValues.getAllEnumValues()
@@ -106,6 +134,7 @@ export class UpdateEmployeeComponent implements OnInit{
         this.department = data.Department
       }
     )
+
     this.employeeService.getAllManagers().subscribe(
       data =>{
         data.forEach((item: any) => {
@@ -123,12 +152,13 @@ export class UpdateEmployeeComponent implements OnInit{
         console.error(error);
       }
     )
+  
   }
 
   updateForm = this.fb.group({
-    FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    FirstName: [''],
     MiddleName: [''],
-    LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
+    LastName: [''],
     EmployeeCode: [''],
     Photo: ['', [Validators.required]],
     Gender: ['', [Validators.required]],
@@ -138,36 +168,38 @@ export class UpdateEmployeeComponent implements OnInit{
       Emergency: ['', [Validators.required]],
     }),
     Email: this.fb.group({
-      CompanyMail: ['', [Validators.required, Validators.email, this.validEmail]],
+      CompanyMail: [''],
       PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
       Flat: ['', [Validators.required]],
       Area: ['', [Validators.required]],
       Landmark: ['', [Validators.required]],
+      Country: ['', [Validators.required]],
       State: ['', [Validators.required]],
       City: ['', [Validators.required]],
       Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
     }),
     dob: ['', [Validators.required]],
-    doj: ['', [Validators.required]],
-    doc: ['', [Validators.required]],
+    doj: [''],
+    doc: [''],
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
-      PrimarySkillset: ['', [Validators.required]],
+      PrimarySkillset: [''],
       SecondarySkillset: [''],
-      SkillLevel: ['', [Validators.required]],
-      Experience: ['', [Validators.required, this.validExperience]],
+      SkillLevel: [''],
+      Experience: [''],
       Certification: this.fb.group({
         CertificationName: [''],
         CertificationDate: ['']
       })
     }),
     ManagerId: [''],
+    TeamLead: [''],
     Department: this.fb.group({
-      DepartmentName:['', [Validators.required]],
+      DepartmentName:[''],
     }),
-    Designation: ['', [Validators.required]],
+    Designation: [''],
   });
 
   nameValidator(v: any) {
@@ -178,13 +210,6 @@ export class UpdateEmployeeComponent implements OnInit{
       return { 'onlyAlfa': true }
     }
   }
-  validExperience(control: any) {
-    const experience = control.value;
-    if (!experience.match(/^(0|[1-9]|[1-2][0-9]|29)(\.[0-9]{1,2})? years?$/)) {
-      return { invalidExperience: true };
-    }
-    return null;
-  }
   validEmail(control: any) {
     const email = control.value;
     if (!email.match(/^(?!.*\.\..*)(?!.*\.{2,}@)[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/)) {
@@ -193,50 +218,16 @@ export class UpdateEmployeeComponent implements OnInit{
     return null;
   }
 
-  // onPostalCodeChange(postalCode: any) {
-  //   this.employeeService.getLocation(postalCode).subscribe(location => {
-  //     if (location) {
-  //       this.updateForm.patchValue({
-  //         Location: {
-  //           City: location.city,
-  //           State: location.state
-  //         }
-  //       });
-  //       this.errorMessage = '';
-  //     } else {
-  //       this.errorMessage = 'Invalid postal code or postal code not found.';
-  //     }
-  //   });
-  // }
-
-  getSelectedPrimarySkills() {
-    return this.updateForm.get('SkillSet.PrimarySkillset')?.value;
+  onCountryChange(countryIsoCode: string) {
+    this.states = State.getStatesOfCountry(countryIsoCode);
+    // this.updateForm.get('Location.State')?.reset();
+    // this.updateForm.get('Location.City')?.reset();
+    // this.cities = [];
   }
-  getSelectedSecondarySkills() {
-    return this.updateForm.get('SkillSet.SecondarySkillset')?.value;
-  }
-  // getRemainingPrimarySkills() {
-  //   return this.skillSet.filter(skill => !this.getSelectedPrimarySkills()?.includes(skill));
-  // }
-  // getRemainingSecondarySkills() {
-  //   return this.skillSet.filter(skill => !this.getSelectedSecondarySkills()?.includes(skill));
-  // }
 
-  // onStateChange() {
-  //   const selectedState = this.updateForm.get('Location.State')?.value;
-  //   this.cities = City.getCitiesOfState('IN', selectedState as any);
-  //   this.updateForm.get('Location.City')?.setValue('');
-  // }
-  onStateChange(stateCode?: string, cityName?: string): void {
-    const selectedState = stateCode || this.updateForm.get('Location.State')?.value;
-    if (selectedState) {
-      this.cities = City.getCitiesOfState('IN', selectedState);
-      if (cityName) {
-        this.updateForm.get('Location.City')?.setValue(cityName);
-      } else {
-        this.updateForm.get('Location.City')?.setValue('');
-      }
-    }
+  onStateChange(countryIsoCode: string, stateIsoCode: string) {
+    this.cities = City.getCitiesOfState(countryIsoCode, stateIsoCode);
+    // this.updateForm.get('Location.City')?.reset();
   }
 
   get primaryE164Number() {
@@ -276,49 +267,27 @@ export class UpdateEmployeeComponent implements OnInit{
     }
   }
 
-  updateEmployee(currentStepIndex: number){
-    this.managerId = this.updateForm.value.ManagerId;
-    if(this.managerId && this.managerId.length>0){
-       this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
-    }
+  updateEmployee(){
+    // this.managerId = this.updateForm.value.ManagerId;
+    // if(this.managerId && this.managerId.length>0){
+    //    this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
+    // }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
         Emergency: this.emergencyE164Number
       },
-      ManagerId: this.setEmployeeCodeToManagerId,
+      // ManagerId: this.setEmployeeCodeToManagerId,
     });
-    
-    // console.log("Step Index: ", currentStepIndex);
-    console.log(this.updateForm.value);
-    // const updateData = {...this.updateForm.value}
-    // switch(currentStepIndex){
-    //   case 0:
-    //       updateData.FirstName = this.updateForm.get('FirstName')?.value,
-    //       updateData.MiddleName = this.updateForm.get('MiddleName')?.value,
-    //       updateData.LastName = this.updateForm.get('LastName')?.value,
-    //       updateData.Department = this.updateForm.get('Department')?.value,
-    //       updateData.Designation = this.updateForm.get('Designation')?.value,
-    //       updateData.ManagerId = this.updateForm.get('ManagerId')?.value,
-    //       updateData.doj = this.updateForm.get('doj')?.value,
-    //       updateData.doc = this.updateForm.get('doc')?.value,
-    //       updateData.Email = {
-    //         CompanyMail: this.updateForm.get('Email.CompantMail')?.value
-    //       }
-          
-    //     break;
-    //   case 1:
-    //   case 2 :
-    // }
-    // console.log("updated Data: ",updateData);
-    // this.employeeService.updateEmployeeInfoById(this._id, this.userName, updateData)
-    // .subscribe(
-    //   (data)=>{
-    //     console.log(data);
-    //     this.route.navigate(['admin/employee-manage']);
-    //   },error=>{
-    //     console.error(error);
-    //   }
-    // )
+    console.log("updated form: ",this.updateForm.value)
+    this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
+    .subscribe(
+      (data)=>{
+        console.log(data);
+        this.route.navigate(['admin/employee-manage']);
+      },error=>{
+        console.error(error);
+      }
+    )
   }
 }

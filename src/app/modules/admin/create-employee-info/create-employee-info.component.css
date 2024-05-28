@@ -22,16 +22,66 @@
     background-color: #0069d9 !important; /* Bootstrap primary hover color */
     border-color: #0062cc !important;
 }
-
-.package{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.example-stepper{
+    margin: 10px 10px;
+    border: solid 1px black;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.5);
+    border-radius: 5px;
 }
-@media (max-width:768px) {
-    .package{
+
+/* .ng-select{
+    width: 40%;
+} */
+::ng-deep ngx-intl-tel-input .iti__flag-container + input {
+    background-color:rgba(0, 0, 0, 0.054);
+    width: 250px;
+    margin-bottom: 10px; 
+}
+
+.upload{
+    background-color:rgba(0, 0, 0, 0.054);
+    margin-top: 20px;
+}
+
+.state{
+    margin-left: 6px;
+}
+.city{
+    margin-left: 14px;
+}
+mat-form-field{
+    width: 250px;
+}
+@media screen and (max-width: 524px){
+    .upload{
         margin-top: 0px;
-        display: grid;
-        gap: 10px;
-        grid-template-columns: repeat(1, 1fr);
+        margin-bottom: 10px;
     }
 }
+@media screen and (max-width: 407px){
+    mat-form-field{
+        width: 200px;
+    }
+}
+@media screen and (max-width: 1008px){
+    .state{
+        margin-left: 0px;
+    }
+    .city{
+        margin-left: 0px;
+    }
+}
+@media screen and (min-width: 320px) and (max-width: 990px){
+    .row {
+        display: flex;
+        flex-wrap: wrap; 
+    }
+    .col {
+        flex: 1; 
+        margin-right: 10px; 
+    }
+      .ng-select {
+        width: 100%;
+    }
+}
+
