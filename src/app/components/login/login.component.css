@@ -61,7 +61,9 @@
 }
 
 .form-control {
-  width: 100%;
+  border: solid 1px red;
+  /* background-color: #00c3ff; */
+  width: 400px;
   padding: 10px;
   font-size: 16px;
   border: none;
@@ -73,7 +75,7 @@
 }
 
 .content {
-  padding: 7rem 0;
+  padding: 3rem 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -88,14 +90,20 @@
 }
 
 .content .contents {
+  /* border: solid 1px black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   max-width: 400px;
   padding: 20px;
 }
 
 img.img-fluid {
+  /* border: solid 1px black; */
   max-width: 100%;
   height: auto;
+  height: 100%;
   display: block;
   margin: 0 auto;
 }
@@ -127,6 +135,7 @@ img.img-fluid {
   }
 
   .form-control {
+    width: 100%;
     padding: 8px;
     font-size: 14px;
   }

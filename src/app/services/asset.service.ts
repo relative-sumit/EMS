@@ -15,7 +15,6 @@ export interface Asset {
   Warranty: string;
   AssetTag: string;
   SerialNumber: string;
-  AssignTo: string;
   AssignDate: string;
   DischargeDate: string;
   Description: string;
@@ -39,13 +38,17 @@ const ASSET_CREATE_MUTATION = gql`
     $warranty: String
     $assetTag: String
     $serialNumber: String
-    $assignTo: String
     $assignDate: String
     $dischargeDate: String
+    $assetPurchaseDate: String
+    $assetStatus: String
+    $cost: String
+    $supplier: String
     $description: String
     $addon: String
     $isWorkable: Int
     $createdBy: String
+    $assignTo: String
   ) {
     createAsset(
       AssetName: $assetName
@@ -57,13 +60,17 @@ const ASSET_CREATE_MUTATION = gql`
       Warranty: $warranty
       AssetTag: $assetTag
       SerialNumber: $serialNumber
-      AssignTo: $assignTo
       AssignDate: $assignDate
       DischargeDate: $dischargeDate
+      AssetPurchaseDate: $assetPurchaseDate
+      AssetStatus: $assetStatus
+      Cost: $cost
+      Supplier: $supplier
       Description: $description
       Addon: $addon
       IsWorkable: $isWorkable
       CreatedBy: $createdBy
+      AssignTo: $assignTo
     ) {
       _id
       AssetName
@@ -75,9 +82,12 @@ const ASSET_CREATE_MUTATION = gql`
       Warranty
       AssetTag
       SerialNumber
-      AssignTo
       AssignDate
       DischargeDate
+      AssetPurchaseDate
+      AssetStatus
+      Cost
+      Supplier
       Description
       Addon
       IsWorkable
@@ -105,7 +115,6 @@ const ALL_ASSET_QUERY = gql`
       Warranty
       AssetTag
       SerialNumber
-      AssignTo
       AssignDate
       Description
       Addon
@@ -132,7 +141,6 @@ const UPDATE_ASSET_QUERY = gql`
       Warranty
       AssetTag
       SerialNumber
-      AssignTo
       AssignDate
       Description
       Addon
@@ -170,10 +178,10 @@ export class AssetService {
   }
 
   createAsset(form: any): Observable<any> {
-    if (form.isWorkable) {
-      form.isWorkable = 1;
+    if (form.IsWorkable) {
+      form.IsWorkable = 1;
     } else {
-      form.isWorkable = 0;
+      form.IsWorkable = 0;
     }
     const encrUserName = '' + sessionStorage.getItem('username');
     const createdBy = this.encrDcpr.decrypt(encrUserName);
@@ -181,20 +189,24 @@ export class AssetService {
       .mutate<any>({
         mutation: ASSET_CREATE_MUTATION,
         variables: {
-          assetName: form.assetName,
-          assetModel: form.assetModel,
-          assetType: form.assetType,
-          memory: form.memory,
-          processor: form.processor,
-          operatingSystem: form.operatingSystem,
-          warranty: form.warranty,
-          assetTag: form.assetTag,
-          serialNumber: form.serialNumber,
-          assignTo: form.assignTo,
-          assignDate: form.assignDate,
-          description: form.description,
-          addon: form.addon,
-          isWorkable: form.isWorkable,
+          assetName: form.AssetName,
+          assetModel: form.AssetModel,
+          assetType: form.AssetType,
+          memory: form.Memory,
+          processor: form.Processor,
+          operatingSystem: form.OperatingSystem,
+          warranty: form.Warranty,
+          assetTag: form.AssetTag,
+          serialNumber: form.SerialNumber,
+          assignTo: form.AssignTo[0].EmployeeCode,
+          assignDate: form.AssignDate,
+          assetPurchaseDate: form.AssetPurchaseDate,
+          assetStatus: form.AssetStatus,
+          cost: form.Cost,
+          supplier: form.Supplier,
+          description: form.Description,
+          addon: form.Addon,
+          isWorkable: form.IsWorkable,
           createdBy: createdBy,
         },
       })
@@ -260,7 +272,6 @@ export class AssetService {
             Warranty: newObj.warranty,
             AssetTag: newObj.assetTag,
             SerialNumber: newObj.serialNumber,
-            AssignTo: newObj.AssignTo,
             AssignDate: newObj.AssignDate,
             Description: newObj.description,
             Addon: newObj.addon,

@@ -1,1 +1,10 @@
-<p>org-structure works!</p>
+<p-organizationChart [value]="data">
+    <ng-template let-node pTemplate="person">
+      <div class="node-header">{{node.label}}</div>
+      <div class="node-content">
+        <!-- <img *ngIf="node.data?.avatar" [src]="'assets/' + node.data.avatar" alt="{{node.data.name}}"> -->
+        <div>{{node.data?.name}}</div>
+      </div>
+    </ng-template>
+  </p-organizationChart>
+  

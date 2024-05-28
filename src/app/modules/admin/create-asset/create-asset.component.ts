@@ -44,6 +44,7 @@ export class CreateAssetComponent implements OnInit {
   errorMessage: string = '';
   assetTypes!: string[];
   warrantyYears!: string[];
+  assetStatusList!: string[];
   laptopOS!: string[];
   mobileOS!: string[];
   assignToList: any[] = [];
@@ -53,7 +54,7 @@ export class CreateAssetComponent implements OnInit {
 
   dropdownSettings = {
     singleSelection: true,
-    idField: 'FirstName',
+    idField: 'EmployeeCode',
     textField: 'View',
     allowSearchFilter: true,
     noDataAvailablePlaceholderText: 'No employee found',
@@ -71,6 +72,7 @@ export class CreateAssetComponent implements OnInit {
       this.warrantyYears = data.Warranty;
       this.laptopOS = data.LaptopOperatingSystem;
       this.mobileOS = data.MobileOperatingSystem;
+      this.assetStatusList = data.AssetStatus;
 
       this.operatingSystems = {
         Laptop: this.laptopOS,
@@ -99,7 +101,7 @@ export class CreateAssetComponent implements OnInit {
   assetForm = this.formBuilder.group({
     AssetName: ['', [Validators.required, Validators.maxLength(15)]],
     AssetModel: ['', [Validators.required, Validators.maxLength(15)]],
-    AssetType: ['', Validators.required],
+    AssetType: [''],
     Memory: ['', [Validators.required, Validators.maxLength(15)]],
     Processor: ['', [Validators.required, Validators.maxLength(15)]],
     OperatingSystem: [''],
@@ -108,6 +110,10 @@ export class CreateAssetComponent implements OnInit {
     SerialNumber: ['', [Validators.required, Validators.maxLength(15)]],
     AssignTo: [''],
     AssignDate: [''],
+    AssetPurchaseDate: [''],
+    AssetStatus: [''],
+    Cost: [''],
+    Supplier: [''],
     Description: [''],
     Addon: [''],
     IsWorkable: [false],
@@ -144,29 +150,29 @@ export class CreateAssetComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.assetForm.getRawValue());
+    console.log(this.assetForm.getRawValue().AssignTo);
 
-    // if (
-    //   this.assetForm.valid &&
-    //   this.assetForm.getRawValue().serialNumber !== null
-    // ) {
-    //   this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
-    //     (data) => {
-    //       console.log('Data:', data);
-    //       this.creationSuccess = true;
-    //       this.errorMessage = '';
-    //       this.notificationMessage = 'Asset created sucessfully';
-    //     },
-    //     (error) => {
-    //       console.log('Error:', error.message);
-    //       this.notificationMessage = 'Failure! Asset not created';
-    //       this.creationSuccess = false;
-    //     }
-    //   );
-    // } else {
-    //   this.errorMessage = '*Please provide all the required fields';
-    //   this.creationSuccess = false;
-    //   this.assetForm.markAllAsTouched();
-    // }
+    if (
+      this.assetForm.valid &&
+      this.assetForm.getRawValue().SerialNumber !== null
+    ) {
+      this.asset.createAsset(this.assetForm.getRawValue()).subscribe(
+        (data) => {
+          console.log('Data:', data);
+          this.creationSuccess = true;
+          this.errorMessage = '';
+          this.notificationMessage = 'Asset created sucessfully';
+        },
+        (error) => {
+          console.log('Error:', error.message);
+          this.notificationMessage = 'Failure! Asset not created';
+          this.creationSuccess = false;
+        }
+      );
+    } else {
+      this.errorMessage = '*Please provide all the required fields';
+      this.creationSuccess = false;
+      this.assetForm.markAllAsTouched();
+    }
   }
 }

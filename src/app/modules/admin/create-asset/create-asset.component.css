@@ -1,11 +1,9 @@
-.container {
+/* .container {
   max-width: 900px;
-  /* max-height: calc(100vh - 25px); */
   background-color: #f4f4f4;
   border-radius: 10px;
   margin: 15px auto;
   padding: 10px;
-  /* border: solid 1px black; */
 }
 
 h2 {
@@ -17,14 +15,9 @@ h2 {
 
 .create-form {
   display: grid;
-  /* justify-content: center; */
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
 }
-
-/* .form-group {
-    margin-bottom: 20px;
-  } */
 
 label {
   font-weight: bold;
@@ -34,7 +27,6 @@ input[type="text"],
 mat-slide-toggle {
   width: calc(100% - 22px);
   padding: 10px;
-  /* border: 1px solid #ccc; */
   border-radius: 5px;
   transition: border-color 0.3s ease;
 }
@@ -104,8 +96,6 @@ button {
 
 .notification-box {
   padding: 5px;
-  /* margin-bottom: 20px;
-  border-radius: 5px; */
 }
 
 .notification-box h2 {
@@ -113,17 +103,15 @@ button {
 }
 
 .notification-success {
-  background-color: #8bc34a; /* Green color for success */
-  color: #fff; /* White text color */
+  background-color: #8bc34a;
+  color: #fff;
 }
 
 .notification-fail {
-  background-color: #f44336; /* Red color for failure */
-  color: #fff; /* White text color */
+  background-color: #f44336;
+  color: #fff;
 }
 
-
-/* Responsive grid */
 @media (max-width: 768px) {
   .create-form {
     grid-template-columns: repeat(2, 1fr);
@@ -134,4 +122,93 @@ button {
   .create-form {
     grid-template-columns: 1fr;
   }
+} */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.notification-box {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.notification-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.notification-fail {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+form > div {
+  flex: 1 1 30%;
+  min-width: 280px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+small {
+  color: red;
+  font-size: 12px;
+}
+.button-div{
+  text-align: center;
+}
+
+button {
+  width: 50%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

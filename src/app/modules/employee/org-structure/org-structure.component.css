@@ -1,0 +1,17 @@
+/* :host ::ng-deep .p-organizationchart .p-person .node-header {
+    padding: .5em .75em;
+    background-color: #007ad9;
+    color: #ffffff;
+  }
+  
+  :host ::ng-deep .p-organizationchart .p-person .node-content {
+    text-align: center;
+    border: 1px solid #007ad9;
+  }
+  
+  :host ::ng-deep .p-organizationchart .p-person img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+  }
+   */

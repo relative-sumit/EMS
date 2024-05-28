@@ -98,7 +98,6 @@ query GoalInfoById($userId: String) {
         Warranty
         AssetTag
         SerialNumber
-        AssignTo
         AssignDate
         DischargeDate
         Description

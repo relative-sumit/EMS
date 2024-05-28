@@ -94,7 +94,6 @@ query EmployeeInfoById($userId: String) {
       Warranty
       AssetTag
       SerialNumber
-      AssignTo
       AssignDate
       DischargeDate
       Description
@@ -182,7 +181,6 @@ query EmployeeInfo {
       Warranty
       AssetTag
       SerialNumber
-      AssignTo
       AssignDate
       DischargeDate
       Description

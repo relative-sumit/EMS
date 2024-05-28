@@ -14,6 +14,7 @@ query GetAllEnumValues {
     Department
     Designation
     Role
+    AssetStatus
   }
 }
 `;
