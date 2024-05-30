@@ -104,7 +104,7 @@
                             <mat-option *ngFor="let designation of filteredDesignations | async" [value]="designation">
                                     {{ designation }}
                             </mat-option>
-                            <mat-option *ngIf="!filteredDesignations?.length" [disabled]="true">No items found</mat-option>
+                            <mat-option *ngIf="!filteredDesignations?.length" [disabled]="true">Not found</mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
                     <!-- <mat-form-field>
@@ -134,7 +134,7 @@
                           <mat-option *ngFor="let teamLead of filteredTeamLeads | async" [value]="teamLead.EmployeeCode">
                             {{ teamLead.view }}
                           </mat-option>
-                          <mat-option *ngIf="!filteredTeamLeads?.length" [disabled]="true">No items found</mat-option>
+                          <mat-option *ngIf="!filteredTeamLeads?.length" [disabled]="true">Not found</mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
                     <!-- <mat-form-field>
@@ -157,7 +157,7 @@
                           <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager.EmployeeCode">
                             {{ manager.view }}
                           </mat-option>
-                          <mat-option *ngIf="!filteredManagers?.length" [disabled]="true">No items found</mat-option>
+                          <mat-option *ngIf="!filteredManagers?.length" [disabled]="true">Not found</mat-option>
                         </mat-autocomplete>
                       </mat-form-field>
                     <!-- <mat-form-field>

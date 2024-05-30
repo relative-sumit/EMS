@@ -19,6 +19,7 @@ import { EncryptingDecryptingService } from '../../../../services/encrypting-dec
 import { State, City } from 'country-state-city';
 import { Observable, map, of, startWith } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -45,7 +46,7 @@ import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autoco
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
-  _id:String = '';
+  _id:string = '';
   fileSizeError: boolean = false;
   encryptedUserName:any;
   userName: String = '';
@@ -67,7 +68,8 @@ export class ProfileComponent implements OnInit{
   patchData: any;
   filteredDesignations!:any;
   filteredManagers!: any;
-  filteredTeamLeads!:any;  
+  filteredTeamLeads!:any;
+
   
   notificationMessage: string = '';
   creationSuccess: boolean = false;
@@ -92,7 +94,8 @@ export class ProfileComponent implements OnInit{
     private fb: FormBuilder,
     private enumValues: EnumValuesService,
     private route: Router,
-    private ed: EncryptingDecryptingService
+    private ed: EncryptingDecryptingService,
+    private auth: AuthService
   ){}
 
   ngOnInit(): void {
@@ -102,46 +105,77 @@ export class ProfileComponent implements OnInit{
     this.employeeService.employeeInfo
     .subscribe(
       (data)=>{
-        console.log(data); 
+        // console.log(data); 
         this._id = data._id
-        // console.log(this._id);
-        this.patchData = data ;
+        console.log(this._id);
+        this.employeeService.getEmployeeInfoById(this._id)
+        .subscribe(
+          data=>{
+            console.log("Data from database: ", data);
+            this.patchData = data ;
+      
+            // if (this.patchData.ManagerId) {
+              // const managerView = `${this.patchData.ManagerId.FirstName} ${this.patchData.ManagerId.LastName} - ${this.patchData.ManagerId.EmployeeCode}`;
+              // const teamLeadView =  `${this.patchData.TeamLead.FirstName} ${this.patchData.TeamLead.LastName} - ${this.patchData.TeamLead.EmployeeCode}`;
+              // const manager = {
+              //   ...this.patchData.ManagerId,
+              //   view: managerView
+              // };
+              // const teamLead = {
+              //   ...this.patchData.TeamLead,
+              //   view: teamLeadView
+              // };
+    
+              // this.managerInfo = [manager];
+              // this.teamLeadInfo = [teamLead];
+              this.updateForm.patchValue({
+                ...this.patchData,
+                ManagerId: this.patchData.ManagerId?.EmployeeCode,
+                TeamLead: this.patchData.TeamLead?.EmployeeCode,
+              });
+              // }else{
+              // TeamLead: this.patchData.TeamLead.EmployeeCode
+              // this.updateForm.patchValue(this.patchData);
+            // }
+          }
+        )
+
         
-        if (this.patchData.ManagerId) {
-          const managerView = `${this.patchData.ManagerId.FirstName} ${this.patchData.ManagerId.LastName} - ${this.patchData.ManagerId.EmployeeCode}`;
-          const teamLeadView =  `${this.patchData.TeamLead.FirstName} ${this.patchData.TeamLead.LastName} - ${this.patchData.TeamLead.EmployeeCode}`;
+        // if (this.patchData.ManagerId) {
+        //   const managerView = `${this.patchData.ManagerId.FirstName} ${this.patchData.ManagerId.LastName} - ${this.patchData.ManagerId.EmployeeCode}`;
+        //   const teamLeadView =  `${this.patchData.TeamLead.FirstName} ${this.patchData.TeamLead.LastName} - ${this.patchData.TeamLead.EmployeeCode}`;
 
-          // const existingManagerIndex = this.managerInfo.findIndex(manager => manager.EmployeeCode === this.patchData.ManagerId.EmployeeCode);
-          // const existingTeamLeadIndex = this.teamLeadInfo.findIndex(teamLead => teamLead.EmployeeCode === this.patchData.TeamLead.EmployeeCode);
-          // if(existingManagerIndex === -1){
-          //   this.managerInfo.push({
-          //     ...this.patchData.ManagerId,
-          //     view: managerView
-          //   });
-          // }
-          // if(existingTeamLeadIndex === -1){
-          //   this.teamLeadInfo.push({
-          //     ...this.patchData.TeamLead,
-          //     view: teamLeadView
-          //   });
-          // }
-          const manager = {
-            ...this.patchData.ManagerId,
-            view: managerView
-          };
-          const teamLead = {
-            ...this.patchData.TeamLead,
-            view: teamLeadView
-          };
+        //   // const existingManagerIndex = this.managerInfo.findIndex(manager => manager.EmployeeCode === this.patchData.ManagerId.EmployeeCode);
+        //   // const existingTeamLeadIndex = this.teamLeadInfo.findIndex(teamLead => teamLead.EmployeeCode === this.patchData.TeamLead.EmployeeCode);
+        //   // if(existingManagerIndex === -1){
+        //   //   this.managerInfo.push({
+        //   //     ...this.patchData.ManagerId,
+        //   //     view: managerView
+        //   //   });
+        //   // }
+        //   // if(existingTeamLeadIndex === -1){
+        //   //   this.teamLeadInfo.push({
+        //   //     ...this.patchData.TeamLead,
+        //   //     view: teamLeadView
+        //   //   });
+        //   // }
+        //   const manager = {
+        //     ...this.patchData.ManagerId,
+        //     view: managerView
+        //   };
+        //   const teamLead = {
+        //     ...this.patchData.TeamLead,
+        //     view: teamLeadView
+        //   };
 
-          // this.managerInfo = [manager];
-          // this.teamLeadInfo = [teamLead];
-          this.updateForm.patchValue({
-            ...this.patchData,
-            ManagerId: this.patchData.ManagerId.EmployeeCode,
-            TeamLead: this.patchData.TeamLead.EmployeeCode
-          });
-        }
+        //   // this.managerInfo = [manager];
+        //   // this.teamLeadInfo = [teamLead];
+        //   this.updateForm.patchValue({
+        //     ...this.patchData,
+        //     ManagerId: this.patchData.ManagerId.EmployeeCode,
+        //     TeamLead: this.patchData.TeamLead.EmployeeCode
+        //   });
+        // }
 
         const selectedState = this.updateForm.get('Location.State')?.value;
         if (selectedState) {
@@ -162,7 +196,6 @@ export class ProfileComponent implements OnInit{
         );
       },error=>{
         console.log(error);
-        this.filteredDesignations = of(this.designations);
       }
     )
 
@@ -185,7 +218,6 @@ export class ProfileComponent implements OnInit{
         );
       },error=>{
         console.error(error);
-        this.filteredManagers = of(this.managerInfo); // Ensure observable always emits an array
       }
     )
 
@@ -207,7 +239,6 @@ export class ProfileComponent implements OnInit{
         this.viewTeamLead = this.teamLeadInfo
       },error=>{
         console.error(error)
-        this.filteredTeamLeads = of(this.teamLeadInfo);
       }
     )
   
@@ -366,10 +397,11 @@ export class ProfileComponent implements OnInit{
     this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
     .subscribe(
       (data)=>{
-        console.log(data);
+        // console.log(data);
+        this.emp = data
+        console.log(this.emp);
         this.creationSuccess = true;
         this.notificationMessage = 'Employee updated sucessfully';
-        this.emp = data
         // this.route.navigate(['admin/employee-manage']);
       },error=>{
         this.creationSuccess = false;

@@ -154,10 +154,9 @@ export class CreateEmployeeInfoComponent implements OnInit{
         console.log(this.managerInfo);
         this.viewManager = this.managerInfo;
         this.filteredManagers = this.addForm.get('ManagerId')?.valueChanges.pipe(
-          startWith(''),
+          // startWith(''),
           map(value => this._filterManagers(value as string))
         );
-
       },error=>{
         console.error(error);
       }
@@ -201,7 +200,11 @@ export class CreateEmployeeInfoComponent implements OnInit{
 
   private _filterManagers(value: string): any[] {
     const filterValue = value.toLowerCase();
+    console.log(this.filteredManagers.length);
     return this.managerInfo.filter(option => option.view.toLowerCase().includes(filterValue));
+  }
+  optionSelected(event: any) {
+    this.addForm.get('ManagerId')?.setValue(event.option.value);
   }
 
   addForm = this.fb.group({
