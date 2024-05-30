@@ -78,12 +78,7 @@ export class UpdateAssetComponent implements OnInit {
   });
 
   ngOnInit() {
-    // this.asset.asset.subscribe((data) => {
-    //   console.log(data);
-      
-    //   this.assetForm.patchValue(data);
-    //   this.assetId = data._id;
-    // });
+    // this.asset.anp
   }
 
   onSubmit() {

@@ -2,7 +2,7 @@
   <h2><strong>Asset Management</strong></h2>
 
   <div class="search-and-add">
-    <button class="new-asset" (click)="addNew()">Add New</button>
+    <button class="btn btn-primary" (click)="addNew()">Add</button>
     <form class="d-flex" role="search">
       <input
         class="form-control me-2"
@@ -24,33 +24,27 @@
       <thead class="table-primary">
         <tr>
           <th scope="col">Actions</th>
-          <th (click)="sort('SrNo')" >
+          <th (click)="sort('SrNo')">
             <div class="table-head-container">
               <div>S.No</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
-          <th (click)="sort('AssetName')">
+          <th (click)="sort('AssetType')">
             <div class="table-head-container">
-              <div>Asset Name</div>
+              <div>Type</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
           <th (click)="sort('AssetModel')">
             <div class="table-head-container">
-              <div>Asset Model</div>
+              <div>Model Name</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
-          <th (click)="sort('AssetType')">
+          <th (click)="sort('AssetTag')">
             <div class="table-head-container">
-              <div>Asset Type</div>
-              <i class="fa-solid fa-sort fa-2xs"></i>
-            </div>
-          </th>
-          <th (click)="sort('Processor')">
-            <div class="table-head-container">
-              <div>Processor</div>
+              <div>Tag Number</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
@@ -62,13 +56,20 @@
           </th>
           <th (click)="sort('AssignTo')">
             <div class="table-head-container">
-              <div>Assigned To</div>
+              <div>Assign To</div>
               <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
-          <th>
+          <th (click)="sort('Warranty')">
             <div class="table-head-container">
-              <div>Working</div>
+              <div>Warranty</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
+            </div>
+          </th>
+          <th (click)="sort('AssetCondition')">
+            <div class="table-head-container">
+              <div>Condition</div>
+              <i class="fa-solid fa-sort fa-2xs"></i>
             </div>
           </th>
         </tr>
@@ -99,14 +100,14 @@
               (click)="deleteAsset(asset)"
             ></i>
           </td>
-          <td>{{asset.SrNo}}</td>
-          <td scope="row">{{ asset.AssetName }}</td>
-          <td>{{ asset.AssetModel }}</td>
+          <td>{{ asset.SrNo }}</td>
           <td>{{ asset.AssetType }}</td>
-          <td>{{ asset.Processor }}</td>
+          <td>{{ asset.AssetModel }}</td>
+          <td>{{ asset.AssetTag }}</td>
           <td>{{ asset.SerialNumber }}</td>
           <td>{{ asset.AssignTo }}</td>
-          <td> <i *ngIf="asset.IsWorkable === 1" class="fa-solid fa-check" style="color: #089239;"> </i> <i *ngIf="asset.IsWorkable === 0" class="fa-solid fa-xmark" style="color: #ff0000;"> </i> </td>
+          <td>{{ asset.Warranty }}</td>
+          <td>{{ asset.AssetCondition }}</td>
         </tr>
       </tbody>
     </table>

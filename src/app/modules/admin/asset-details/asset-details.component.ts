@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
 
 interface AssetType {
   SrNo: number;
-  AssetName: string;
-  AssetModel: string;
   AssetType: string;
-  Processor: string;
+  AssetModel: string;
+  AssetTag: string;
   SerialNumber: string;
   AssignTo: string;
-  IsWorkable: string;
+  Warranty: string;
+  AssetCondition: string;
 }
 
 @Component({
@@ -42,23 +42,25 @@ export class AssetDetailsComponent implements OnInit {
 
   get() {
     this.asset.getAllAsset().subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       
       let count = 1;
       data.forEach((item: any) => {
         const newObj = {
           SrNo: count,
-          AssetName: item.AssetName,
-          AssetModel: item.AssetModel,
           AssetType: item.AssetType,
-          Processor: item.Processor,
+          AssetModel: item.AssetModel,
+          AssetTag: item.AssetTag,
           SerialNumber: item.SerialNumber,
           AssignTo: item.AssignTo,
-          IsWorkable: item.IsWorkable,
+          Warranty: this.formatDate(item.WarrantyStart) + " - " + this.formatDate(item.WarrantyExpire),
+          AssetCondition: item.AssetCondition,
         };
         this.assetList.push(newObj);
         count++;
       });
+      console.log(this.assetList);
+      
     });
   }
 
@@ -129,4 +131,21 @@ export class AssetDetailsComponent implements OnInit {
       }
     }
   }
+
+  formatDate(input: string): string {
+    // Create an array with month names
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Split the input string to extract year and month
+    const [year, month] = input.split("-");
+
+    // Convert the month part to an integer and adjust for 0-based index
+    const monthIndex = parseInt(month, 10) - 1;
+
+    // Return the formatted string
+    return `${months[monthIndex]}, ${year}`;
+}
 }

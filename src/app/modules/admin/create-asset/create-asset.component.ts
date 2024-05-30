@@ -43,7 +43,6 @@ export class CreateAssetComponent implements OnInit {
   creationSuccess: boolean = false;
   errorMessage: string = '';
   assetTypes!: string[];
-  warrantyYears!: string[];
   assetConditionList!: string[];
   laptopOS!: string[];
   mobileOS!: string[];
@@ -69,17 +68,16 @@ export class CreateAssetComponent implements OnInit {
   ngOnInit(): void {
     this.enumValues.getAllEnumValues().subscribe((data) => {
       this.assetTypes = data.AssetType;
-      this.warrantyYears = data.Warranty;
       this.laptopOS = data.LaptopOperatingSystem;
       this.mobileOS = data.MobileOperatingSystem;
       this.assetConditionList = data.AssetCondition;
 
       this.operatingSystems = {
         Laptop: this.laptopOS,
-        Mobile: this.mobileOS,
+        Phone: this.mobileOS,
+        Tablet: this.mobileOS,
         Mouse: [],
-        Keyboard: [],
-        Wifi_Router: [],
+        Keyboard: []
       };
     });
 
@@ -95,32 +93,28 @@ export class CreateAssetComponent implements OnInit {
         this.assignToList.push(newObj);
       });
       // this.assignToDropdownList = this.assignToList;
-      console.log(this.assignToList);
-      
+      // console.log(this.assignToList);
     });
 
     this.onAssetTypeChange();
   }
 
   assetForm = this.formBuilder.group({
-    AssetName: ['', [Validators.required, Validators.maxLength(15)]],
     AssetModel: ['', [Validators.required, Validators.maxLength(15)]],
-    AssetType: [''],
+    SerialNumber: ['', [Validators.required, Validators.maxLength(15)]],
+    AssetType: ['', Validators.required],
     Memory: [''],
     Processor: [''],
     OperatingSystem: [''],
-    Warranty: ['', Validators.required],
-    AssetTag: ['', [Validators.required, Validators.maxLength(15)]],
-    SerialNumber: ['', [Validators.required, Validators.maxLength(15)]],
+    WarrantyStart: ['', Validators.required],
+    WarrantyExpire: ['', Validators.required],
     AssignTo: [''],
     AssignDate: [''],
     AssetPurchaseDate: [''],
-    AssetStatus: [''],
-    Cost: [''],
-    Supplier: [''],
+    AssetCondition: [''],
+    Cost: ['', [Validators.pattern(/^[1-9]\d*(\.\d{1,2})?$/)]],
+    Vendor: [''],
     Description: [''],
-    Addon: [''],
-    IsWorkable: [false],
   });
 
   onAssetTypeChange() {
@@ -130,8 +124,7 @@ export class CreateAssetComponent implements OnInit {
           this.operatingSystems[selectedType] || [];
         if (
           selectedType === 'Mouse' ||
-          selectedType === 'Keyboard' ||
-          selectedType === 'Wifi Router'
+          selectedType === 'Keyboard'
         ) {
           this.assetForm.get('OperatingSystem')?.clearValidators();
           this.assetForm.get('Memory')?.clearValidators();
@@ -170,7 +163,6 @@ export class CreateAssetComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.assetForm.getRawValue().SerialNumber);
 
     if (
       this.assetForm.valid &&
@@ -193,7 +185,6 @@ export class CreateAssetComponent implements OnInit {
       this.errorMessage = '*Please provide all the required fields';
       this.creationSuccess = false;
       this.assetForm.markAllAsTouched();
-      console.log('no');
     }
   }
 }

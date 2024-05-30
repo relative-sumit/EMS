@@ -234,122 +234,6 @@
   </form>
 </div> -->
 
-<!-- 
-<form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="AssetName">Asset Name</label>
-    <input id="AssetName" formControlName="AssetName" />
-  </div>
-
-  <div>
-    <label for="AssetModel">Asset Model</label>
-    <input id="AssetModel" formControlName="AssetModel" />
-  </div>
-
-  <div>
-    <label for="AssetType">Asset Type</label>
-    <select id="AssetType" formControlName="AssetType">
-      <option *ngFor="let type of assetTypes" [value]="type">{{ type }}</option>
-    </select>
-  </div>
-
-  <div *ngIf="currentOperatingSystems.length > 0">
-    <label for="OperatingSystem">Operating System</label>
-    <select id="OperatingSystem" formControlName="OperatingSystem">
-      <option *ngFor="let os of currentOperatingSystems" [value]="os">
-        {{ os }}
-      </option>
-    </select>
-  </div>
-
-  <div>
-    <label for="Memory">Memory</label>
-    <input id="Memory" formControlName="Memory" />
-  </div>
-
-  <div>
-    <label for="Processor">Processor</label>
-    <input id="Processor" formControlName="Processor" />
-  </div>
-
-  <div>
-    <label for="Warranty">Warranty</label>
-    <select id="Warranty" formControlName="Warranty">
-      <option *ngFor="let year of warrantyYears" [value]="year">
-        {{ year }}
-      </option>
-    </select>
-  </div>
-
-  <div>
-    <label for="AssetTag">Asset Tag</label>
-    <input id="AssetTag" formControlName="AssetTag" />
-  </div>
-
-  <div>
-    <label for="SerialNumber">Serial Number</label>
-    <input id="SerialNumber" formControlName="SerialNumber" />
-  </div>
-
-  <ng-multiselect-dropdown
-    [placeholder]="'Assign To'"
-    [data]="assignToDropdownList"
-    [settings]="dropdownSettings"
-    formControlName="AssignTo"
-  >
-  </ng-multiselect-dropdown>
-
-  <div>
-    <label for="AssignDate">Assign Date</label>
-    <input id="AssignDate" formControlName="AssignDate" type="date" />
-  </div>
-
-  <div>
-    <label for="AssetPurchaseDate">Asset Purchase Date</label>
-    <input
-      id="AssetPurchaseDate"
-      formControlName="AssetPurchaseDate"
-      type="date"
-    />
-  </div>
-
-  <div>
-    <label for="AssetStatus">Asset Status</label>
-    <select id="AssetStatus" formControlName="AssetStatus">
-      <option *ngFor="let status of assetStatusList" [value]="status">
-        {{ status }}
-      </option>
-    </select>
-  </div>
-
-  <div>
-    <label for="Cost">Cost</label>
-    <input id="Cost" formControlName="Cost" />
-  </div>
-
-  <div>
-    <label for="Supplier">Supplier</label>
-    <input id="Supplier" formControlName="Supplier" />
-  </div>
-
-  <div>
-    <label for="Description">Description</label>
-    <textarea id="Description" formControlName="Description"></textarea>
-  </div>
-
-  <div>
-    <label for="Addon">Addon</label>
-    <input id="Addon" formControlName="Addon" />
-  </div>
-
-  <div>
-    <label for="IsWorkable">Is Workable</label>
-    <input id="IsWorkable" formControlName="IsWorkable" type="checkbox" />
-  </div>
-
-  <button type="submit" [disabled]="assetForm?.invalid">Submit</button>
-</form> -->
-
 <div class="container mt-4">
   <h2><strong>Create Asset</strong></h2>
   <div
@@ -364,26 +248,7 @@
   </div>
   <form [formGroup]="assetForm" (ngSubmit)="onSubmit()">
     <div>
-      <label for="AssetName">Asset Name<span class="req-class">*</span></label>
-      <input id="AssetName" formControlName="AssetName" />
-      <div
-        *ngIf="
-          assetForm.get('AssetName')?.invalid &&
-          (assetForm.get('AssetName')?.dirty ||
-            assetForm.get('AssetName')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('AssetName')?.errors?.['required']"
-          >*Asset Name is required.</small
-        >
-        <small *ngIf="assetForm.get('AssetName')?.errors?.['maxlength']"
-          >*Asset Name cannot be more than 15 characters.</small
-        >
-      </div>
-    </div>
-
-    <div>
-      <label for="AssetModel">Asset Model<span class="req-class">*</span></label>
+      <label for="AssetModel">Model Name<span class="req-class">*</span></label>
       <input id="AssetModel" formControlName="AssetModel" />
       <div
         *ngIf="
@@ -402,7 +267,26 @@
     </div>
 
     <div>
-      <label for="AssetType">Asset Type<span class="req-class">*</span></label>
+      <label for="SerialNumber">Serial Number<span class="req-class">*</span></label>
+      <input id="SerialNumber" formControlName="SerialNumber" />
+      <div
+        *ngIf="
+          assetForm.get('SerialNumber')?.invalid &&
+          (assetForm.get('SerialNumber')?.dirty ||
+            assetForm.get('SerialNumber')?.touched)
+        "
+      >
+        <small *ngIf="assetForm.get('SerialNumber')?.errors?.['required']"
+          >*Serial Number is required.</small
+        >
+        <small *ngIf="assetForm.get('SerialNumber')?.errors?.['maxlength']"
+          >*Serial Number cannot be more than 15 characters.</small
+        >
+      </div>
+    </div>
+
+    <div>
+      <label for="AssetType">Type<span class="req-class">*</span></label>
       <select id="AssetType" formControlName="AssetType">
         <option *ngFor="let type of assetTypes" [value]="type">
           {{ type }}
@@ -417,9 +301,6 @@
       >
         <small *ngIf="assetForm.get('AssetType')?.errors?.['required']"
           >*Asset Type is required.</small
-        >
-        <small *ngIf="assetForm.get('AssetType')?.errors?.['maxlength']"
-          >*Asset Type cannot be more than 15 characters.</small
         >
       </div>
     </div>
@@ -482,61 +363,44 @@
     </div>
 
     <div>
-      <label for="Warranty">Warranty<span class="req-class">*</span></label>
-      <select id="Warranty" formControlName="Warranty">
-        <option *ngFor="let year of warrantyYears" [value]="year">
-          {{ year }}
-        </option>
-      </select>
+      <label for="WarrantyStart">Warranty Start<span class="req-class">*</span></label>
+      <input id="WarrantyStart" formControlName="WarrantyStart" type="month" />
       <div
         *ngIf="
-          assetForm.get('Warranty')?.invalid &&
-          (assetForm.get('Warranty')?.dirty ||
-            assetForm.get('Warranty')?.touched)
+          assetForm.get('WarrantyStart')?.invalid &&
+          (assetForm.get('WarrantyStart')?.dirty ||
+            assetForm.get('WarrantyStart')?.touched)
         "
       >
-        <small *ngIf="assetForm.get('Warranty')?.errors?.['required']"
-          >*Warranty is required.</small
+        <small *ngIf="assetForm.get('WarrantyStart')?.errors?.['required']"
+          >*Warranty Start is required.</small
+        >
+      </div>
+    </div>
+    
+    <div>
+      <label for="WarrantyExpire">Warranty Expire<span class="req-class">*</span></label>
+      <input id="WarrantyExpire" formControlName="WarrantyExpire" type="month" />
+      <div
+        *ngIf="
+          assetForm.get('WarrantyExpire')?.invalid &&
+          (assetForm.get('WarrantyExpire')?.dirty ||
+            assetForm.get('WarrantyExpire')?.touched)
+        "
+      >
+        <small *ngIf="assetForm.get('WarrantyExpire')?.errors?.['required']"
+          >*Warranty Expire is required.</small
         >
       </div>
     </div>
 
     <div>
-      <label for="AssetTag">Asset Tag<span class="req-class">*</span></label>
-      <input id="AssetTag" formControlName="AssetTag" />
-      <div
-        *ngIf="
-          assetForm.get('AssetTag')?.invalid &&
-          (assetForm.get('AssetTag')?.dirty ||
-            assetForm.get('AssetTag')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('AssetTag')?.errors?.['required']"
-          >*Asset Tag is required.</small
-        >
-        <small *ngIf="assetForm.get('AssetTag')?.errors?.['maxlength']"
-          >*Asset Tag cannot be more than 15 characters.</small
-        >
-      </div>
-    </div>
-
-    <div>
-      <label for="SerialNumber">Serial Number<span class="req-class">*</span></label>
-      <input id="SerialNumber" formControlName="SerialNumber" />
-      <div
-        *ngIf="
-          assetForm.get('SerialNumber')?.invalid &&
-          (assetForm.get('SerialNumber')?.dirty ||
-            assetForm.get('SerialNumber')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('SerialNumber')?.errors?.['required']"
-          >*Serial Number is required.</small
-        >
-        <small *ngIf="assetForm.get('SerialNumber')?.errors?.['maxlength']"
-          >*Serial Number cannot be more than 15 characters.</small
-        >
-      </div>
+      <label for="AssetPurchaseDate">Purchase Date</label>
+      <input
+        id="AssetPurchaseDate"
+        formControlName="AssetPurchaseDate"
+        type="date"
+      />
     </div>
 
     <div>
@@ -554,53 +418,16 @@
     </div>
 
     <div>
-      <label for="AssetPurchaseDate">Asset Purchase Date<span class="req-class">*</span></label>
-      <input
-        id="AssetPurchaseDate"
-        formControlName="AssetPurchaseDate"
-        type="date"
-      />
-      <div
-        *ngIf="
-          assetForm.get('AssetPurchaseDate')?.invalid &&
-          (assetForm.get('AssetPurchaseDate')?.dirty ||
-            assetForm.get('AssetPurchaseDate')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('AssetPurchaseDate')?.errors?.['required']"
-          >*Asset Purchase Date is required.</small
-        >
-        <small *ngIf="assetForm.get('AssetPurchaseDate')?.errors?.['maxlength']"
-          >*Asset Purchase Date cannot be more than 15 characters.</small
-        >
-      </div>
-    </div>
-
-    <div>
-      <label for="AssetStatus">Asset Status<span class="req-class">*</span></label>
-      <select id="AssetStatus" formControlName="AssetStatus">
+      <label for="AssetCondition">Condition</label>
+      <select id="AssetCondition" formControlName="AssetCondition">
         <option *ngFor="let condition of assetConditionList" [value]="condition">
           {{ condition }}
         </option>
       </select>
-      <div
-        *ngIf="
-          assetForm.get('AssetStatus')?.invalid &&
-          (assetForm.get('AssetStatus')?.dirty ||
-            assetForm.get('AssetStatus')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('AssetStatus')?.errors?.['required']"
-          >*Asset Status is required.</small
-        >
-        <small *ngIf="assetForm.get('AssetStatus')?.errors?.['maxlength']"
-          >*Asset Status cannot be more than 15 characters.</small
-        >
-      </div>
     </div>
 
     <div>
-      <label for="Cost">Cost<span class="req-class">*</span></label>
+      <label for="Cost">Cost</label>
       <input id="Cost" formControlName="Cost" />
       <div
         *ngIf="
@@ -609,47 +436,20 @@
             assetForm.get('Cost')?.touched)
         "
       >
-        <small *ngIf="assetForm.get('Cost')?.errors?.['required']"
-          >*Cost is required.</small
-        >
-        <small *ngIf="assetForm.get('Cost')?.errors?.['maxlength']"
-          >*Cost cannot be more than 15 characters.</small
+        <small *ngIf="assetForm.get('Cost')?.errors?.['pattern']"
+          >*Invalid format. Put only numbers. Ex:- 1000, 200.99</small
         >
       </div>
     </div>
 
     <div>
-      <label for="Supplier">Supplier<span class="req-class">*</span></label>
-      <input id="Supplier" formControlName="Supplier" />
-      <div
-        *ngIf="
-          assetForm.get('Supplier')?.invalid &&
-          (assetForm.get('Supplier')?.dirty ||
-            assetForm.get('Supplier')?.touched)
-        "
-      >
-        <small *ngIf="assetForm.get('Supplier')?.errors?.['required']"
-          >*Supplier is required.</small
-        >
-        <small *ngIf="assetForm.get('Supplier')?.errors?.['maxlength']"
-          >*Supplier cannot be more than 15 characters.</small
-        >
-      </div>
+      <label for="Vendor">Vendor</label>
+      <input id="Vendor" formControlName="Vendor" />
     </div>
 
     <div>
       <label for="Description">Description</label>
       <textarea id="Description" formControlName="Description"></textarea>
-    </div>
-
-    <div>
-      <label for="Addon">Addon</label>
-      <input id="Addon" formControlName="Addon" />
-    </div>
-
-    <div>
-      <label for="IsWorkable">Working</label>
-      <input id="IsWorkable" formControlName="IsWorkable" type="checkbox" />
     </div>
 
     <div *ngIf="errorMessage" class="submit-error-message">
