@@ -267,7 +267,9 @@
     </div>
 
     <div>
-      <label for="SerialNumber">Serial Number<span class="req-class">*</span></label>
+      <label for="SerialNumber"
+        >Serial Number<span class="req-class">*</span></label
+      >
       <input id="SerialNumber" formControlName="SerialNumber" />
       <div
         *ngIf="
@@ -306,7 +308,9 @@
     </div>
 
     <div *ngIf="currentOperatingSystems.length > 0">
-      <label for="OperatingSystem">Operating System<span class="req-class">*</span></label>
+      <label for="OperatingSystem"
+        >Operating System<span class="req-class">*</span></label
+      >
       <select id="OperatingSystem" formControlName="OperatingSystem">
         <option *ngFor="let os of currentOperatingSystems" [value]="os">
           {{ os }}
@@ -363,7 +367,9 @@
     </div>
 
     <div>
-      <label for="WarrantyStart">Warranty Start<span class="req-class">*</span></label>
+      <label for="WarrantyStart"
+        >Warranty Start<span class="req-class">*</span></label
+      >
       <input id="WarrantyStart" formControlName="WarrantyStart" type="month" />
       <div
         *ngIf="
@@ -377,10 +383,16 @@
         >
       </div>
     </div>
-    
+
     <div>
-      <label for="WarrantyExpire">Warranty Expire<span class="req-class">*</span></label>
-      <input id="WarrantyExpire" formControlName="WarrantyExpire" type="month" />
+      <label for="WarrantyExpire"
+        >Warranty Expire<span class="req-class">*</span></label
+      >
+      <input
+        id="WarrantyExpire"
+        formControlName="WarrantyExpire"
+        type="month"
+      />
       <div
         *ngIf="
           assetForm.get('WarrantyExpire')?.invalid &&
@@ -420,7 +432,10 @@
     <div>
       <label for="AssetCondition">Condition</label>
       <select id="AssetCondition" formControlName="AssetCondition">
-        <option *ngFor="let condition of assetConditionList" [value]="condition">
+        <option
+          *ngFor="let condition of assetConditionList"
+          [value]="condition"
+        >
           {{ condition }}
         </option>
       </select>
@@ -432,13 +447,12 @@
       <div
         *ngIf="
           assetForm.get('Cost')?.invalid &&
-          (assetForm.get('Cost')?.dirty ||
-            assetForm.get('Cost')?.touched)
+          (assetForm.get('Cost')?.dirty || assetForm.get('Cost')?.touched)
         "
       >
-        <small *ngIf="assetForm.get('Cost')?.errors?.['pattern']"
-          >*Invalid format. Put only numbers. Ex:- 1000, 200.99</small
-        >
+        <small *ngIf="assetForm.get('Cost')?.errors?.['pattern']">
+          *Invalid format. Put only numbers. Ex:- 1000, 200.99
+        </small>
       </div>
     </div>
 

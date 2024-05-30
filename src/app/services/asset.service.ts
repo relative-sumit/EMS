@@ -95,6 +95,7 @@ const ALL_ASSET_QUERY = gql`
     UpdatedDate
     IsActive
     IsDeleted
+    AssignTo
     }
   }
 `;
