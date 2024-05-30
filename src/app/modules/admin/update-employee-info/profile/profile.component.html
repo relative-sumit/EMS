@@ -113,9 +113,6 @@
                                    formControlName="Designation"
                                    [matAutocomplete]="designationAuto">
                             <mat-autocomplete #designationAuto="matAutocomplete" autoActiveFirstOption>
-                                <mat-option *ngIf="filteredDesignations.length === 0" disabled>
-                                    No items found
-                                  </mat-option>
                               <mat-option *ngFor="let designation of filteredDesignations | async" [value]="designation">
                                 {{ designation }}
                               </mat-option>
@@ -145,9 +142,6 @@
                                    formControlName="TeamLead"
                                    [matAutocomplete]="teamLeadAuto">
                             <mat-autocomplete #teamLeadAuto="matAutocomplete" autoActiveFirstOption>
-                                <mat-option *ngIf="filteredTeamLeads.length === 0" disabled>
-                                    No items found
-                                  </mat-option>
                               <mat-option *ngFor="let teamLead of filteredTeamLeads | async" [value]="teamLead.EmployeeCode">
                                 {{ teamLead.view }}
                               </mat-option>
@@ -170,9 +164,6 @@
                                    formControlName="ManagerId"
                                    [matAutocomplete]="managerAuto">
                             <mat-autocomplete #managerAuto="matAutocomplete" autoActiveFirstOption>
-                                <mat-option *ngIf="filteredManagers.length === 0" disabled>
-                                    No items found
-                                  </mat-option>
                               <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager.EmployeeCode">
                                 {{ manager.view }}
                               </mat-option>

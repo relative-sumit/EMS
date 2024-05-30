@@ -42,7 +42,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   styleUrl: './personal.component.css'
 })
 export class PersonalComponent implements OnInit{
-  _id:String = '';
+  _id:string = '';
   fileSizeError: boolean = false;
   encryptedUserName:any;
   userName: String = '';
@@ -111,18 +111,25 @@ export class PersonalComponent implements OnInit{
       (data)=>{
         console.log(data); 
         this._id = data._id
-        this.employeeInfo = data
+        // this.employeeInfo = data
+        this.employeeService.getEmployeeInfoById(this._id)
+        .subscribe(
+          data=>{
+            this.employeeInfo = data
+            this.updateForm.patchValue(this.employeeInfo);
+            const countryIsoCode = this.updateForm.get('Location.Country')?.value;
+            if (countryIsoCode) {
+                this.onCountryChange(countryIsoCode);
+                const stateIsoCode = this.updateForm.get('Location.State')?.value;
+                if (stateIsoCode) {
+                    this.onStateChange(countryIsoCode, stateIsoCode);
+                }
+            }
+          }
+        )
         // console.log(this._id);
         // if(this.employeeInfo && this.employeeInfo.Location){
-          this.updateForm.patchValue(this.employeeInfo);
-          const countryIsoCode = this.updateForm.get('Location.Country')?.value;
-          if (countryIsoCode) {
-              this.onCountryChange(countryIsoCode);
-              const stateIsoCode = this.updateForm.get('Location.State')?.value;
-              if (stateIsoCode) {
-                  this.onStateChange(countryIsoCode, stateIsoCode);
-              }
-          }
+
       },error=>{
         console.error(error);
       }
