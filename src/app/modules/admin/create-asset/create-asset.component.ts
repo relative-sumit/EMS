@@ -44,7 +44,7 @@ export class CreateAssetComponent implements OnInit {
   errorMessage: string = '';
   assetTypes!: string[];
   warrantyYears!: string[];
-  assetStatusList!: string[];
+  assetConditionList!: string[];
   laptopOS!: string[];
   mobileOS!: string[];
   assignToList: any[] = [];
@@ -52,13 +52,13 @@ export class CreateAssetComponent implements OnInit {
   operatingSystems: { [key: string]: string[] } = {};
   currentOperatingSystems: string[] = [];
 
-  dropdownSettings = {
-    singleSelection: true,
-    idField: 'EmployeeCode',
-    textField: 'View',
-    allowSearchFilter: true,
-    noDataAvailablePlaceholderText: 'No employee found',
-  };
+  // dropdownSettings = {
+  //   singleSelection: true,
+  //   idField: 'EmployeeCode',
+  //   textField: 'View',
+  //   allowSearchFilter: true,
+  //   noDataAvailablePlaceholderText: 'No employee found',
+  // };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,12 +72,14 @@ export class CreateAssetComponent implements OnInit {
       this.warrantyYears = data.Warranty;
       this.laptopOS = data.LaptopOperatingSystem;
       this.mobileOS = data.MobileOperatingSystem;
-      this.assetStatusList = data.AssetStatus;
+      this.assetConditionList = data.AssetCondition;
 
       this.operatingSystems = {
         Laptop: this.laptopOS,
         Mobile: this.mobileOS,
         Mouse: [],
+        Keyboard: [],
+        Wifi_Router: [],
       };
     });
 
@@ -92,7 +94,9 @@ export class CreateAssetComponent implements OnInit {
 
         this.assignToList.push(newObj);
       });
-      this.assignToDropdownList = this.assignToList;
+      // this.assignToDropdownList = this.assignToList;
+      console.log(this.assignToList);
+      
     });
 
     this.onAssetTypeChange();
@@ -102,8 +106,8 @@ export class CreateAssetComponent implements OnInit {
     AssetName: ['', [Validators.required, Validators.maxLength(15)]],
     AssetModel: ['', [Validators.required, Validators.maxLength(15)]],
     AssetType: [''],
-    Memory: ['', [Validators.required, Validators.maxLength(15)]],
-    Processor: ['', [Validators.required, Validators.maxLength(15)]],
+    Memory: [''],
+    Processor: [''],
     OperatingSystem: [''],
     Warranty: ['', Validators.required],
     AssetTag: ['', [Validators.required, Validators.maxLength(15)]],
@@ -124,15 +128,31 @@ export class CreateAssetComponent implements OnInit {
       if (selectedType) {
         this.currentOperatingSystems =
           this.operatingSystems[selectedType] || [];
-        if (selectedType === 'Mouse') {
+        if (
+          selectedType === 'Mouse' ||
+          selectedType === 'Keyboard' ||
+          selectedType === 'Wifi Router'
+        ) {
           this.assetForm.get('OperatingSystem')?.clearValidators();
+          this.assetForm.get('Memory')?.clearValidators();
+          this.assetForm.get('Processor')?.clearValidators();
           this.assetForm.get('OperatingSystem')?.setValue('');
+          this.assetForm.get('Memory')?.setValue('');
+          this.assetForm.get('Processor')?.setValue('');
         } else {
           this.assetForm
             .get('OperatingSystem')
             ?.setValidators([Validators.required, Validators.maxLength(15)]);
+          this.assetForm
+            .get('Memory')
+            ?.setValidators([Validators.required, Validators.maxLength(15)]);
+          this.assetForm
+            .get('Processor')
+            ?.setValidators([Validators.required, Validators.maxLength(15)]);
         }
         this.assetForm.get('OperatingSystem')?.updateValueAndValidity();
+        this.assetForm.get('Memory')?.updateValueAndValidity();
+        this.assetForm.get('Processor')?.updateValueAndValidity();
       }
     });
   }
@@ -150,7 +170,7 @@ export class CreateAssetComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.assetForm.getRawValue().AssignTo);
+    console.log(this.assetForm.getRawValue().SerialNumber);
 
     if (
       this.assetForm.valid &&
@@ -164,7 +184,7 @@ export class CreateAssetComponent implements OnInit {
           this.notificationMessage = 'Asset created sucessfully';
         },
         (error) => {
-          console.log('Error:', error.message);
+          console.error('Error:', error.message);
           this.notificationMessage = 'Failure! Asset not created';
           this.creationSuccess = false;
         }
@@ -173,6 +193,7 @@ export class CreateAssetComponent implements OnInit {
       this.errorMessage = '*Please provide all the required fields';
       this.creationSuccess = false;
       this.assetForm.markAllAsTouched();
+      console.log('no');
     }
   }
 }

@@ -4,100 +4,67 @@ import { BehaviorSubject, Observable, map, throwError } from 'rxjs';
 import { EncryptingDecryptingService } from './encrypting-decrypting.service';
 import { catchError } from 'rxjs/operators';
 
-export interface Asset {
-  _id: string;
-  AssetName: string;
-  AssetModel: string;
-  AssetType: string;
-  Memory: string;
-  Processor: string;
-  OperatingSystem: string;
-  Warranty: string;
-  AssetTag: string;
-  SerialNumber: string;
-  AssignDate: string;
-  DischargeDate: string;
-  Description: string;
-  Addon: string;
-  IsWorkable: number;
-  CreatedBy: string;
-  CreatedDate: string;
-  UpdatedBy: string;
-  UpdatedDate: string;
-  IsActive: number;
-  IsDeleted: number;
-}
+
 const ASSET_CREATE_MUTATION = gql`
   mutation CreateAsset(
-    $assetName: String
     $assetModel: String
     $assetType: String
     $memory: String
     $processor: String
     $operatingSystem: String
-    $warranty: String
-    $assetTag: String
+    $warrantyStart: String
+    $warrantyExpire: String
     $serialNumber: String
     $assignDate: String
-    $dischargeDate: String
     $assetPurchaseDate: String
-    $assetStatus: String
+    $assetCondition: String
     $cost: String
-    $supplier: String
+    $vendor: String
     $description: String
-    $addon: String
-    $isWorkable: Int
     $createdBy: String
     $assignTo: String
   ) {
     createAsset(
-      AssetName: $assetName
       AssetModel: $assetModel
       AssetType: $assetType
       Memory: $memory
       Processor: $processor
       OperatingSystem: $operatingSystem
-      Warranty: $warranty
-      AssetTag: $assetTag
+      WarrantyStart: $warrantyStart
+      WarrantyExpire: $warrantyExpire
       SerialNumber: $serialNumber
       AssignDate: $assignDate
-      DischargeDate: $dischargeDate
       AssetPurchaseDate: $assetPurchaseDate
-      AssetStatus: $assetStatus
+      AssetCondition: $assetCondition
       Cost: $cost
-      Supplier: $supplier
+      Vendor: $vendor
       Description: $description
-      Addon: $addon
-      IsWorkable: $isWorkable
       CreatedBy: $createdBy
       AssignTo: $assignTo
     ) {
       _id
-      AssetName
       AssetModel
       AssetType
       Memory
       Processor
       OperatingSystem
-      Warranty
+      WarrantyStart
+      WarrantyExpire
       AssetTag
       SerialNumber
       AssignDate
       DischargeDate
       AssetPurchaseDate
-      AssetStatus
+      AssetCondition
       Cost
-      Supplier
+      Vendor
       Description
-      Addon
-      IsWorkable
       CreatedBy
       CreatedDate
       UpdatedBy
       UpdatedDate
       IsActive
       IsDeleted
-      Message
     }
   }
 `;
@@ -106,25 +73,28 @@ const ALL_ASSET_QUERY = gql`
   query GetAsset {
     getAsset {
       _id
-      AssetName
-      AssetModel
-      AssetType
-      Memory
-      Processor
-      OperatingSystem
-      Warranty
-      AssetTag
-      SerialNumber
-      AssignDate
-      Description
-      Addon
-      IsWorkable
-      CreatedBy
-      CreatedDate
-      UpdatedBy
-      UpdatedDate
-      IsActive
-      IsDeleted
+    AssetModel
+    AssetType
+    Memory
+    Processor
+    OperatingSystem
+    WarrantyStart
+    WarrantyExpire
+    AssetTag
+    SerialNumber
+    AssignDate
+    DischargeDate
+    AssetPurchaseDate
+    AssetCondition
+    Cost
+    Vendor
+    Description
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
     }
   }
 `;
@@ -132,25 +102,28 @@ const UPDATE_ASSET_QUERY = gql`
   mutation UpdateAsset($input: AssetInput) {
     updateAsset(input: $input) {
       _id
-      AssetName
-      AssetModel
-      AssetType
-      Memory
-      Processor
-      OperatingSystem
-      Warranty
-      AssetTag
-      SerialNumber
-      AssignDate
-      Description
-      Addon
-      IsWorkable
-      CreatedBy
-      CreatedDate
-      UpdatedBy
-      UpdatedDate
-      IsActive
-      IsDeleted
+    AssetModel
+    AssetType
+    Memory
+    Processor
+    OperatingSystem
+    WarrantyStart
+    WarrantyExpire
+    AssetTag
+    SerialNumber
+    AssignDate
+    DischargeDate
+    AssetPurchaseDate
+    AssetCondition
+    Cost
+    Vendor
+    Description
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
     }
   }
 `;
@@ -183,30 +156,28 @@ export class AssetService {
     } else {
       form.IsWorkable = 0;
     }
+
     const encrUserName = '' + sessionStorage.getItem('username');
     const createdBy = this.encrDcpr.decrypt(encrUserName);
     return this.apollo
       .mutate<any>({
         mutation: ASSET_CREATE_MUTATION,
         variables: {
-          assetName: form.AssetName,
           assetModel: form.AssetModel,
           assetType: form.AssetType,
           memory: form.Memory,
           processor: form.Processor,
           operatingSystem: form.OperatingSystem,
-          warranty: form.Warranty,
-          assetTag: form.AssetTag,
+          warrantyStart: form.WarrantyStart,
+          warrantyExpire: form.WarrantyExpire,
           serialNumber: form.SerialNumber,
-          assignTo: form.AssignTo[0].EmployeeCode,
+          assignTo: form.AssignTo,
           assignDate: form.AssignDate,
           assetPurchaseDate: form.AssetPurchaseDate,
-          assetStatus: form.AssetStatus,
+          assetCondition: form.AssetCondition,
           cost: form.Cost,
-          supplier: form.Supplier,
+          vendor: form.Vendor,
           description: form.Description,
-          addon: form.Addon,
-          isWorkable: form.IsWorkable,
           createdBy: createdBy,
         },
       })

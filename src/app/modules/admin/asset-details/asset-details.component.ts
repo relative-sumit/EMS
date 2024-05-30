@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Asset, AssetService } from '../../../services/asset.service';
+import { AssetService } from '../../../services/asset.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchPipe } from '../../../pipes/search.pipe';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +42,8 @@ export class AssetDetailsComponent implements OnInit {
 
   get() {
     this.asset.getAllAsset().subscribe((data) => {
+      console.log(data);
+      
       let count = 1;
       data.forEach((item: any) => {
         const newObj = {
@@ -77,28 +79,28 @@ export class AssetDetailsComponent implements OnInit {
     this.router.navigate(['admin/create-asset']);
   }
 
-  updateAsset(asset: Asset) {
+  updateAsset(asset: any) {
     this.asset.setAsset(asset);
     this.router.navigate(['admin/update-asset']);
   }
 
-  deleteAsset(asset: Asset) {
+  deleteAsset(asset: any) {
     console.log(asset);
 
-    if (confirm('Are you sure, delete asset?')) {
-      this.asset.deleteAsset(asset).subscribe(
-        (data) => {
-          console.log(data);
-          alert('Asset deleted successfully!');
-          this.asset.getAllAsset().subscribe((data) => {
-            this.assetList = data;
-          });
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
+    // if (confirm('Are you sure, delete asset?')) {
+    //   this.asset.deleteAsset(asset).subscribe(
+    //     (data) => {
+    //       console.log(data);
+    //       alert('Asset deleted successfully!');
+    //       this.asset.getAllAsset().subscribe((data) => {
+    //         this.assetList = data;
+    //       });
+    //     },
+    //     (error) => {
+    //       console.error(error);
+    //     }
+    //   );
+    // }
   }
 
   sort(key: keyof AssetType) {

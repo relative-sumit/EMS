@@ -75,21 +75,28 @@ query EmployeeInfoById($userId: String) {
     }
     Assets {
       _id
-      AssetName
-      AssetModel
-      AssetType
-      Memory
-      Processor
-      OperatingSystem
-      Warranty
-      AssetTag
-      SerialNumber
-      AssignDate
-      DischargeDate
-      Description
-      Addon
-      IsWorkable
-      Message
+    AssetModel
+    AssetType
+    Memory
+    Processor
+    OperatingSystem
+    WarrantyStart
+    WarrantyExpire
+    AssetTag
+    SerialNumber
+    AssignDate
+    DischargeDate
+    AssetPurchaseDate
+    AssetCondition
+    Cost
+    Vendor
+    Description
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
     }
     ManagerId {
       _id
@@ -168,21 +175,28 @@ query EmployeeInfo {
     }
     Assets {
       _id
-      AssetName
-      AssetModel
-      AssetType
-      Memory
-      Processor
-      OperatingSystem
-      Warranty
-      AssetTag
-      SerialNumber
-      AssignDate
-      DischargeDate
-      Description
-      Addon
-      IsWorkable
-      Message
+    AssetModel
+    AssetType
+    Memory
+    Processor
+    OperatingSystem
+    WarrantyStart
+    WarrantyExpire
+    AssetTag
+    SerialNumber
+    AssignDate
+    DischargeDate
+    AssetPurchaseDate
+    AssetCondition
+    Cost
+    Vendor
+    Description
+    CreatedBy
+    CreatedDate
+    UpdatedBy
+    UpdatedDate
+    IsActive
+    IsDeleted
     }
     ManagerId {
       _id
