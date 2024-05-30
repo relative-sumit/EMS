@@ -61,6 +61,8 @@ export class PersonalComponent implements OnInit{
   selectedState!: string;
   selectedCity!: string;
   employeeInfo: any;
+  notificationMessage: string = '';
+  creationSuccess: boolean = false;
 
   managerDropdownSettings = {
     singleSelection: true,
@@ -160,27 +162,27 @@ export class PersonalComponent implements OnInit{
     MiddleName: [''],
     LastName: [''],
     EmployeeCode: [''],
-    Photo: ['', [Validators.required]],
+    Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
       CountryCode: [''],
       Primary: ['', [Validators.required]],
-      Emergency: ['', [Validators.required]],
+      Emergency: [''],
     }),
     Email: this.fb.group({
       CompanyMail: [''],
       PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
-      Flat: ['', [Validators.required]],
-      Area: ['', [Validators.required]],
-      Landmark: ['', [Validators.required]],
-      Country: ['', [Validators.required]],
-      State: ['', [Validators.required]],
-      City: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
+      Flat: [''],
+      Area: [''],
+      Landmark: [''],
+      Country: [''],
+      State: [''],
+      City: [''],
+      Pincode: ['', [Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
     }),
-    dob: ['', [Validators.required]],
+    dob: [''],
     doj: [''],
     doc: [''],
     SkillSet: this.fb.group({
@@ -272,10 +274,16 @@ export class PersonalComponent implements OnInit{
     // if(this.managerId && this.managerId.length>0){
     //    this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
     // }
+    if(this.updateForm.value.Contact?.Emergency){
+      this.updateForm.patchValue({
+        Contact: {
+          Emergency: this.emergencyE164Number,
+        },
+      });
+    }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number
       },
       // ManagerId: this.setEmployeeCodeToManagerId,
     });
@@ -284,8 +292,12 @@ export class PersonalComponent implements OnInit{
     .subscribe(
       (data)=>{
         console.log(data);
-        this.route.navigate(['admin/employee-manage']);
+        this.creationSuccess = true;
+        this.notificationMessage = 'Employee updated sucessfully';
+        // this.route.navigate(['admin/employee-manage']);
       },error=>{
+        this.creationSuccess = false;
+        this.notificationMessage = 'Failure! Employee not updated';
         console.error(error);
       }
     )

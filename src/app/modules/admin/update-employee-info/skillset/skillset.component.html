@@ -2,6 +2,16 @@
 <app-display></app-display>
 <mat-stepper class="example-stepper">
 <mat-step [stepControl]="updateForm" label="SKILL SET">
+    <div
+    *ngIf="notificationMessage"
+    class="notification-box"
+    [ngClass]="{
+      'notification-success': creationSuccess,
+      'notification-fail': !creationSuccess
+    }"
+  >
+    <h2>{{ notificationMessage }}</h2>
+  </div>
     <form [formGroup]="updateForm">
         <div class="row">
             <div class="col p-3" formGroupName="SkillSet">

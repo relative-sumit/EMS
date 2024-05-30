@@ -143,29 +143,29 @@ export class PersonalComponent implements OnInit {
       [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
     EmployeeCode: [''],
-    Photo: ['', [Validators.required]],
+    Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
       CountryCode: [''],
       Primary: ['', [Validators.required]],
-      Emergency: ['', [Validators.required]],
+      Emergency: [''],
     }),
     Email: this.fb.group({
       CompanyMail: [''],
       PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
-      Flat: ['', [Validators.required]],
-      Area: ['', [Validators.required]],
-      Landmark: ['', [Validators.required]],
-      Country: ['', [Validators.required]],
-      State: ['', [Validators.required]],
-      City: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
+      Flat: [''],
+      Area: [''],
+      Landmark: [''],
+      Country: [''],
+      State: [''],
+      City: [''],
+      Pincode: ['', [Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
     }),
-    dob: ['', [Validators.required]],
-    doj: ['', [Validators.required]],
-    doc: ['', [Validators.required]],
+    dob: [''],
+    doj: [''],
+    doc: [''],
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
@@ -182,7 +182,7 @@ export class PersonalComponent implements OnInit {
     Department: this.fb.group({
       DepartmentName:[''],
     }),
-    Designation: ['', [Validators.required]],
+    Designation: [''],
   });
 
   //validating names
@@ -274,10 +274,17 @@ export class PersonalComponent implements OnInit {
   }
 
   updateEmployee() {
+
+    if(this.updateForm.value.Contact?.Emergency){
+      this.updateForm.patchValue({
+        Contact: {
+          Emergency: this.emergencyE164Number,
+        },
+      });
+    }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number
       }
     });
    

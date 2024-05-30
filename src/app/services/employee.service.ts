@@ -98,12 +98,13 @@ export class EmployeeService {
   updateEmployeeInfoById(_id: String, Username: String, input:any){
     // console.log("from service","_id: ", _id, "Data: ", input)
     // console.log("Before: ", input);
-    
-    input.Department = input.Department.DepartmentName
-    if( typeof input.ManagerId === 'object'){
+    if(input.Department){
+      input.Department = input.Department.DepartmentName
+    }    
+    if(input.ManagerId && typeof input.ManagerId === 'object'){
       input.ManagerId = input.ManagerId.EmployeeCode
     }
-    if( typeof input.TeamLead === 'object'){
+    if(input.TeamLead && typeof input.TeamLead === 'object'){
       input.TeamLead = input.TeamLead.EmployeeCode
     }
     console.log("InputData: ", input);
@@ -177,7 +178,9 @@ export class EmployeeService {
   }
 
   createEmployeeInfo(Username: String, input:any){
-    input.Department = input.Department.DepartmentName
+    if(input.Department){
+      input.Department = input.Department.DepartmentName
+    }
     // input.ManagerId = input.ManagerId[0].EmployeeCode
     // input.TeamLead = input.TeamLead[0].EmployeeCode
     console.log("from service", input)

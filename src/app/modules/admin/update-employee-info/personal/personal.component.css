@@ -13,6 +13,25 @@
 .error{
     color: red;
 }
+.notification-box {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+  
+.notification-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+  
+.notification-fail {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
 ::ng-deep ngx-intl-tel-input .iti__flag-container + input {
     background-color:rgba(0, 0, 0, 0.054);
     width: 250px; 

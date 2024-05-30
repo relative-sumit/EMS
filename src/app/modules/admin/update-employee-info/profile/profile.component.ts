@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { DisplayComponent } from '../display/display.component';
 import { EmployeeService } from '../../../../services/employee.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +17,8 @@ import { EnumValuesService } from '../../../../services/enum-values.service';
 import { Router } from '@angular/router';
 import { EncryptingDecryptingService } from '../../../../services/encrypting-decrypting.service';
 import { State, City } from 'country-state-city';
+import { Observable, map, of, startWith } from 'rxjs';
+import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-profile',
@@ -35,7 +37,9 @@ import { State, City } from 'country-state-city';
     NgSelectModule,
     MatSelectModule,
     NgMultiSelectDropDownModule,
-    DisplayComponent
+    DisplayComponent,
+    MatAutocompleteModule,
+    AsyncPipe
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -61,6 +65,12 @@ export class ProfileComponent implements OnInit{
   selectedState!: string;
   selectedCity!: string;
   patchData: any;
+  filteredDesignations!:any;
+  filteredManagers!: any;
+  filteredTeamLeads!:any;  
+  
+  notificationMessage: string = '';
+  creationSuccess: boolean = false;
 
   managerDropdownSettings = {
     singleSelection: true,
@@ -146,6 +156,13 @@ export class ProfileComponent implements OnInit{
         this.designations = data.Designation
         this.skillLevel = data.SkillLevel
         this.department = data.Department
+        this.filteredDesignations = this.updateForm.get('Designation')?.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value as string, this.designations))
+        );
+      },error=>{
+        console.log(error);
+        this.filteredDesignations = of(this.designations);
       }
     )
 
@@ -162,8 +179,13 @@ export class ProfileComponent implements OnInit{
         });
         // console.log(this.managerInfo);
         this.viewManager = this.managerInfo;
+        this.filteredManagers = this.updateForm.get('ManagerId')?.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterManagers(value as string))
+        );
       },error=>{
         console.error(error);
+        this.filteredManagers = of(this.managerInfo); // Ensure observable always emits an array
       }
     )
 
@@ -177,10 +199,15 @@ export class ProfileComponent implements OnInit{
             view: item.FirstName + ' ' + item.LastName + ' - ' + item.EmployeeCode
           };
           this.teamLeadInfo.push(teamLeadObj);
+          this.filteredTeamLeads = this.updateForm.get('TeamLead')?.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterTeamLeads(value as string))
+          );
         });
         this.viewTeamLead = this.teamLeadInfo
       },error=>{
         console.error(error)
+        this.filteredTeamLeads = of(this.teamLeadInfo);
       }
     )
   
@@ -190,6 +217,25 @@ export class ProfileComponent implements OnInit{
   getFullNameWithCode(employee: any): string {
     return `${employee.FirstName} ${employee.LastName} - ${employee.EmployeeCode}`;
   }
+
+  private _filter(value: string, options: string[]): string[] {
+    if (!options) {
+      return [];
+    }
+    const filterValue = value.toLowerCase();
+    return options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterTeamLeads(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.teamLeadInfo.filter(option => option.view.toLowerCase().includes(filterValue));
+  }
+
+  private _filterManagers(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.managerInfo.filter(option => option.view.toLowerCase().includes(filterValue));
+  }
+
 
   updateForm = this.fb.group({
     FirstName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
@@ -217,8 +263,8 @@ export class ProfileComponent implements OnInit{
       Pincode: [''],
     }),
     dob: [''],
-    doj: ['', [Validators.required]],
-    doc: ['', [Validators.required]],
+    doj: [''],
+    doc: [''],
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: [''],
@@ -233,9 +279,9 @@ export class ProfileComponent implements OnInit{
     ManagerId: [''],
     TeamLead: [''],
     Department: this.fb.group({
-      DepartmentName:['', [Validators.required]],
+      DepartmentName:[''],
     }),
-    Designation: ['', [Validators.required]],
+    Designation: [''],
   });
 
   nameValidator(v: any) {
@@ -302,26 +348,32 @@ export class ProfileComponent implements OnInit{
       // }
     }
   }
-
+  emp: any
   updateEmployee(){
-    // this.managerId = this.updateForm.value.ManagerId;
-    // if(this.managerId && this.managerId.length>0){
-    //    this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
-    // }
+    if(this.updateForm.value.Contact?.Emergency){
+      this.updateForm.patchValue({
+        Contact: {
+          Emergency: this.emergencyE164Number,
+        },
+      });
+    }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number
       },
-      // ManagerId: this.setEmployeeCodeToManagerId,
     });
     console.log(this.updateForm.value)
     this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
     .subscribe(
       (data)=>{
         console.log(data);
-        this.route.navigate(['admin/employee-manage']);
+        this.creationSuccess = true;
+        this.notificationMessage = 'Employee updated sucessfully';
+        this.emp = data
+        // this.route.navigate(['admin/employee-manage']);
       },error=>{
+        this.creationSuccess = false;
+        this.notificationMessage = 'Failure! Employee not updated';
         console.error(error);
       }
     )

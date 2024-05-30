@@ -274,9 +274,15 @@ export class AuthService {
   }
 
   updateEmployeeInfo(UserId: String, Username: string, input: any) {
-    input.Department = input.Department.DepartmentName
-    input.ManagerId = input.ManagerId.EmployeeCode
-    input.TeamLead = input.TeamLead.EmployeeCode
+    if(input.Department){
+      input.Department = input.Department.DepartmentName
+    }    
+    if(input.ManagerId && typeof input.ManagerId === 'object'){
+      input.ManagerId = input.ManagerId.EmployeeCode
+    }
+    if(input.TeamLead && typeof input.TeamLead === 'object'){
+      input.TeamLead = input.TeamLead.EmployeeCode
+    }
     return this.apollo.mutate<any>({
       mutation: UPDATE_EMPLOYEE_INFO,
       variables: {

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,8 @@ import {  MatSelectModule } from '@angular/material/select';
 import { EnumValuesService } from '../../../services/enum-values.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Country, State, City } from 'country-state-city';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete'
+import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-create-employee-info',
@@ -34,7 +35,9 @@ import { Country, State, City } from 'country-state-city';
     NgxIntlTelInputModule,
     NgSelectModule,
     MatSelectModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    MatAutocompleteModule,
+    AsyncPipe
   ],
   templateUrl: './create-employee-info.component.html',
   styleUrl: './create-employee-info.component.css'
@@ -62,6 +65,10 @@ export class CreateEmployeeInfoComponent implements OnInit{
   cities: any[] = [];
   selectedState!: string;
   selectedCity!: string;
+  filteredDesignations!: any;
+  filteredManagers!: any;
+  filteredTeamLeads!: any;
+  filteredDepartments!: any;
 
   managerDropdownSettings = {
     singleSelection: true,
@@ -90,11 +97,6 @@ export class CreateEmployeeInfoComponent implements OnInit{
   ngOnInit(): void {
     this.encryptedUserName = sessionStorage.getItem('username');
     this.userName = this.ed.decrypt(this.encryptedUserName);
-    // this.addForm.get('Location.Pincode')?.valueChanges.subscribe(value => {
-    //   if (this.addForm.get('Location.Pincode')?.valid) {
-    //     this.onPostalCodeChange(value);
-    //   }
-    // });
 
     this.countries = Country.getAllCountries();
     this.addForm.get('Location.Country')?.valueChanges.subscribe((countryIsoCode) => {
@@ -125,6 +127,16 @@ export class CreateEmployeeInfoComponent implements OnInit{
         this.designations = data.Designation
         this.skillLevel = data.SkillLevel
         this.department = data.Department
+
+        this.filteredDesignations = this.addForm.get('Designation')?.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value as string, this.designations))
+        );
+
+        // this.filteredDepartments = this.addForm.get('Department.DepartmentName')?.valueChanges.pipe(
+        //   startWith(''),
+        //   map(value => this._filter(value as string, this.department))
+        // );
       }
     )
 
@@ -141,6 +153,11 @@ export class CreateEmployeeInfoComponent implements OnInit{
         });
         console.log(this.managerInfo);
         this.viewManager = this.managerInfo;
+        this.filteredManagers = this.addForm.get('ManagerId')?.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterManagers(value as string))
+        );
+
       },error=>{
         console.error(error);
       }
@@ -158,10 +175,33 @@ export class CreateEmployeeInfoComponent implements OnInit{
           this.teamLeadInfo.push(teamLeadObj);
         });
         this.viewTeamLead = this.teamLeadInfo 
+        this.filteredTeamLeads = this.addForm.get('TeamLead')?.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterTeamLeads(value as string))
+        );
       },error=>{
         console.error(error);
       }
     )
+  }
+
+
+  private _filter(value: string, options: string[]): string[] {
+    if (!options) {
+      return [];
+    }
+    const filterValue = value.toLowerCase();
+    return options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterTeamLeads(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.teamLeadInfo.filter(option => option.view.toLowerCase().includes(filterValue));
+  }
+
+  private _filterManagers(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.managerInfo.filter(option => option.view.toLowerCase().includes(filterValue));
   }
 
   addForm = this.fb.group({
@@ -169,29 +209,29 @@ export class CreateEmployeeInfoComponent implements OnInit{
     MiddleName: [''],
     LastName: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator]],
     EmployeeCode: [''],
-    Photo: ['', Validators.required],
+    Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
       CountryCode: [''],
       Primary: ['', [Validators.required]],
-      Emergency: ['', [Validators.required]],
+      Emergency: [''],
     }),
     Email: this.fb.group({
       CompanyMail: ['', [Validators.required,  Validators.email, this.validEmail]],
       PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
-      Flat: ['', [Validators.required]],
-      Area: ['', [Validators.required]],
-      Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
-      City: ['', [Validators.required]],
-      State: ['', [Validators.required]],
-      Country: ['', [Validators.required]]
+      Flat: [''],
+      Area: [''],
+      Landmark: [''],
+      Pincode: ['', [Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
+      City: [''],
+      State: [''],
+      Country: ['']
     }),
-    dob: ['', [Validators.required]],
-    doj: ['', [Validators.required]],
-    doc: ['', [Validators.required]],
+    dob: [''],
+    doj: [''],
+    doc: [''],
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
@@ -206,9 +246,9 @@ export class CreateEmployeeInfoComponent implements OnInit{
     ManagerId: [''],
     TeamLead: [''],
     Department: this.fb.group({
-      DepartmentName:['', [Validators.required]]
+      DepartmentName:['']
     }),
-    Designation: ['', [Validators.required]],
+    Designation: [''],
   });
 
   nameValidator(v: any) {
@@ -235,21 +275,6 @@ export class CreateEmployeeInfoComponent implements OnInit{
     return null;
   }
 
-  // onPostalCodeChange(postalCode: any) {
-  //   this.employeeService.getLocation(postalCode).subscribe(location => {
-  //     if (location) {
-  //       this.addForm.patchValue({
-  //         Location: {
-  //           City: location.city,
-  //           State: location.state
-  //         }
-  //       });
-  //       this.errorMessage = '';
-  //     } else {
-  //       this.errorMessage = 'Invalid postal code or postal code not found.';
-  //     }
-  //   });
-  // }
   onCountryChange(countryIsoCode: string) {
     this.states = State.getStatesOfCountry(countryIsoCode);
     this.addForm.get('Location.State')?.reset();
@@ -302,23 +327,30 @@ export class CreateEmployeeInfoComponent implements OnInit{
 
 
   addEmployee(){
+    console.log()
     if(this.addForm.valid){
+      if(this.addForm.value.Contact?.Emergency){
+        this.addForm.patchValue({
+          Contact: {
+            Emergency: this.emergencyE164Number,
+          },
+        });
+      }
       this.addForm.patchValue({
         Contact: {
           Primary: this.primaryE164Number,
-          Emergency: this.emergencyE164Number
         },
       });
       console.log(this.addForm.value);
-      this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
-      .subscribe(
-        (data)=>{
-          // console.log(data);
-          this.route.navigate(['admin/employee-manage']);
-        },error=>{
-          console.error(error);
-        }
-      )
+      // this.employeeService.createEmployeeInfo(this.userName, this.addForm.value)
+      // .subscribe(
+      //   (data)=>{
+      //     console.log(data);
+      //     // this.route.navigate(['admin/employee-manage']);
+      //   },error=>{
+      //     console.error(error);
+      //   }
+      // )
     }else{
       this.addForm.markAllAsTouched();
     }
