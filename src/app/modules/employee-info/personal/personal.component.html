@@ -30,7 +30,7 @@
             <div class="row">
               <div class="col p-3">
                 <div *ngIf="editMode[1]">
-                  <span style="color: gray">Upload Photo <span style="font-size: 20px;" *ngIf="editMode[1]">*</span></span>
+                  <span style="color: gray">Upload Photo</span>
                 </div>
                 <div *ngIf="!editMode[1]">
                   <img [src]="photoPreview" alt="" />
@@ -42,11 +42,11 @@
                   <input type="file" #fileInput class="form-control" (change)="onFileChange($event)"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;" />
                 </div>
-                <p *ngIf="editMode[1]"><small>(*note: Photo size should be less than 100kb)</small></p>
+                <!-- <p *ngIf="editMode[1]"><small>(*note: Photo size should be less than 100kb)</small></p> -->
                 <p *ngIf="fileSizeError" class="error">Photo size should be less than 100KB</p>
-                <p class="error"
+                <!-- <p class="error"
                   *ngIf="this.updateForm.get('Photo')?.touched && this.updateForm.get('Photo')?.errors?.['required']">
-                  Please upload photo</p>
+                  Please upload photo</p> -->
               </div>
               <div class="col p-3">
                 <div>
@@ -75,15 +75,15 @@
                   </p>
                 </div>
               </div>
-              <!-- <div class="col p-3">
+              <div class="col p-3" *ngIf="editMode[1]">
                 <div>
                   <span style="color: gray">Middle Name</span>
                 </div>
-                <div class="values" *ngIf="!editMode[1]">
+                <!-- <div class="values" *ngIf="!editMode[1]">
                   {{ employeeInfo?.MiddleName }}
-                </div>
-                <input class="form-control" *ngIf="editMode[1]" formControlName="MiddleName" />
-              </div> -->
+                </div> -->
+                <input class="form-control"  formControlName="MiddleName" />
+              </div>
               <div class="col p-3">
                 <div>
                   <span style="color: gray">Last Name <span style="font-size: 20px;" *ngIf="editMode[1]">*</span></span>
@@ -225,16 +225,16 @@
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Date of Birth <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
+                  <span style="color: gray">Date of Birth</span>
                 </div>
                 <div class="values" *ngIf="!editMode[2]">
                   {{ dateFormate?.dob }}
                 </div>
                 <input type="date" class="form-control" formControlName="dob" *ngIf="editMode[2]" />
-                <p class="error"
+                <!-- <p class="error"
                   *ngIf="this.updateForm.get('dob')?.touched && this.updateForm.get('dob')?.errors?.['required']">
                   Date of birth is required
-                </p>
+                </p> -->
               </div>
             </div>
             <div class="row">
@@ -264,7 +264,7 @@
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Emergency Contact No <span style="font-size: 20px;" *ngIf="editMode[2]">*</span></span>
+                  <span style="color: gray">Emergency Contact No</span>
                 </div>
                 <div class="values" *ngIf="!editMode[2]">
                   {{ employeeInfo?.Contact.Emergency }}
@@ -272,7 +272,7 @@
                 <div formGroupName="Contact">
                   <ngx-intl-tel-input formControlName="Emergency" *ngIf="editMode[2]"></ngx-intl-tel-input>
                   <div class="error" *ngIf="this.updateForm.get('Contact.Emergency')?.touched && this.updateForm.get('Contact.Emergency')?.errors">
-                    <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors?.['required']">Contact number is required</p>
+                    <!-- <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors?.['required']">Contact number is required</p> -->
                     <p *ngIf="this.updateForm.get('Contact.Emergency')?.errors && !this.updateForm.get('Contact.Emergency')?.errors?.['required']">Phone number is invalid for selected country</p>
                   </div>
                 </div>
@@ -319,63 +319,63 @@
             <div class="row">
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Country <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">Country</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.Country }}
                 </div>
                 <div formGroupName="Location" *ngIf="editMode[3]">
-                  <select class="form-control" formControlName="Country" required>
+                  <select class="form-control" formControlName="Country">
                     <option *ngFor="let country of countries" [value]="country.isoCode">{{ country.name }}</option>
                   </select>
                   <!-- <input class="form-control" formControlName="State" *ngIf="editMode[3]" readonly/> -->
-                  <p class="error"
+                  <!-- <p class="error"
                     *ngIf="this.updateForm.get('Location.Country')?.touched && this.updateForm.get('Location.Country')?.errors?.['required']">
                     Country name is required
-                  </p>
+                  </p> -->
                 </div>
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">State <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">State</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.State }}
                 </div>
                 <div formGroupName="Location" *ngIf="editMode[3]">
-                  <select class="form-control" formControlName="State" required>
+                  <select class="form-control" formControlName="State">
                     <option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</option>
                   </select>
                   <!-- <input class="form-control" formControlName="State" *ngIf="editMode[3]" readonly/> -->
-                  <p class="error"
+                  <!-- <p class="error"
                     *ngIf="this.updateForm.get('Location.State')?.touched && this.updateForm.get('Location.State')?.errors?.['required']">
                     State name is required
-                  </p>
+                  </p> -->
                 </div>
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">City <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">City</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.City }}
                 </div>
                 <div formGroupName="Location">
-                  <select class="form-control" *ngIf="editMode[3]" formControlName="City" required>
+                  <select class="form-control" *ngIf="editMode[3]" formControlName="City">
                     <option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</option>
                   </select>
                   <!-- <input class="form-control" formControlName="City" *ngIf="editMode[3]" readonly/> -->
-                  <p class="error"
+                  <!-- <p class="error"
                     *ngIf="this.updateForm.get('Location.City')?.touched && this.updateForm.get('Location.City')?.errors?.['required']">
                     City name is required
-                  </p>
+                  </p> -->
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Zipcode <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">Zipcode</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.Pincode }}
@@ -383,7 +383,7 @@
                 <div formGroupName="Location">
                   <input class="form-control" formControlName="Pincode" *ngIf="editMode[3]" />
                   <div *ngIf="this.updateForm.get('Location.Pincode')?.touched && this.updateForm.get('Location.Pincode')?.errors">
-                    <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p>
+                    <!-- <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['required']">Zipcode is required</p> -->
                     <p class="error" *ngIf="this.updateForm.get('Location.Pincode')?.errors?.['pattern']">Invalid Zipcode. (use 5 digits or 5-4 digits for US, 6 digits for India)</p>
                   </div>
                   <p class="error">{{errorMessage}}</p>
@@ -391,7 +391,7 @@
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Flat No, Society/Building Name <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">Flat No, Society/Building Name</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.Flat }}
@@ -400,15 +400,15 @@
                   <!-- <input class="form-control" formControlName="Flat" *ngIf="editMode[3]"> -->
                   <textarea class="form-control" formControlName="Flat" *ngIf="editMode[3]"
                     id="exampleFormControlTextarea1" rows="3"></textarea>
-                  <p class="error"
+                  <!-- <p class="error"
                     *ngIf="this.updateForm.get('Location.Flat')?.touched && this.updateForm.get('Location.Flat')?.errors?.['required']">
                     Flat number is required
-                  </p>
+                  </p> -->
                 </div>
               </div>
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Area <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">Area</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.Area }}
@@ -417,27 +417,23 @@
                   <!-- <input class="form-control" formControlName="Area" *ngIf="editMode[3]"> -->
                   <textarea class="form-control" formControlName="Area" *ngIf="editMode[3]"
                     id="exampleFormControlTextarea1" rows="3"></textarea>
-                  <p class="error"
+                  <!-- <p class="error"
                     *ngIf="this.updateForm.get('Location.Area')?.touched && this.updateForm.get('Location.Area')?.errors?.['required']">
                     Area name is required
-                  </p>
+                  </p> -->
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col p-3">
                 <div>
-                  <span style="color: gray">Landmark <span style="font-size: 20px;" *ngIf="editMode[3]">*</span></span>
+                  <span style="color: gray">Landmark</span>
                 </div>
                 <div class="values" *ngIf="!editMode[3]">
                   {{ employeeInfo?.Location.Landmark }}
                 </div>
                 <div formGroupName="Location">
                   <input class="form-control" formControlName="Landmark" *ngIf="editMode[3]" />
-                  <p class="error"
-                    *ngIf="this.updateForm.get('Location.Landmark')?.touched && this.updateForm.get('Location.Landmark')?.errors?.['required']">
-                    Landmark is required
-                  </p>
                 </div>
               </div>
             </div>

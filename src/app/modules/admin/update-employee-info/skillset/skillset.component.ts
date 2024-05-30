@@ -58,6 +58,8 @@ export class SkillsetComponent implements OnInit {
   cities: any[] = [];
   selectedState!: string;
   selectedCity!: string;
+  notificationMessage: string = '';
+  creationSuccess: boolean = false;
 
   managerDropdownSettings = {
     singleSelection: true,
@@ -246,25 +248,33 @@ export class SkillsetComponent implements OnInit {
     }
   }
 
+  emp: any;
   updateEmployee() {
-    // this.managerId = this.updateForm.value.ManagerId;
-    // if (this.managerId && this.managerId.length > 0) {
-    //   this.setEmployeeCodeToManagerId = this.managerId[0].EmployeeCode
-    // }
+    if(this.updateForm.value.Contact?.Emergency){
+      this.updateForm.patchValue({
+        Contact: {
+          Emergency: this.emergencyE164Number,
+        },
+      });
+    }
     this.updateForm.patchValue({
       Contact: {
         Primary: this.primaryE164Number,
-        Emergency: this.emergencyE164Number
       },
-      // ManagerId: this.setEmployeeCodeToManagerId,
     });
     console.log("updated form: ", this.updateForm.value)
     this.employeeService.updateEmployeeInfoById(this._id, this.userName, this.updateForm.value)
       .subscribe(
         (data) => {
           console.log(data);
-          this.route.navigate(['admin/employee-manage']);
-        }, error => {
+          this.emp = data
+          this.creationSuccess = true;
+          this.notificationMessage = 'Employee updated sucessfully';
+
+          // this.route.navigate(['admin/employee-manage']);
+        },error=>{
+          this.creationSuccess = false;
+          this.notificationMessage = 'Failure! Employee not updated';
           console.error(error);
         }
       )

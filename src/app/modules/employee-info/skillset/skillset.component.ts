@@ -77,29 +77,29 @@ export class SkillsetComponent implements OnInit{
       [Validators.required, Validators.minLength(4), Validators.maxLength(15), this.nameValidator],
     ],
     EmployeeCode: [''],
-    Photo: ['', [Validators.required]],
+    Photo: [''],
     Gender: ['', [Validators.required]],
     Contact: this.fb.group({
       CountryCode: [''],
       Primary: ['', [Validators.required]],
-      Emergency: ['', [Validators.required]],
+      Emergency: [''],
     }),
     Email: this.fb.group({
       CompanyMail: [''],
       PersonalMail: ['', [Validators.required, Validators.email, this.validEmail]],
     }),
     Location: this.fb.group({
-      Flat: ['', [Validators.required]],
-      Area: ['', [Validators.required]],
-      Landmark: ['', [Validators.required]],
-      Pincode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
-      City: ['', [Validators.required]],
-      State: ['', [Validators.required]],
-      Country: ['', [Validators.required]],
+      Flat: [''],
+      Area: [''],
+      Landmark: [''],
+      Pincode: ['', [Validators.pattern(/^\d{5}(-\d{4})?$|^\d{6}$/)]],
+      City: [''],
+      State: [''],
+      Country: [''],
     }),
-    dob: ['', [Validators.required]],
-    doj: ['', [Validators.required]],
-    doc: ['', [Validators.required]],
+    dob: [''],
+    doj: [''],
+    doc: [''],
     SkillSet: this.fb.group({
       EmployeeSkillsetId: [''],
       PrimarySkillset: ['', [Validators.required]],
@@ -116,7 +116,7 @@ export class SkillsetComponent implements OnInit{
     Department: this.fb.group({
       DepartmentName:[''],
     }),
-    Designation: ['', [Validators.required]],
+    Designation: [''],
   });
 
   //validating names

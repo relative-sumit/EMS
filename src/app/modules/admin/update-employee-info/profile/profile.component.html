@@ -2,6 +2,16 @@
     <app-display></app-display>
     <mat-stepper class="example-stepper">
         <mat-step [stepControl]="updateForm" label="PROFILE">
+            <div
+            *ngIf="notificationMessage"
+            class="notification-box"
+            [ngClass]="{
+              'notification-success': creationSuccess,
+              'notification-fail': !creationSuccess
+            }"
+          >
+            <h2>{{ notificationMessage }}</h2>
+          </div>
             <form [formGroup]="updateForm">
                 <div class="row">
                     <div class="col">
@@ -83,48 +93,97 @@
                     <div class="col">
                         <mat-form-field formGroupName="Department">
                             <mat-label>Department Name</mat-label>
-                            <mat-select formControlName="DepartmentName" required>
+                            <mat-select formControlName="DepartmentName">
                                 <mat-option *ngFor="let depart of department" [value]="depart">
                                     {{ depart }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <p class="error"
+                        <!-- <p class="error"
                             *ngIf="this.updateForm.get('Department')?.touched && this.updateForm.get('Department')?.errors?.['required']">
-                            Department name is required</p>
+                            Department name is required</p> -->
                     </div>
                     <div class="col">
                         <mat-form-field>
                             <mat-label>Designation</mat-label>
-                            <!-- <input matInput placeholder="Designation" formControlName="Designation" required> -->
+                            <input type="text"
+                                   placeholder="Select a designation"
+                                   aria-label="Select Designation"
+                                   matInput
+                                   formControlName="Designation"
+                                   [matAutocomplete]="designationAuto">
+                            <mat-autocomplete #designationAuto="matAutocomplete" autoActiveFirstOption>
+                                <mat-option *ngIf="filteredDesignations.length === 0" disabled>
+                                    No items found
+                                  </mat-option>
+                              <mat-option *ngFor="let designation of filteredDesignations | async" [value]="designation">
+                                {{ designation }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        <!-- <mat-form-field>
+                            <mat-label>Designation</mat-label>
                             <mat-select formControlName="Designation" required>
                                 <mat-option *ngFor="let designation of designations" [value]="designation">
                                     {{ designation }}
                                 </mat-option>
-                                <!-- <mat-option value="two">Second option</mat-option> -->
                             </mat-select>
-                        </mat-form-field>
-                        <p class="error"
+                        </mat-form-field> -->
+                        <!-- <p class="error"
                             *ngIf="this.updateForm.get('Designation')?.touched && this.updateForm.get('Designation')?.errors?.['required']">
-                            Designation is required</p>
+                            Designation is required</p> -->
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <mat-form-field>
+                            <mat-label>Team Lead</mat-label>
+                            <input type="text"
+                                   placeholder="Select a team lead"
+                                   aria-label="Select Team Lead"
+                                   matInput
+                                   formControlName="TeamLead"
+                                   [matAutocomplete]="teamLeadAuto">
+                            <mat-autocomplete #teamLeadAuto="matAutocomplete" autoActiveFirstOption>
+                                <mat-option *ngIf="filteredTeamLeads.length === 0" disabled>
+                                    No items found
+                                  </mat-option>
+                              <mat-option *ngFor="let teamLead of filteredTeamLeads | async" [value]="teamLead.EmployeeCode">
+                                {{ teamLead.view }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        <!-- <mat-form-field>
                             <mat-label>Team Lead Name</mat-label>
                             <mat-select formControlName="TeamLead">
                                 <mat-option *ngFor="let teamLead of teamLeadInfo" [value]="teamLead.EmployeeCode">{{teamLead.view}}</mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
                     <div class="col">
                         <mat-form-field>
+                            <mat-label>Manager</mat-label>
+                            <input type="text"
+                                   placeholder="Select a manager"
+                                   aria-label="Select Manager"
+                                   matInput
+                                   formControlName="ManagerId"
+                                   [matAutocomplete]="managerAuto">
+                            <mat-autocomplete #managerAuto="matAutocomplete" autoActiveFirstOption>
+                                <mat-option *ngIf="filteredManagers.length === 0" disabled>
+                                    No items found
+                                  </mat-option>
+                              <mat-option *ngFor="let manager of filteredManagers | async" [value]="manager.EmployeeCode">
+                                {{ manager.view }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        <!-- <mat-form-field>
                             <mat-label>Manager Name</mat-label>
                             <mat-select formControlName="ManagerId">
                                 <mat-option *ngFor="let manager of managerInfo" [value]="manager.EmployeeCode">{{manager.view}}</mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
                     <!-- <div class="col">
                         <ng-multiselect-dropdown [placeholder]="'Team Lead Name'" [settings]="teamLeadDropdownSettings"
@@ -143,10 +202,10 @@
                             <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
                             <mat-datepicker #join></mat-datepicker>
                         </mat-form-field>
-                        <div class="error"
+                        <!-- <div class="error"
                             *ngIf="this.updateForm.get('doj')?.touched && this.updateForm.get('doj')?.errors">
                             <p *ngIf="this.updateForm.get('doj')?.errors?.['required']">Date of joining is required</p>
-                        </div>
+                        </div> -->
                     </div>
                 <div class="row">
                     <div class="col">
@@ -157,11 +216,11 @@
                             <mat-datepicker-toggle matSuffix [for]="conform"></mat-datepicker-toggle>
                             <mat-datepicker #conform></mat-datepicker>
                         </mat-form-field>
-                        <div class="error"
+                        <!-- <div class="error"
                             *ngIf="this.updateForm.get('doc')?.touched && this.updateForm.get('doc')?.errors">
                             <p *ngIf="this.updateForm.get('doc')?.errors?.['required']">Date of confirmation is required
                             </p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>    
                 </div>
@@ -173,5 +232,3 @@
         </mat-step>
     </mat-stepper>
 </div>
-
-<!-- style="width: 20%;" class="dateSize" -->
