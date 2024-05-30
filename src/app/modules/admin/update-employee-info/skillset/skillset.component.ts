@@ -41,7 +41,7 @@ import { State, City } from 'country-state-city';
   styleUrl: './skillset.component.css'
 })
 export class SkillsetComponent implements OnInit {
-  _id: String = '';
+  _id: string = '';
   fileSizeError: boolean = false;
   encryptedUserName: any;
   userName: String = '';
@@ -86,12 +86,17 @@ export class SkillsetComponent implements OnInit {
         (data) => {
           console.log(data);
           this._id = data._id
-          // console.log(this._id);        
-          this.updateForm.patchValue(data);
-          const selectedState = this.updateForm.get('Location.State')?.value;
-          if (selectedState) {
-            this.onStateChange(selectedState, data.Location.City);
-          }
+          // console.log(this._id);
+          this.employeeService.getEmployeeInfoById(this._id)
+          .subscribe(
+            data=>{
+              this.updateForm.patchValue(data);
+              const selectedState = this.updateForm.get('Location.State')?.value;
+              if (selectedState) {
+                this.onStateChange(selectedState, data.Location.City);
+              }
+            }
+          )        
         }
       )
     this.enumValues.getAllEnumValues()
